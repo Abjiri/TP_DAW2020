@@ -4,11 +4,11 @@ html
     title Gestão de recursos educativos
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
-    block content
-
     div(class= "topnav")
       if (auth)
         a(href= '/signup') Registar
         a(href= '/login') Login
       else
         a(href= '/logout') Logout
+
+    block content
