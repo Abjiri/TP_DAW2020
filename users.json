@@ -1,0 +1,29 @@
+[
+    {
+        "email": "admin@email",
+        "password": "123",
+        "nome": "Administrador",
+        "filiacao": "estudante",
+        "nivel": "administrador",
+        "dataRegisto": "2021-01-21T11:35",
+        "dateUltimoAcesso": "2021-01-21T11:37"
+    },
+    {
+        "email": "consumer@email",
+        "password": "456",
+        "nome": "Consumidor",
+        "filiacao": "docente",
+        "nivel": "consumidor",
+        "dataRegisto": "2021-01-21T11:35",
+        "dateUltimoAcesso": "2021-01-21T11:37"
+    },
+    {
+        "email": "producer@email",
+        "password": "456",
+        "nome": "Produtor",
+        "filiacao": "DI",
+        "nivel": "produtor",
+        "dataRegisto": "2021-01-21T11:35",
+        "dateUltimoAcesso": "2021-01-21T11:37"
+    }
+]

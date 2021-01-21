@@ -1,0 +1,29 @@
+[
+    {
+        "tipo": "relatorio",
+        "titulo": "Relatorio",
+        "subtitulo": "Bem relatado",
+        "dataCriacao": "2021-01-16T11:35",
+        "dataRegisto": "2021-01-20T17:46",
+        "visibilidade": "publico",
+        "autor" : "produtor@email"
+    },
+    {
+        "tipo": "tese",
+        "titulo": "Tese",
+        "subtitulo": "Bem tesa",
+        "dataCriacao": "2021-01-16T11:35",
+        "dataRegisto": "2021-01-20T17:46",
+        "visibilidade": "privado",
+        "autor" : "produtor@email"
+    },
+    {
+        "tipo": "artigo",
+        "titulo": "Artigo",
+        "subtitulo": "Cheio de ortigas",
+        "dataCriacao": "2021-01-16T11:35",
+        "dataRegisto": "2021-01-20T17:46",
+        "visibilidade": "publico",
+        "autor" : "produtor@email"
+    }
+]
