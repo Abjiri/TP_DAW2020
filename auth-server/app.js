@@ -26,11 +26,12 @@ passport.use(new LocalStrategy(
     User.consultar(email)
       .then(dados => {
         const user = dados
+        console.log(user)
 
-        if(!user) { return done(null, false, {message: 'Utilizador inexistente!\n'})}
-        if(password != user.password) { return done(null, false, {message: 'Password inválida!\n'})}
+        if(!user) { return done(null, {success: false, invalidInput: 'email', message: 'Email inexistente!\n'})}
+        if(password != user.password) { return done(null, {success: false, invalidInput: 'password', message: 'Password inválida!\n'})}
 
-        return done(null, user)
+        return done(null, {success: true, user})
       })
       .catch(e => done(e))
     })
@@ -38,16 +39,22 @@ passport.use(new LocalStrategy(
 
 // Indica-se ao passport como serializar o utilizador
 passport.serializeUser((user,done) => {
-  console.log('Serialização, email: ' + user.email)
-  done(null, user.email)
+  if (user.success) {
+    console.log('Serialização, email: ' + user.email)
+    done(null, {success: user.success, email: user.email})
+  }
+  else done(null, user)
 })
   
 // Desserialização: a partir do id obtem-se a informação do utilizador
-passport.deserializeUser((email, done) => {
-  console.log('Desserialização, email: ' + email)
-  User.consultar(email)
-    .then(dados => done(null, dados))
-    .catch(erro => done(erro, false))
+passport.deserializeUser((user, done) => {
+  if (user.success) {
+    console.log('Desserialização, email: ' + user.email)
+    User.consultar(user.email)
+      .then(dados => done(null, {success: true, user: dados}))
+      .catch(erro => done(erro, false))
+  }
+  else done(null, user)
 })
 
 var usersRouter = require('./routes/users');
