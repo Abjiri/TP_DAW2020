@@ -2,28 +2,29 @@
     {
         "email": "admin@email",
         "password": "123",
-        "nome": "Administrador",
-        "filiacao": "estudante",
         "nivel": "administrador",
+        "nome": "Administrador",
+        "estatuto": {
+            "tipo": "Estudante",
+            "filiacao": "MIEI"
+        },
         "dataRegisto": "2021-01-21T11:35",
-        "dateUltimoAcesso": "2021-01-21T11:37"
+        "dataUltimoAcesso": "2021-01-21T11:37",
+        "descricao": "Sou o chefe disto",
+        "foto": "url para a foto"
     },
-    {
-        "email": "consumer@email",
-        "password": "456",
-        "nome": "Consumidor",
-        "filiacao": "docente",
-        "nivel": "consumidor",
-        "dataRegisto": "2021-01-21T11:35",
-        "dateUltimoAcesso": "2021-01-21T11:37"
-    },
-    {
-        "email": "producer@email",
-        "password": "456",
-        "nome": "Produtor",
-        "filiacao": "DI",
+        {
+        "email": "produtor@email",
+        "password": "123",
         "nivel": "produtor",
-        "dataRegisto": "2021-01-21T11:35",
-        "dateUltimoAcesso": "2021-01-21T11:37"
+        "nome": "Produtor 1",
+        "estatuto": {
+            "tipo": "Docente",
+            "filiacao": "História"
+        },
+        "dataRegisto": "2021-01-01T01:35",
+        "dataUltimoAcesso": "2021-01-21T04:48",
+        "descricao": "Ando aqui infiltrado",
+        "foto": "url para a foto"
     }
 ]

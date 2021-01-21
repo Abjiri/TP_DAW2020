@@ -1,0 +1,222 @@
+extends layout 
+
+block content
+  script(src='/javascripts/jquery-3.5.1.js')
+  link(href='https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'   rel='stylesheet')
+  link(href='/stylesheets/perfil.css' rel='stylesheet')
+  link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js')
+  link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css')
+  script(src='/javascripts/showedit.js')
+  .container
+    .row
+      .col-md-12
+        #content.content.content-full-width
+          // begin profile
+          .profile
+            .profile-header
+              // BEGIN profile-header-cover
+              .profile-header-cover
+              // END profile-header-cover
+              // BEGIN profile-header-content
+              .profile-header-content
+                // BEGIN profile-header-img
+                .profile-header-img
+                  img(src='https://bootdey.com/img/Content/avatar/avatar3.png' alt='' onClick="showEdit();" style="cursor:pointer")
+                // END profile-header-img
+                // BEGIN profile-header-info
+                .profile-header-info
+                  h3.m-t-10.m-b-5 #{user.nome}
+                  p.m-b-10
+                   i.fa.fa-address-card-o(style='font-size:24px;color:#7FDBFF')  Afiliação: 
+                   |  #{user.estatuto.filiacao} (#{user.estatuto.tipo})
+                  p.m-b-10 
+                   i.fa.fa-envelope-o(style='font-size:24px;color:#7FDBFF')  E-mail: 
+                   |  #{user.email}
+                  p.m-b-10 
+                   i.fa.fa-plus-square(style='font-size:24px;color:#7FDBFF')  Registado em: 
+                   |  #{moment(user.dataRegisto).format('MM/DD/YYYY')}
+                  p.m-b-10 
+                   i.fa.fa-info-circle(style='font-size:24px;color:#7FDBFF')  Desrição: 
+                   |  #{user.descricao} 
+                   #display
+                  a.btn.btn-sm.btn-info.mb-2(href='#' onclick='showEdit();') Editar Perfil
+                  |  
+                  i.fa.fa-edit 
+                  |  
+                  a.btn.btn-sm.btn-info.mb-2(href='#' onclick='showEdit();') Mudar Foto
+                // END profile-header-info
+              // END profile-header-content
+          // end profile
+          // begin profile-content
+          .profile-content
+            // begin tab-content
+            .tab-content.p-0
+              // begin #profile-post tab
+              #profile-post.tab-pane.fade.active.show
+                // begin timeline
+                ul.timeline
+                  li
+                    // begin timeline-time
+                    .timeline-time
+                      span.date today
+                      span.time 04:20
+                    // end timeline-time
+                    // begin timeline-icon
+                    .timeline-icon
+                      a(href='javascript:;') &nbsp;
+                    // end timeline-icon
+                    // begin timeline-body
+                    .timeline-body
+                      .timeline-header
+                        span.userimage
+                          img(src='https://bootdey.com/img/Content/avatar/avatar3.png' alt='')
+                        span.username
+                          a(href='javascript:;') Sean Ngu
+                          small
+                        span.pull-right.text-muted 18 Views
+                      .timeline-content
+                        p
+                          | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc   faucibus turpis quis tincidunt luctus.
+                          | Nam sagittis dui in nunc consequat, in imperdiet nunc sagittis.
+                      .timeline-likes
+                        .stats-right
+                          span.stats-text 259 Shares
+                          span.stats-text 21 Comments
+                        .stats
+                          span.fa-stack.fa-fw.stats-icon
+                            i.fa.fa-circle.fa-stack-2x.text-danger
+                            i.fa.fa-heart.fa-stack-1x.fa-inverse.t-plus-1
+                          span.fa-stack.fa-fw.stats-icon
+                            i.fa.fa-circle.fa-stack-2x.text-primary
+                            i.fa.fa-thumbs-up.fa-stack-1x.fa-inverse
+                          span.stats-total 4.3k
+                      .timeline-footer
+                        a.m-r-15.text-inverse-lighter(href='javascript:;')
+                          i.fa.fa-thumbs-up.fa-fw.fa-lg.m-r-3
+                          |  Like
+                        a.m-r-15.text-inverse-lighter(href='javascript:;')
+                          i.fa.fa-comments.fa-fw.fa-lg.m-r-3
+                          |  Comment
+                        a.m-r-15.text-inverse-lighter(href='javascript:;')
+                          i.fa.fa-share.fa-fw.fa-lg.m-r-3
+                          |  Share
+                      .timeline-comment-box
+                        .user
+                          img(src='https://bootdey.com/img/Content/avatar/avatar3.png')
+                        .input
+                          form(action='')
+                            .input-group
+                              input.form-control.rounded-corner(type='text' placeholder='Write a   comment...')
+                              span.input-group-btn.p-l-10
+                                button.btn.btn-primary.f-s-12.rounded-corner(type='button')   Comment
+                    // end timeline-body
+                  li
+                    // begin timeline-time
+                    .timeline-time
+                      span.date yesterday
+                      span.time 20:17
+                    // end timeline-time
+                    // begin timeline-icon
+                    .timeline-icon
+                      a(href='javascript:;') &nbsp;
+                    // end timeline-icon
+                    // begin timeline-body
+                    .timeline-body
+                      .timeline-header
+                        span.userimage
+                          img(src='https://bootdey.com/img/Content/avatar/avatar3.png' alt='')
+                        span.username Sean Ngu
+                        span.pull-right.text-muted 82 Views
+                      .timeline-content
+                        p Location: United States
+                      .timeline-footer
+                        a.m-r-15.text-inverse-lighter(href='javascript:;')
+                          i.fa.fa-thumbs-up.fa-fw.fa-lg.m-r-3
+                          |  Like
+                        a.m-r-15.text-inverse-lighter(href='javascript:;')
+                          i.fa.fa-comments.fa-fw.fa-lg.m-r-3
+                          |  Comment
+                        a.m-r-15.text-inverse-lighter(href='javascript:;')
+                          i.fa.fa-share.fa-fw.fa-lg.m-r-3
+                          |  Share
+                    // end timeline-body
+                  li
+                    // begin timeline-time
+                    .timeline-time
+                      span.date 24 February 2014
+                      span.time 08:17
+                    // end timeline-time
+                    // begin timeline-icon
+                    .timeline-icon
+                      a(href='javascript:;') &nbsp;
+                    // end timeline-icon
+                    // begin timeline-body
+                    .timeline-body
+                      .timeline-header
+                        span.userimage
+                          img(src='https://bootdey.com/img/Content/avatar/avatar3.png' alt='')
+                        span.username Sean Ngu
+                        span.pull-right.text-muted 1,282 Views
+                      .timeline-content
+                        p.lead
+                          i.fa.fa-quote-left.fa-fw.pull-left
+                          |                                     Quisque sed varius nisl. Nulla   facilisi. Phasellus consequat sapien sit amet nibh molestie placerat.   Donec nulla quam, ullamcorper ut velit vitae, lobortis condimentum   magna. Suspendisse mollis in sem vel mollis.
+                          i.fa.fa-quote-right.fa-fw.pull-right
+                      .timeline-footer
+                        a.m-r-15.text-inverse-lighter(href='javascript:;')
+                          i.fa.fa-thumbs-up.fa-fw.fa-lg.m-r-3
+                          |  Like
+                        a.m-r-15.text-inverse-lighter(href='javascript:;')
+                          i.fa.fa-comments.fa-fw.fa-lg.m-r-3
+                          |  Comment
+                        a.m-r-15.text-inverse-lighter(href='javascript:;')
+                          i.fa.fa-share.fa-fw.fa-lg.m-r-3
+                          |  Share
+                    // end timeline-body
+                  li
+                    // begin timeline-time
+                    .timeline-time
+                      span.date 10 January 2014
+                      span.time 20:43
+                    // end timeline-time
+                    // begin timeline-icon
+                    .timeline-icon
+                      a(href='javascript:;') &nbsp;
+                    // end timeline-icon
+                    // begin timeline-body
+                    .timeline-body
+                      .timeline-header
+                        span.userimage
+                          img(src='https://bootdey.com/img/Content/avatar/avatar3.png' alt='')
+                        span.username Sean Ngu
+                        span.pull-right.text-muted 1,021,282 Views
+                      .timeline-content
+                        h4.template-title
+                          i.fa.fa-map-marker.text-danger.fa-fw
+                          |                                     795 Folsom Ave, Suite 600 San   Francisco, CA 94107
+                        p
+                          | In hac habitasse platea dictumst. Pellentesque bibendum id sem nec   faucibus. Maecenas molestie, augue vel accumsan rutrum, massa mi   rutrum odio, id luctus mauris nibh ut leo.
+                        p.m-t-20
+                          img(src='../assets/img/gallery/gallery-5.jpg' alt='')
+                      .timeline-footer
+                        a.m-r-15.text-inverse-lighter(href='javascript:;')
+                          i.fa.fa-thumbs-up.fa-fw.fa-lg.m-r-3
+                          |  Like
+                        a.m-r-15.text-inverse-lighter(href='javascript:;')
+                          i.fa.fa-comments.fa-fw.fa-lg.m-r-3
+                          |  Comment
+                        a.m-r-15.text-inverse-lighter(href='javascript:;')
+                          i.fa.fa-share.fa-fw.fa-lg.m-r-3
+                          |  Share
+                    // end timeline-body
+                  li
+                    // begin timeline-icon
+                    .timeline-icon
+                      a(href='javascript:;') &nbsp;
+                    // begin timeline-body
+                // end timeline
+              // end #profile-post tab
+            // end tab-content
+          // end profile-content
+  

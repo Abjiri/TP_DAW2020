@@ -12,18 +12,18 @@ GET foto
 
 
 USER:
-- nome
-- email
-- password
-- descrição
-- filiacao
+- nome ok
+- email ok 
+- password ok
+- descrição ok
+- filiacao ok
 	- estudante -> curso
 	- docente -> departamento
 	- trabalhador -> empresa
-- nivel (admin, produtor, consumidor)
-- dataRegisto
-- dataUltimoAcesso
-- foto de perfil (diretoria)
+- nivel (admin, produtor, consumidor) ok
+- dataRegisto ok
+- dataUltimoAcesso ok
+- foto de perfil (diretoria) ok
 
 
 RECURSO:
