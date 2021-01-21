@@ -31,7 +31,7 @@ router.get('/perfil', function(req, res, next) {
 });
 
 router.post('/editar/:id', function(req, res, next){
-  req.cookies.token = req.query.token
+  //req.cookies.token = req.query.token
   if (!req.cookies.token) res.redirect('/users/login')
   else {
     var token = unveilToken(req.cookies.token)
