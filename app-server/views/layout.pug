@@ -3,12 +3,45 @@ html
   head
     title Gestão de recursos educativos
     link(rel='stylesheet', href='/stylesheets/style.css')
+    script(src="/javascripts/jquery-3.5.1.min.js")
+    script(src="/javascripts/navbar.js")
   body
     div(class= "topnav")
-      if (auth)
-        a(href= '/signup') Registar
-        a(href= '/login') Login
+      if (!auth)
+        a(href= '/users/signup') Registar
+        a(id="navbar_login") Login
       else
-        a(href= '/logout') Logout
+        a(href= '/users/logout') Logout
 
+    div(id="login_modal" class="modal" style=invalidInput ? "display: block" : "display: none")
+      form(class="modal-content" action="/users/login" method="POST")
+        div(class="login_img")
+          span(class="login_close" title="Fechar") &times;
+
+        if (invalidInput)
+          div(class="login_error_msg" style="float: center")
+            p(style="text-align: center")= error_msg
+
+        div(class="login_container")
+          label(for="email")
+            b Email
+          input(type="text" name="email" class="login_input" style=(invalidInput == "email") ? "background-color: #ffb3b3" : "" value=invalidInput ? email : '' required)
+                
+          label(for="password")
+            b Password
+          table
+            tr
+              th(style= "width: 95%")
+                input(id="login_password" type="password" name="password" class="login_input" style=(invalidInput == "password") ? "background-color: #ffb3b3" : "" value=invalidInput ? password : '' required)
+              th
+                button(type="button" class="login_reveal_pwd") 👀
+          
+
+          button(type="submit" class="login_btn") Login
+
+        div(class="login_container")
+          button(type="button" class="login_btn login_cancelbtn") Cancel
+          span(class="forgot_passwd")
+            a(href="#") Esqueceste-te da password?
+        
     block content
