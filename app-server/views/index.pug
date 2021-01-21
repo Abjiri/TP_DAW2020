@@ -1,9 +1,14 @@
 extends layout
 
 block content
+  div(class= "topnav")
+    if (auth)
+      a(href= '/signup') Registar
+      a(href= '/login') Login
+    else
+      a(href= '/logout') Logout
+
   h1 Gestão de recursos educativos
   ul.w3-ul
-    li
-      a(href='/login') Login
     li
       a(href='/recursos') Lista de recursos

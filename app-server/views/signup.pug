@@ -1,0 +1,30 @@
+extends layout
+
+block content
+    form(action= "/signup" method="POST")
+        .w3-container
+        div(class= "signup_form")
+            h1 Registar
+            p Preenche este formulário para criar uma conta!
+            hr
+
+            label(for= "email")
+                b Email
+            input(type="text" name="email" required)
+
+            label(for= "password")
+                b Password
+            input(type="password" name="password" required)
+
+            label(for= "password_again")
+                b Password de novo  
+            input(type="password" name="password_again" required)
+
+            label
+                input(type="checkbox" name="remember")
+                | Lembrar-se de mim
+
+            div(class= "clearfix")
+                button(type="button" class="cancelbtn") Retroceder
+                button(type="submit" class="sigtnupbtn") Registar
+
