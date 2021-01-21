@@ -23,7 +23,8 @@ router.post('/', function(req, res){
 router.post('/login', passport.authenticate('local'), function(req, res){
   jwt.sign({ 
     email: req.user.email, 
-    level: req.user.nivel, 
+    level: req.user.nivel,
+    _id: req.user._id, 
     sub: 'TP_DAW2020'}, 
     "TP_DAW2020",
     {expiresIn: "1d"},

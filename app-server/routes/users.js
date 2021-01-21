@@ -21,16 +21,24 @@ function unveilToken(token){
 
 /* GET users listing. */
 router.get('/perfil', function(req, res, next) {
-  if (!req.cookies.token) res.redirect('login')
+  if (!req.cookies.token) res.redirect('/users/login')
   else {
     var token = unveilToken(req.cookies.token)
-    console.log('http://localhost:8001/users/' + token.email +'?token=' + req.cookies.token)
-    axios.get('http://localhost:8001/users/' + token.email +'?token=' + req.cookies.token)
+    axios.get('http://localhost:8001/users/' + token._id +'?token=' + req.cookies.token)
       .then(dados => res.render("user", {user: dados.data}))
       .catch(error => res.render('error', {error}))
   }
 });
 
-router.post('/:id')
+router.post('/editar/:id', function(req, res, next){
+  req.cookies.token = req.query.token
+  if (!req.cookies.token) res.redirect('/users/login')
+  else {
+    var token = unveilToken(req.cookies.token)
+    axios.put('http://localhost:8001/users/' + token._id +'?token=' + req.cookies.token, req.body)
+      .then(dados => res.redirect("/users/perfil"))
+      .catch(error => res.render('error', {error}))
+  }
+})
 
 module.exports = router;

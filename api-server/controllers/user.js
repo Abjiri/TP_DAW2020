@@ -10,9 +10,9 @@ module.exports.listar = () => {
         .exec()
 }
 
-module.exports.consultar = email => {
+module.exports.consultar = id => {
     return User
-        .findOne({email: email})
+        .findOne({_id: id})
         .exec()
 }
 
