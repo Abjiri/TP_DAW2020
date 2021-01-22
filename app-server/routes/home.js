@@ -45,7 +45,7 @@ router.post('/recursos/upload', upload.array('recurso'), function(req, res) {
         titulo: req.files.length == 1 ? req.body.titulo : req.body.titulo[i],
         descricao: req.files.length == 1 ? req.body.descricao : req.body.descricao[i],
         dataCriacao: req.files.length == 1 ? req.body.dataCriacao : req.body.dataCriacao[i],
-        visibilidade: req.files.length == 1 ? req.body.visibilidade : req.body.visibilidade[i],
+        visibilidade: req.body[`visibilidade${req.body.nr_visibilidade[i]}`],
         autor: token._id,
         nome_ficheiro: req.files[i].originalname,
         tamanho: req.files[i].size,
@@ -56,7 +56,9 @@ router.post('/recursos/upload', upload.array('recurso'), function(req, res) {
     }
   }
 
-  res.redirect('/');
+  axios.post('http://localhost:8001/recursos?token=' + req.cookies.token, files)
+    .then(dados => res.redirect('/recursos'))
+    .catch(error => res.render('error', {error}))
 })
 
 module.exports = router;

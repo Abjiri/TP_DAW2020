@@ -9,8 +9,8 @@ var userSchema = new mongoose.Schema({
         tipo: String, 
         filiacao: String
     },
-    dataRegisto: {type: Date, default: Date.now},
-    dataUltimoAcesso: Date,
+    dataRegisto: {type: String, default: new Date().toISOString().substr(0,10)},
+    dataUltimoAcesso: String,
     descricao: String,
     foto: String
   });

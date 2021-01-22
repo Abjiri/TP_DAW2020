@@ -23,7 +23,7 @@ router.get('/:id', function(req, res) {
     .catch(e => res.status(500).jsonp({error: e}))
 });
 
-// Inserir um recurso
+// Inserir recursos
 router.post('/', function(req, res){
   Recurso.inserir(req.body)
     .then(dados => res.status(201).jsonp({dados}))

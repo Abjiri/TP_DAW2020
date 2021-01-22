@@ -32,6 +32,8 @@ function injectForm() {
         <div id="${newFileId}" style="margin: 20px">
             <hr>
 
+            <input hidden name="nr_visibilidade" value="${newFileId}">
+
             <div class="login_container">
                 <div class="w3-col s3">
                     <label class="w3-text-teal"><b>Ficheiro: </b></label>
@@ -46,7 +48,7 @@ function injectForm() {
                     <label class="w3-text-teal"><b>Nome: </b></label>
                 </div>
                 <div class="w3-col s9 w3-border">
-                    <input class="w3-input w3-border w3-light-grey" type="text" name="nome" required>
+                    <input class="w3-input w3-border w3-light-grey" type="text" name="titulo" required>
                 </div>
             </div>
 
@@ -90,9 +92,9 @@ function injectForm() {
                     <label class="w3-text-teal"><b>Visibilidade: </b></label>
                 </div>
                 <div class="w3-col s9">
-                    <input type="radio" class="w3-input w3-border w3-light-grey" name="visibilidade" value="publico">
+                    <input type="radio" class="w3-input w3-border w3-light-grey" name="visibilidade${newFileId}" value="publico">
                     <label for="publico"> Público </label>
-                    <input type="radio" class="w3-input w3-border w3-light-grey" name="visibilidade" value="privado">
+                    <input type="radio" class="w3-input w3-border w3-light-grey" name="visibilidade${newFileId}" value="privado">
                     <label for="privado"> Privado </label>
                 </div>
             </div>
