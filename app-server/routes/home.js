@@ -56,7 +56,6 @@ router.post('/recursos/upload', upload.array('recurso'), function(req, res) {
     }
   }
 
-  console.log(files)
   res.redirect('/');
 })
 
