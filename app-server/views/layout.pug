@@ -8,40 +8,82 @@ html
   body
     div(class= "topnav")
       if (!auth)
-        a(href= '/users/signup') Registar
+        a(id="navbar_signup") Registar
         a(id="navbar_login") Login
       else
         a(href= '/users/logout') Logout
 
-    div(id="login_modal" class="modal" style=invalidInput ? "display: block" : "display: none")
+
+    div(id="login_modal" class="modal" style=invalidLoginField ? "display: block" : "display: none")
       form(class="modal-content" action="/users/login" method="POST")
         div(class="login_img")
           span(class="login_close" title="Fechar") &times;
 
-        if (invalidInput)
+        if (invalidLoginField)
           div(class="login_error_msg" style="float: center")
             p(style="text-align: center")= error_msg
 
         div(class="login_container")
           label(for="email")
             b Email
-          input(type="text" name="email" class="login_input" style=(invalidInput == "email") ? "background-color: #ffb3b3" : "" value=invalidInput ? email : '' required)
+          input(type="text" name="email" class="login_input" style=(invalidLoginField == "email") ? "background-color: #ffb3b3" : "" value=invalidLoginField ? email : '' required)
                 
           label(for="password")
             b Password
           table
             tr
               th(style= "width: 95%")
-                input(id="login_password" type="password" name="password" class="login_input" style=(invalidInput == "password") ? "background-color: #ffb3b3" : "" value=invalidInput ? password : '' required)
+                input(id="login_password" type="password" name="password" class="login_input" style=(invalidLoginField == "password") ? "background-color: #ffb3b3" : "" value=invalidLoginField ? password : '' required)
               th
-                button(type="button" class="login_reveal_pwd") 👀
+                button(id="login_reveal" type="button" class="login_btn reveal_pwd") 👀
           
 
           button(type="submit" class="login_btn") Login
 
         div(class="login_container")
-          button(type="button" class="login_btn login_cancelbtn") Cancel
+          button(id="login_cancelbtn" type="button" class="login_btn login_cancelbtn") Cancel
           span(class="forgot_passwd")
             a(href="#") Esqueceste-te da password?
+
+
+    div(id="signup_modal" class="modal" style=invalidSignupField ? "display: block" : "display: none")
+      form(class="modal-content" action="/users/signup" method="POST")
+        span(class="signup_close" title="Fechar") &times;
+
+        div(class="signup_container")
+          h1 Registar
+          p Preenche este formulário para te registares!
+          hr(class="signup_hr")
+
+          label(for="email")
+            b Email
+          input(type="text" name="email" class="signup_input" style=(invalidSignupField == "email") ? "background-color: #ffb3b3" : "" value=invalidSignupField ? email : '' required)
+                
+          label(for="password")
+            b Password
+          table
+            tr
+              th(style= "width: 95%")
+                input(id="signup_password" type="password" name="password" class="signup_input" style=(invalidSignupField == "password") ? "background-color: #ffb3b3" : "" value=invalidSignupField ? pwd : '' required)
+              th
+                button(id="signup_reveal_pwd" type="button" class="login_btn reveal_pwd") 👀
+                
+          label(for="password_again")
+            b Password
+          table
+            tr
+              th(style= "width: 95%")
+                input(id="signup_password_again" type="password" name="password_again" class="signup_input" style=(invalidSignupField == "password") ? "background-color: #ffb3b3" : "" value=invalidSignupField ? pwd_again : '' required)
+              th
+                button(id="signup_reveal_pwd_again" type="button" class="login_btn reveal_pwd") 👀
+
+        if (invalidSignupField)
+          div(style="float: center")
+            p(style="text-align: center")= error_msg
+
+        div(class="signup_container clearfix")
+          button(id="signup_cancelbtn" type="button" class="signup_btn signup_cancelbtn") Cancelar
+          button(type="submit" class="signup_btn signup_submit_btn") Registar
+
         
     block content

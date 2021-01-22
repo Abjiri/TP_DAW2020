@@ -290,7 +290,7 @@ hr{border:0;border-top:1px solid #eee;margin:20px 0}
     position: relative;
 }
 
-.login_reveal_pwd {
+.reveal_pwd {
     border: none;
     background-color: white;
 }
@@ -362,4 +362,75 @@ span.forgot_passwd {
 @keyframes animatezoom {
     from {transform: scale(0)} 
     to {transform: scale(1)}
+}
+
+.signup_input {
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    display: inline-block;
+    border: none;
+    background: #f1f1f1;
+}
+
+.signup_input:focus {
+    background-color: #ddd;
+    outline: none;
+}
+
+.signup_btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    opacity: 0.9;
+}
+
+.signup_btn:hover {
+    opacity:1;
+}
+
+.signup_cancelbtn {
+    padding: 14px 20px;
+    background-color: #f44336;
+}
+
+.signup_cancelbtn, .signup_submit_btn {
+    float: left;
+    width: 50%;
+}
+
+.signup_container {
+    margin: 16px 16px 0 16px;
+}
+
+.signup_hr {
+    border: 1px solid #f1f1f1;
+    margin-bottom: 25px;
+}
+
+.signup_close {
+    position: relative;
+    float: right;
+    right: 25px;
+    top: 5px;
+    font-size: 40px;
+    font-weight: bold;
+    color: #000000;
+}
+
+.signup_close:hover,
+.signup_close:focus {
+  color: #f44336;
+  cursor: pointer;
+}
+
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
 }
