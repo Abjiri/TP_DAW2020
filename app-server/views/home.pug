@@ -8,18 +8,59 @@ block content
       h2(style="margin: 10px 20px 20px 20px") Upload de recursos
 
       div(class="login_container")
+
+        div(class="login_container")
+          div(class="w3-col s3")
+            label(class="w3-text-teal")
+              b Ficheiro: 
+          div(class="w3-col s9 w3-border")
+            input(class="w3-input w3-border w3-light-grey" type="file" name="recurso" required)
+      
+        div(class="login_container")
+          div(class="w3-col s3")
+            label(class="w3-text-teal")
+              b Nome: 
+          div(class="w3-col s9 w3-border")
+            input(class="w3-input w3-border w3-light-grey" type="text" name="titulo" required)
+
         div(class="login_container")
           div(class="w3-col s3")
             label(class="w3-text-teal")
               b Descrição: 
           div(class="w3-col s9 w3-border")
-            input(class="w3-input w3-border w3-light-grey" type="text" name="description" required)
+            input(class="w3-input w3-border w3-light-grey" type="text" name="descricao" required)
+
+        div(class="login_container")
+          div(class="w3-col s3")
+            label(class="w3-text-teal")
+              b Tipo: 
+          div(class="w3-col s9 w3-border")
+            select(id="tipo_estatuto" class="w3-input w3-border w3-light-grey" name="tipo" required)
+              option(hidden disabled selected value)
+              option(value="relatorio") Relatório
+              option(value="tese") Tese
+              option(value="artigo") Artigo
+              option(value="aplicacao") Aplicação
+              option(value="slides") Slides
+              option(value="testeexame") Teste/Exame
+              option(value="problemaresolvido") Problema resolvido
+
+        div(class="login_container")
+          div(class="w3-col s3")
+            label(class="w3-text-teal")
+              b Data de criação: 
+          div(class="w3-col s9 w3-border")
+            input(class="w3-input w3-border w3-light-grey" type="date" name="dataCriacao" required)
+
         div(class="w3-row login_container w3-margin-bottom")
           div(class="w3-col s3")
             label(class="w3-text-teal")
-              b Ficheiro: 
-          div(class="w3-col s9 w3-border")
-            input(class="w3-input w3-border w3-light-grey" type="file" name="myFile" required)
+              b Visibilidade: 
+          div(class="w3-col s9" style="display: block")
+            input(type="radio" class="w3-input w3-border w3-light-grey" name="visibilidade" value="publico")
+            label(for="publico") Público
+            input(type="radio" class="w3-input w3-border w3-light-grey" name="visibilidade" value="privado")
+            label(for="privado") Privado
 
       div(id="anotherFile" style="login-container" class="1")
 
