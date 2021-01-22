@@ -26,12 +26,11 @@ passport.use(new LocalStrategy(
     User.consultar(email)
       .then(dados => {
         const user = dados
-        console.log(user)
 
         if(!user) { return done(null, {success: false, invalidInput: 'email', message: 'Email inexistente!\n'})}
         if(password != user.password) { return done(null, {success: false, invalidInput: 'password', message: 'Password inválida!\n'})}
 
-        return done(null, {success: true, user})
+        return done(null, {success: true, ...user})
       })
       .catch(e => done(e))
     })
