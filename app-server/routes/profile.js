@@ -55,6 +55,7 @@ router.get('/:id', function(req, res, next) {
       var token = unveilToken(req.cookies.token)
       axios.get('http://localhost:8001/users/' + req.params.id +'?token=' + req.cookies.token)
         .then(dados => {
+          console.log("user " + JSON.stringify(dados.data))
           res.render("profile", {auth: true, user: dados.data, owns: token._id == req.params.id, foto: path}) // if the user owns the profile
         })
         .catch(error => res.render('error', {error}))
@@ -72,11 +73,12 @@ router.post('/:id/editar', function(req, res, next){
 })
   
 router.post('/:id/editar/imagem/', upload.single('foto'), function(req,res,next){
+  console.log(JSON.stringify(req.file))
     if (!req.cookies.token) res.redirect('/users/login')
     else {
       var token = unveilToken(req.cookies.token)
       axios.put('http://localhost:8001/users/' + req.params.id +'?token=' + req.cookies.token, {foto: req.file.path, _id: token._id})
-        .then(dados => res.render("profile", {user: dados.data}))
+        .then(dados => res.redirect("/perfil"))
         .catch(error => res.render('error', {error}))
     }
 })

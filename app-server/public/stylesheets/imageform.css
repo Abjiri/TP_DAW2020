@@ -1,0 +1,15 @@
+.picture_close {
+    position: absolute;
+    right: 0px;
+    top: -35px;
+    margin-bottom: 5px;
+    color: #000;
+    font-size: 35px;
+    font-weight: bold;
+}
+
+.picture_close:hover,
+.picture_close:focus {
+  color: red;
+  cursor: pointer;
+}
