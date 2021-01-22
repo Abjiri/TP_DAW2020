@@ -40,11 +40,21 @@ RECURSO:
 - produtor
 - tamanho
 - comments:
+- tags
 
 
+POST:
+- titulo
+- corpo
+- recurso
+- comments: [comment]
+- autor
+- data criação
 
-
-
+COMMENT:
+- corpo
+- autor
+- data criação
 
 
 
