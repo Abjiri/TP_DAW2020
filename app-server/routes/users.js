@@ -19,6 +19,21 @@ var storage = multer.diskStorage({
 })
 var upload = multer({storage: storage})
 
+function unveilToken(token){  
+  var t = null;
+  jwt.verify(token,keyToken,function(e,decoded){
+    if(e){
+      console.log('Erro: ' + e)
+      t = null
+    }
+    else{
+      return t = decoded
+    } 
+  })
+  return t
+}
+
+
 router.get('/login', function(req, res) {
   res.render('login');
 })
@@ -54,20 +69,6 @@ router.post('/login', function(req, res) {
     })
     .catch(error => res.render('error', {error}))
 })
-
-function unveilToken(token){  
-  var t = null;
-  jwt.verify(token,keyToken,function(e,decoded){
-    if(e){
-      console.log('Erro: ' + e)
-      t = null
-    }
-    else{
-      return t = decoded
-    } 
-  })
-  return t
-}
 
 /* GET users listing. */
 router.get('/perfil', function(req, res, next) {
