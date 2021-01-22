@@ -16,6 +16,12 @@ module.exports.consultar = id => {
         .exec()
 }
 
+module.exports.consultarFoto = id => {
+    return User
+        .findOne({_id: id}, {_id: 0, foto: 1})
+        .exec()
+}
+
 module.exports.contar = () => {
     return User
         .countDocuments()

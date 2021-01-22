@@ -9,7 +9,7 @@ var multer = require('multer')
 
 var storage = multer.diskStorage({
   destination: (req,file,cb) => {
-    cb(null, "./uploads/imagens/")
+    cb(null, "public/images/")
   },
   filename: (req,file,cb) => {
     cb(null, Date.now() + "-" + file.originalname)
@@ -32,6 +32,10 @@ function unveilToken(token){
   console.log("DECODE: " + JSON.stringify(t))
   return t
 }
+
+function normalizePath(path){
+  return path.split("public")[1].replace(/\\/g,"\/");
+}
   
 router.get('/', function(req, res, next) {
     if (!req.cookies.token) res.redirect('/users/login')
@@ -41,11 +45,21 @@ router.get('/', function(req, res, next) {
         res.redirect('/perfil/' + token._id)
     }
 });
-  
+
 router.get('/:id', function(req, res, next) {
-    axios.get('http://localhost:8001/users/' + req.params.id +'?token=' + req.cookies.token)
-    .then(dados => res.render("profile", {user: dados.data}))
-    .catch(error => res.render('error', {auth: true, error}))
+  console.log("ESTOU AQUI: " + req.params.id)
+  axios.get('http://localhost:8001/users/imagem/' + req.params.id + '?token=' + req.cookies.token)
+    .then(foto => {
+      var path = normalizePath(foto.data.foto)
+      console.log(path)
+      var token = unveilToken(req.cookies.token)
+      axios.get('http://localhost:8001/users/' + req.params.id +'?token=' + req.cookies.token)
+        .then(dados => {
+          res.render("profile", {auth: true, user: dados.data, owns: token._id == req.params.id, foto: path}) // if the user owns the profile
+        })
+        .catch(error => res.render('error', {error}))
+    })
+    .catch(error => res.render('error', {error}))
 })
   
 router.post('/:id/editar', function(req, res, next){
@@ -53,7 +67,7 @@ router.post('/:id/editar', function(req, res, next){
     else {
       axios.put('http://localhost:8001/users/' + req.params.id +'?token=' + req.cookies.token, req.body)
         .then(dados => res.redirect("/perfil"))
-        .catch(error => res.render('error', {auth: true, error}))
+        .catch(error => res.render('error', {error}))
     }
 })
   
