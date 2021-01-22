@@ -8,7 +8,7 @@ block content
   script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js')
   link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css')
   #display.modal(style="display: none; overflow: hidden; height: auto")
-  #display2.modal(style="display: none;")
+  #display2.modal(style="display: none; overflow: hidden; height: auto")
   .container
     .row
       .col-md-12
@@ -40,7 +40,7 @@ block content
                   p.m-b-10 
                    i.fa.fa-info-circle(style='font-size:24px;color:#7FDBFF')  Desrição: 
                    |  #{user.descricao} 
-                  a.btn.btn-sm.btn-info.mb-2(href='#' onclick='editForm(' +'\'' + user._id +'\'' + ');') Editar Perfil
+                  a.btn.btn-sm.btn-info.mb-2(href='#' onclick='editForm(' +'\'' + JSON.stringify(user) +'\'' + ');') Editar Perfil
                   |  
                   i.fa.fa-edit 
                   |  
