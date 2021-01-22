@@ -3,8 +3,10 @@ html
   head
     title Gestão de recursos educativos
     link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/navbar.css')
     script(src="/javascripts/jquery-3.5.1.min.js")
     script(src="/javascripts/navbar.js")
+    script(src="/javascripts/upload-recurso.js")
   body
     div(class= "topnav")
       a(href="/" style="float: left") Home
@@ -38,7 +40,7 @@ html
               th(style= "width: 95%")
                 input(id="login_password" type="password" name="password" class="login_input" style=(invalidLField == "password") ? "background-color: #ffb3b3" : "" value=invalidLField ? password : '' required)
               th
-                button(id="login_reveal" type="button" class="login_btn reveal_pwd") 👀
+                button(id="login_reveal_pwd" type="button" class="login_btn reveal_pwd") 👀
           
 
           button(type="submit" class="login_btn") Login

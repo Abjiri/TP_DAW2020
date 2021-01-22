@@ -27,9 +27,9 @@ router.post('/login', function(req, res) {
           httpOnly: true
         })
 
-        res.redirect('/recursos')
+        res.redirect('/')
       }
-      else res.render('index', {
+      else res.render('home', {
         auth: false,
         invalidLField: dados.data.invalidInput,
         ...req.body,
@@ -41,7 +41,7 @@ router.post('/login', function(req, res) {
 
 router.post('/signup', function(req, res) {
   if (req.body.password != req.body.password_again) 
-    res.render('index', {
+    res.render('home', {
       auth: false,
       invalidSField: "password",
       ...req.body,
@@ -58,9 +58,9 @@ router.post('/signup', function(req, res) {
             httpOnly: true
           })
 
-          res.redirect('/recursos')
+          res.redirect('/')
         }
-        else res.render('index', {
+        else res.render('home', {
           auth: false,
           invalidSField: dados.data.invalidInput,
           ...req.body,

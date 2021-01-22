@@ -1,0 +1,26 @@
+[
+    {
+        "titulo": "Publicacao 1",
+        "corpo": "corpo 1",
+        "recurso": "600b019a37ec38bc5c3f0858",
+        "id_autor": "600ac84f6ab9852f43a15ca1",
+        "dataCriacao": "ISODate('2021-01-22T14:07:03.599Z')",
+        "comments": []
+    },
+    {
+        "titulo": "Publicacao 2",
+        "corpo": "corpo 2",
+        "recurso": "600b019a37ec38bc5c3f0859",
+        "id_autor": "600aca8b8398033152a114c4",
+        "dataCriacao": "ISODate('2021-01-22T14:07:03.599Z')",
+        "comments": []
+    },
+    {
+        "titulo": "Publicacao 3",
+        "corpo": "corpo 3",
+        "recurso": "600b019a37ec38bc5c3f085a",
+        "id_autor": "600adc07a58b684218d467f0",
+        "dataCriacao": "ISODate('2021-01-22T14:07:03.599Z')",
+        "comments": []
+    }
+]

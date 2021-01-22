@@ -16,7 +16,8 @@ db.once('open', function() {
   console.log("Conexão ao MongoDB realizada com sucesso...")
 });
 
-var indexRouter = require('./routes/index');
+var publicacaoRouter = require('./routes/publicacao');
+var recursoRouter = require('./routes/recurso');
 var usersRouter = require(('./routes/users'))
 
 var app = express();
@@ -37,7 +38,8 @@ app.use(function(req, res, next) {
   else res.status(401).jsonp({error: 'Token inexistente'});
 })
 
-app.use('/', indexRouter);
+app.use('/publicacoes', publicacaoRouter);
+app.use('/recursos', recursoRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler

@@ -54,4 +54,9 @@ $(document).ready(function()
         if (pwd.getAttribute("type") == 'password') pwd.setAttribute("type","text");
         else pwd.setAttribute("type","password");
     });
+
+    $("#new_resource").click(function(event) {
+        event.preventDefault();
+        document.getElementById('new_resource_modal').style.display='block';   
+    });
   });
