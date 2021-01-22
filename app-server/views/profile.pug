@@ -7,7 +7,7 @@ block content
   link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
   script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js')
   link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css')
-  script(src='/javascripts/showedit.js')
+  #display.modal(style="display: none; overflow: hidden; height: auto")
   .container
     .row
       .col-md-12
@@ -22,7 +22,7 @@ block content
               .profile-header-content
                 // BEGIN profile-header-img
                 .profile-header-img
-                  img(src='' + foto  alt='' onClick="showEdit();" style="cursor:pointer")
+                  img(src='' + foto  alt='' onClick='pictureForm(' +'\'' + user._id +'\'' + ');' style="cursor:pointer")
                 // END profile-header-img
                 // BEGIN profile-header-info
                 .profile-header-info
@@ -39,12 +39,11 @@ block content
                   p.m-b-10 
                    i.fa.fa-info-circle(style='font-size:24px;color:#7FDBFF')  Desrição: 
                    |  #{user.descricao} 
-                   #display
                   a.btn.btn-sm.btn-info.mb-2(href='#' onclick='showEdit();') Editar Perfil
                   |  
                   i.fa.fa-edit 
                   |  
-                  a.btn.btn-sm.btn-info.mb-2(href='#' onclick='showEdit();') Mudar Foto
+                  a.btn.btn-sm.btn-info.mb-2(href='#' onclick='pictureForm(' +'\'' + user._id +'\'' + ');') Mudar Foto
                 // END profile-header-info
               // END profile-header-content
           // end profile
