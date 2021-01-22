@@ -7,11 +7,14 @@ html
     script(src="/javascripts/navbar.js")
   body
     div(class= "topnav")
+      a(href="/" style="float: left") Home
+      a(href="/recursos" style="float: left") Recursos
       if (!auth)
-        a(id="navbar_signup") Registar
-        a(id="navbar_login") Login
+        a(id="navbar_signup" style="float: right") Registar
+        a(id="navbar_login" style="float: right") Login
       else
-        a(href= '/users/logout') Logout
+        a(href="/perfil" style="float: left") Perfil
+        a(href="/users/logout" style="float: right") Logout
 
 
     div(id="login_modal" class="modal" style=invalidLField ? "display: block" : "display: none")
@@ -56,7 +59,7 @@ html
           hr(class="signup_hr")
 
           label(for="nome")
-            b Email
+            b Nome
           input(type="text" name="nome" class="signup_input" style=(invalidSField == "nome") ? "background-color: #ffb3b3" : "" value=invalidSField ? nome : '' required)
 
           label(for="email")

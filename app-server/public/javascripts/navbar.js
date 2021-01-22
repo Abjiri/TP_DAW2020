@@ -37,14 +37,6 @@ $(document).ready(function()
         }
     });
 
-    $("#opt_est").click(function() {
-        document.getElementById('filiacao').setAttribute("placeholder","Curso...");  
-    });
-
-    $("#opt_est").click(function() {
-        document.getElementById('filiacao').setAttribute("placeholder","Curso...");  
-    });
-
     $("#login_reveal_pwd").click(function() {
         var pwd = document.getElementById('login_password');
         if (pwd.getAttribute("type") == 'password') pwd.setAttribute("type","text");

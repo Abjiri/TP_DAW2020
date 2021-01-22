@@ -29,8 +29,8 @@ passport.use('login-auth', new LocalStrategy(
 
         if(!user) { return done(null, {strat: 'login-auth', success: false, invalidInput: 'email', message: 'Email inexistente!\n'})}
         if(password != user.password) { return done(null, {strat: 'login-auth', success: false, invalidInput: 'password', message: 'Password inválida!\n'})}
-
-        return done(null, {strat: 'login-auth', success: true, ...user})
+        
+        return done(null, {strat: 'login-auth', success: true, user})
       })
       .catch(e => done(e))
     })
@@ -54,7 +54,7 @@ passport.use('signup-auth', new LocalStrategy(
               }
             })
             .then(dados => {
-              return done(null, {strat: 'signup-auth', success: true, ...dados})
+              return done(null, {strat: 'signup-auth', success: true, user: dados})
             })
             .catch(e => done(e))
         }
@@ -66,8 +66,8 @@ passport.use('signup-auth', new LocalStrategy(
 // Indica-se ao passport como serializar o utilizador
 passport.serializeUser((user,done) => {
   if (user.success) {
-    console.log('Serialização, email: ' + user.email)
-    done(null, {strat: user.strat, success: user.success, email: user.email})
+    console.log('Serialização, email: ' + user.user.email)
+    done(null, {strat: user.strat, success: user.success, email: user.user.email})
   }
   else done(null, user)
 })

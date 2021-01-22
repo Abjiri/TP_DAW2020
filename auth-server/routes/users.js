@@ -23,9 +23,9 @@ router.post('/', function(req, res) {
 router.post('/login', passport.authenticate('login-auth'), function(req, res) {
   if (req.user.success) {
     jwt.sign({
-      email: req.user.email, 
-      nivel: req.user.nivel,
-      _id: req.user._id,
+      email: req.user.user.email, 
+      nivel: req.user.user.nivel,
+      _id: req.user.user._id,
       sub: 'TP_DAW2020'}, 
       "TP_DAW2020",
       {expiresIn: "1d"},
@@ -41,9 +41,9 @@ router.post('/login', passport.authenticate('login-auth'), function(req, res) {
 router.post('/signup', passport.authenticate('signup-auth'), function(req, res) {
   if (req.user.success) {
     jwt.sign({
-      email: req.user.email, 
-      nivel: req.user.nivel,
-      _id: req.user._id,
+      email: req.user.user.email, 
+      nivel: req.user.user.nivel,
+      _id: req.user.user._id,
       sub: 'TP_DAW2020'}, 
       "TP_DAW2020",
       {expiresIn: "1d"},
