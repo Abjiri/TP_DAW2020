@@ -14,26 +14,26 @@ html
         a(href= '/users/logout') Logout
 
 
-    div(id="login_modal" class="modal" style=invalidLoginField ? "display: block" : "display: none")
+    div(id="login_modal" class="modal" style=invalidLField ? "display: block" : "display: none")
       form(class="modal-content" action="/users/login" method="POST")
         div(class="login_img")
           span(class="login_close" title="Fechar") &times;
 
-        if (invalidLoginField)
+        if (invalidLField)
           div(class="login_error_msg" style="float: center")
             p(style="text-align: center")= error_msg
 
         div(class="login_container")
           label(for="email")
             b Email
-          input(type="text" name="email" class="login_input" style=(invalidLoginField == "email") ? "background-color: #ffb3b3" : "" value=invalidLoginField ? email : '' required)
+          input(type="text" name="email" class="login_input" style=(invalidLField == "email") ? "background-color: #ffb3b3" : "" value=invalidLField ? email : '' required)
                 
           label(for="password")
             b Password
           table
             tr
               th(style= "width: 95%")
-                input(id="login_password" type="password" name="password" class="login_input" style=(invalidLoginField == "password") ? "background-color: #ffb3b3" : "" value=invalidLoginField ? password : '' required)
+                input(id="login_password" type="password" name="password" class="login_input" style=(invalidLField == "password") ? "background-color: #ffb3b3" : "" value=invalidLField ? password : '' required)
               th
                 button(id="login_reveal" type="button" class="login_btn reveal_pwd") 👀
           
@@ -46,7 +46,7 @@ html
             a(href="#") Esqueceste-te da password?
 
 
-    div(id="signup_modal" class="modal" style=invalidSignupField ? "display: block" : "display: none")
+    div(id="signup_modal" class="modal" style=invalidSField ? "display: block" : "display: none")
       form(class="modal-content" action="/users/signup" method="POST")
         span(class="signup_close" title="Fechar") &times;
 
@@ -55,16 +55,29 @@ html
           p Preenche este formulário para te registares!
           hr(class="signup_hr")
 
+          label(for="nome")
+            b Email
+          input(type="text" name="nome" class="signup_input" style=(invalidSField == "nome") ? "background-color: #ffb3b3" : "" value=invalidSField ? nome : '' required)
+
           label(for="email")
             b Email
-          input(type="text" name="email" class="signup_input" style=(invalidSignupField == "email") ? "background-color: #ffb3b3" : "" value=invalidSignupField ? email : '' required)
-                
+          input(type="text" name="email" class="signup_input" style=(invalidSField == "email") ? "background-color: #ffb3b3" : "" value=invalidSField ? email : '' required)
+
+          label(for="estatuto")
+            b Estatuto
+          select(id="tipo_estatuto" name="tipo" required)
+            option(hidden disabled selected value)
+            option(value="estudante" selected=(tipo == "estudante") ? true : false) Estudante
+            option(value="docente" selected=(tipo == "docente") ? true : false) Docente
+            option(value="trabalhador" selected=(tipo == "trabalhador") ? true : false) Trabalhador
+          input(id="filiacao" type="text" name="filiacao" class="signup_input" style=(invalidSField == "filiacao") ? "background-color: #ffb3b3" : "" value=invalidSField ? filiacao : '' required)
+
           label(for="password")
             b Password
           table
             tr
               th(style= "width: 95%")
-                input(id="signup_password" type="password" name="password" class="signup_input" style=(invalidSignupField == "password") ? "background-color: #ffb3b3" : "" value=invalidSignupField ? pwd : '' required)
+                input(id="signup_password" type="password" name="password" class="signup_input" style=(invalidSField == "password") ? "background-color: #ffb3b3" : "" value=invalidSField ? password : '' required)
               th
                 button(id="signup_reveal_pwd" type="button" class="login_btn reveal_pwd") 👀
                 
@@ -73,11 +86,11 @@ html
           table
             tr
               th(style= "width: 95%")
-                input(id="signup_password_again" type="password" name="password_again" class="signup_input" style=(invalidSignupField == "password") ? "background-color: #ffb3b3" : "" value=invalidSignupField ? pwd_again : '' required)
+                input(id="signup_password_again" type="password" name="password_again" class="signup_input" style=(invalidSField == "password") ? "background-color: #ffb3b3" : "" value=invalidSField ? password_again : '' required)
               th
                 button(id="signup_reveal_pwd_again" type="button" class="login_btn reveal_pwd") 👀
 
-        if (invalidSignupField)
+        if (invalidSField)
           div(style="float: center")
             p(style="text-align: center")= error_msg
 

@@ -20,8 +20,7 @@ router.post('/', function(req, res) {
 })
 
 // login de utilizador
-router.post('/login', passport.authenticate('local'), function(req, res) {
-  console.log("XD LOGIN " + JSON.stringify(req.user))
+router.post('/login', passport.authenticate('login-auth'), function(req, res) {
   if (req.user.success) {
     jwt.sign({
       email: req.user.email, 
@@ -31,15 +30,24 @@ router.post('/login', passport.authenticate('local'), function(req, res) {
       "TP_DAW2020",
       {expiresIn: "1d"},
       function(e, token) {
-        jwt.verify(token,"TP_DAW2020",function(e,decoded){
-          if(e){
-            console.log('Erro: ' + e)
-            t = null
-          }
-          else{
-            console.log("Decode: " + JSON.stringify(decoded))
-          } 
-        })
+        if(e) res.status(500).jsonp({error: "Erro na geração do token: " + e}) 
+        else res.status(201).jsonp({token})
+    })
+  }
+  else res.status(201).jsonp({invalidInput: req.user.invalidInput, error: req.user.message}) 
+})
+
+// login de utilizador
+router.post('/signup', passport.authenticate('signup-auth'), function(req, res) {
+  if (req.user.success) {
+    jwt.sign({
+      email: req.user.email, 
+      nivel: req.user.nivel,
+      _id: req.user._id,
+      sub: 'TP_DAW2020'}, 
+      "TP_DAW2020",
+      {expiresIn: "1d"},
+      function(e, token) {
         if(e) res.status(500).jsonp({error: "Erro na geração do token: " + e}) 
         else res.status(201).jsonp({token})
     })

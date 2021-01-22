@@ -26,6 +26,25 @@ $(document).ready(function()
         document.getElementById('signup_modal').style.display='none';   
     });
 
+    $("#tipo_estatuto").change(function() {
+        var tipo = $(this).val();
+        var filiacao = document.getElementById('filiacao');
+
+        switch (tipo) {
+            case "estudante": filiacao.setAttribute("placeholder","Curso..."); break;
+            case "docente": filiacao.setAttribute("placeholder","Departamento..."); break;
+            case "trabalhador": filiacao.setAttribute("placeholder","Empresa..."); break;
+        }
+    });
+
+    $("#opt_est").click(function() {
+        document.getElementById('filiacao').setAttribute("placeholder","Curso...");  
+    });
+
+    $("#opt_est").click(function() {
+        document.getElementById('filiacao').setAttribute("placeholder","Curso...");  
+    });
+
     $("#login_reveal_pwd").click(function() {
         var pwd = document.getElementById('login_password');
         if (pwd.getAttribute("type") == 'password') pwd.setAttribute("type","text");

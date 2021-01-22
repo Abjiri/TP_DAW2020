@@ -21,16 +21,43 @@ db.once('open', function() {
 var User = require('./controllers/user')
 
 // Configuração da estratégia local
-passport.use(new LocalStrategy(
+passport.use('login-auth', new LocalStrategy(
   {usernameField: 'email'}, (email, password, done) => {
     User.consultar(email)
       .then(dados => {
         const user = dados
 
-        if(!user) { return done(null, {success: false, invalidInput: 'email', message: 'Email inexistente!\n'})}
-        if(password != user.password) { return done(null, {success: false, invalidInput: 'password', message: 'Password inválida!\n'})}
+        if(!user) { return done(null, {strat: 'login-auth', success: false, invalidInput: 'email', message: 'Email inexistente!\n'})}
+        if(password != user.password) { return done(null, {strat: 'login-auth', success: false, invalidInput: 'password', message: 'Password inválida!\n'})}
 
-        return done(null, {success: true, ...user})
+        return done(null, {strat: 'login-auth', success: true, ...user})
+      })
+      .catch(e => done(e))
+    })
+)
+
+// Configuração da estratégia local
+passport.use('signup-auth', new LocalStrategy(
+  {usernameField: 'email', passReqToCallback: true}, 
+  (req, email, password, done) => {
+    User.consultar(email)
+      .then(dados => {
+        if (dados) return done(null, {strat: 'signup-auth', success: false, invalidInput: 'email', message: 'Email já existe!\n'})
+        else {
+          User.inserir({
+              email, password, 
+              nome: req.body.nome,
+              nivel: "produtor",
+              estatuto: {
+                tipo: req.body.tipo, 
+                filiacao: req.body.filiacao
+              }
+            })
+            .then(dados => {
+              return done(null, {strat: 'signup-auth', success: true, ...dados})
+            })
+            .catch(e => done(e))
+        }
       })
       .catch(e => done(e))
     })
@@ -40,7 +67,7 @@ passport.use(new LocalStrategy(
 passport.serializeUser((user,done) => {
   if (user.success) {
     console.log('Serialização, email: ' + user.email)
-    done(null, {success: user.success, email: user.email})
+    done(null, {strat: user.strat, success: user.success, email: user.email})
   }
   else done(null, user)
 })
@@ -50,10 +77,13 @@ passport.deserializeUser((user, done) => {
   if (user.success) {
     console.log('Desserialização, email: ' + user.email)
     User.consultar(user.email)
-      .then(dados => done(null, {success: true, user: dados}))
+      .then(dados => done(null, {success: true, ...dados}))
       .catch(erro => done(erro, false))
   }
-  else done(null, user)
+  else {
+    delete user.strat
+    done(null, user)
+  }
 })
 
 var usersRouter = require('./routes/users');

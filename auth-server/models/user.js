@@ -10,9 +10,9 @@ var userSchema = new mongoose.Schema({
         filiacao: String
     },
     dataRegisto: {type: Date, default: Date.now},
-    dataUltimoAcesso: Date,
-    descricao: String,
-    foto: String
+    dataUltimoAcesso: {type: Date, default: Date.now},
+    descricao: {type: String, default: ""},
+    foto: {type: String, default: ""}
   });
 
 module.exports = mongoose.model('user', userSchema)
