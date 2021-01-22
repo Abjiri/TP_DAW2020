@@ -1,7 +1,39 @@
 var express = require('express');
 var router = express.Router();
 
+var jwt = require('jsonwebtoken')
+var keyToken = "TP_DAW2020"
+
 var axios = require('axios');
+var fs = require('fs')
+
+var multer = require('multer')
+
+var storage = multer.diskStorage({
+  destination: (req,file,cb) => {
+    cb(null, "./uploads/imagens/")
+  },
+  filename: (req,file,cb) => {
+    cb(null, Date.now() + "-" + file.originalname)
+  }
+})
+var upload = multer({storage: storage})
+
+function unveilToken(token){  
+  var t = null;
+  jwt.verify(token,keyToken,function(e,decoded){
+    if(e){
+      console.log('Erro: ' + e)
+      t = null
+    }
+    else{
+      return t = decoded
+    } 
+  })
+  console.log("DECODE: " + JSON.stringify(t))
+  return t
+}
+
 
 router.get('/login', function(req, res) {
   res.render('login');
@@ -98,8 +130,18 @@ router.get('/perfil', function(req, res, next) {
   }
 });
 
-router.post('/editar/:id', function(req, res, next){
-  req.cookies.token = req.query.token
+router.post('/editar/imagem/', upload.single('foto'), function(req,res,next){
+  if (!req.cookies.token) res.redirect('/users/login')
+  else {
+    var token = unveilToken(req.cookies.token)
+    axios.put('http://localhost:8001/users/' + token._id +'?token=' + req.cookies.token, {foto: req.file.path, _id: token._id})
+      .then(dados => res.render("user", {user: dados.data}))
+      .catch(error => res.render('error', {error}))
+  }
+})
+
+router.post('/editar', function(req, res, next){
+  //req.cookies.token = req.query.token
   if (!req.cookies.token) res.redirect('/users/login')
   else {
     var token = unveilToken(req.cookies.token)
