@@ -1,7 +1,23 @@
 var express = require('express');
 var router = express.Router();
 
+var jwt = require('jsonwebtoken')
+var keyToken = "TP_DAW2020"
+
 var axios = require('axios');
+var fs = require('fs')
+
+var multer = require('multer')
+
+var storage = multer.diskStorage({
+  destination: (req,file,cb) => {
+    cb(null, "../uploads/imagens/")
+  },
+  filename: (req,file,cb) => {
+    cb(null, new Date().toISOString() + file.originalname)
+  }
+})
+var upload = multer({storage: storage})
 
 router.get('/login', function(req, res) {
   res.render('login');
@@ -21,6 +37,7 @@ router.post('/login', function(req, res) {
     .then(dados => {
       console.log(dados.data)
       if (dados.data.success) {
+        console.log("ok")
         res.cookie('token', dados.data.token, {
           expires: new Date(Date.now() + '1d'),
           secure: false,
@@ -64,6 +81,11 @@ router.get('/perfil', function(req, res, next) {
       .catch(error => res.render('error', {error}))
   }
 });
+
+router.post('/editar/:id/imagem', upload.single('foto'), function(req,res,next){
+  console.log("ola")
+  console.log(req.file)
+})
 
 router.post('/editar/:id', function(req, res, next){
   //req.cookies.token = req.query.token
