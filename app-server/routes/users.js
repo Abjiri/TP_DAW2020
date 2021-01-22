@@ -19,8 +19,7 @@ router.get('/logout', function(req, res) {
 router.post('/login', function(req, res) {
   axios.post('http://localhost:8000/users/login', req.body)
     .then(dados => {
-      console.log(dados.data)
-      if (dados.data.success) {
+      if (dados.data.token) {
         res.cookie('token', dados.data.token, {
           expires: new Date(Date.now() + '1d'),
           secure: false,
