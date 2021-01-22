@@ -11,10 +11,10 @@ var multer = require('multer')
 
 var storage = multer.diskStorage({
   destination: (req,file,cb) => {
-    cb(null, "../uploads/imagens/")
+    cb(null, "./uploads/imagens/")
   },
   filename: (req,file,cb) => {
-    cb(null, new Date().toISOString() + file.originalname)
+    cb(null, Date.now() + "-" + file.originalname)
   }
 })
 var upload = multer({storage: storage})
@@ -30,6 +30,7 @@ function unveilToken(token){
       return t = decoded
     } 
   })
+  console.log("DECODE: " + JSON.stringify(t))
   return t
 }
 
@@ -51,6 +52,7 @@ router.post('/login', function(req, res) {
   axios.post('http://localhost:8000/users/login', req.body)
     .then(dados => {
       if (dados.data.token) {
+        console.log("TOKEN: " + dados.data.token)
         res.cookie('token', dados.data.token, {
           expires: new Date(Date.now() + '1d'),
           secure: false,
@@ -81,12 +83,17 @@ router.get('/perfil', function(req, res, next) {
   }
 });
 
-router.post('/editar/:id/imagem', upload.single('foto'), function(req,res,next){
-  console.log("ola")
-  console.log(req.file)
+router.post('/editar/imagem/', upload.single('foto'), function(req,res,next){
+  if (!req.cookies.token) res.redirect('/users/login')
+  else {
+    var token = unveilToken(req.cookies.token)
+    axios.put('http://localhost:8001/users/' + token._id +'?token=' + req.cookies.token, {foto: req.file.path, _id: token._id})
+      .then(dados => res.render("user", {user: dados.data}))
+      .catch(error => res.render('error', {error}))
+  }
 })
 
-router.post('/editar/:id', function(req, res, next){
+router.post('/editar', function(req, res, next){
   //req.cookies.token = req.query.token
   if (!req.cookies.token) res.redirect('/users/login')
   else {

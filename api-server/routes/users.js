@@ -18,6 +18,7 @@ router.get('/:id', function(req, res) {
 
 // Alterar um utilizador
 router.put("/:id", function(req,res){
+  console.log(JSON.stringify(req.body))
   User.alterar(req.body)
     .then(dados => res.status(200).jsonp(dados) )
     .catch(e => res.status(500).jsonp({error: e}))
