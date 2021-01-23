@@ -69,7 +69,7 @@ block content
       div(class="login_container")
         input(class="w3-btn w3-blue-grey" type="button" value="+ 1" onclick='injectForm()')
         input(class="w3-btn w3-blue-grey" style="float:right" type="submit" value="Submeter")
-        input(class="w3-btn w3-blue-grey" style="float:right; margin-right: 10px" type="button" value="Cancelar")
+        input(id="close_new_resource" class="w3-btn w3-blue-grey" style="float:right; margin-right: 10px" type="button" value="Cancelar")
 
   if (auth)
     button(id="new_resource" type="button") Carregar recursos

@@ -6,19 +6,27 @@ block content
 
     table.w3-table-all
         tr
-          th Tipo
           th Título
-          th Subtítulo
-          th Data de criação
-          th Data de registo
-          th Visibilidade
+          th Tipo
+          th Autor
+          th Nr comentários
+          th Classificação
+          th Última modificação
+          th Tamanho
           th Operações
+          th Nr downloads
         each r in lista
           tr
-            td= r.tipo
             td= r.titulo
-            td= r.subtitulo
-            td= r.dataCriacao
-            td= r.dataRegisto
-            td= r.visibilidade
+            td= r.tipo
+            td= r.autor
+            td= r.nrComentarios
+            td
+              if (r.classificacao)
+                r.classificacao
+              else
+                -
+            td= r.dataUltimaMod
+            td= r.tamanho
             td ✏️ 🗑️
+            td= r.nrDownloads

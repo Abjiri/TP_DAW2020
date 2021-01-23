@@ -5,9 +5,24 @@ var Recurso = require('../models/recurso')
 // lista os recursos
 module.exports.listar = () => {
     return Recurso
-        .find()
-        .sort('-data')
-        .exec()
+        .aggregate([{
+            $lookup: {
+                from: "users",
+                localField: "autor",
+                foreignField: "_id",
+                as: "users_docs"
+            },
+            $project: {
+                titulo: 1,
+                tipo: 1,
+                nrComentarios: {$size: '$comentarios'},
+                classificacao: 1,
+                dataUltimaMod: 1,
+                tamanho: 1,
+                nrDownloads: 1,
+            }
+        }])
+        .sort('-_id')
 }
 
 // lista os recursos do produtor
