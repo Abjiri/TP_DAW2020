@@ -20,7 +20,7 @@ function showEdit(){
 
 function pictureForm(id){
     var form = `
-    <form class="w3-container modal-content" action="/perfil/${id}/editar/imagem/" method="POST" style="border: 0; width: 100%">
+    <form class="w3-container modal-content" action="/perfil/${id}/editar/imagem/" method="POST" style="border: 0; width: 100%" enctype='multipart/form-data'>
     <div class="login_img">
         <span class="picture_close" title="Fechar" onclick="fechar()"> &times;</span>
     </div>
@@ -70,13 +70,20 @@ function editForm(user){
         <label class="w3-text-teal"><b>Estatuto:</b></label>
     </div>
     <div class="w3-col s9 w3-border w3-margin-top">
-        <select name="cars" id="estatuto" style="width:100%">
+        <select name="estatuto" id="estatuto" style="width:100%">
             <option value="estudante" ` + (json.estatuto.tipo == "estudante" ? `selected` : ``)  + `>Estudante</option>
             <option value="docente" ` + (json.estatuto.tipo == "docente" ? `selected` : ``) + `>Docente</option>
             <option value="trabalhador" ` + (json.estatuto.tipo == "trabalhador" ? `selected` : ``) + `>Trabalhador</option>
         </select>
     </div>
-    
+    </div>
+    <div "w3-row w3-margin-bottom">
+        <div class="w3-col s3 w3-margin-top">
+            <label class="w3-text-teal"><b>Filiação:</b></label>
+        </div>
+        <div class="w3-col s9">
+            <input class="w3-input w3-margin-top w3-border w3-light-grey" type="text" name="filiacao" value="${json.estatuto.filiacao}">
+        </div>
     </div>
     <input class="w3-margin-top w3-btn w3-light-blue" type="submit" value="Confirmar" style="width: 100%"/>
     </form>`

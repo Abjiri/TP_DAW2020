@@ -23,10 +23,18 @@ router.get('/:id', function(req, res) {
     .catch(e => res.status(500).jsonp({error: e}))
 });
 
+
+router.put("/imagem/:id", function(req,res){
+  console.log(JSON.stringify(req.body))
+  User.alterar({foto: req.body.foto, _id: req.params.id})
+    .then(dados => res.status(200).jsonp(dados) )
+    .catch(e => res.status(500).jsonp({error: e}))
+})
+
 // Alterar um utilizador
 router.put("/:id", function(req,res){
   console.log(JSON.stringify(req.body))
-  User.alterar({foto: req.body.foto, _id: req.params.id})
+  User.alterar(req.body)
     .then(dados => res.status(200).jsonp(dados) )
     .catch(e => res.status(500).jsonp({error: e}))
 })
