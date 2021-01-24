@@ -2,29 +2,26 @@ $(document).ready(function()
   {
     $('body').on('click', '#upload', function(e){
         e.preventDefault();
+
+        var i = 0; 
         var form = document.getElementById('myForm');
         var formData = new FormData(form);
         var fileRadioButton = {}
-        var fileMD5 = {}
+        var files = {}
         var zip = new JSZip();
-
         for (var [key, value] of formData.entries()) { 
             if(key.match(/^visibilidade[0-9]+$/)){
                 fileRadioButton[key.split(/visibilidade/)[1]] = value
             }
             else if(key == "recurso"){
                 zip.file("data/" + value.name, value)
-                calculateMd5(value, result => {
-                    console.log("VALUE " + value)
-                    fileMD5[value] = result
-                    console.log("1" + JSON.stringify(fileMD5))
-                })
+                files[i++] = value.name
             }
         }
         console.log(JSON.stringify(fileRadioButton))
-        console.log(JSON.stringify(fileMD5))
-        var manifestData = generateManifestData(fileMD5)
-        zip.file("manifest-md5.txt", manifestData)
+        var manifest = getManifestString(files)
+        zip.file("manifest-md5.txt",manifest)
+
         zip.generateAsync({type:'blob'}).then((blobdata)=>{
             // create zip blob file
             let zipblob = new Blob([blobdata])
@@ -39,15 +36,39 @@ $(document).ready(function()
     })
 })
 
-function generateManifestData(obj){
+function getChecksum(input, id){
+    let file = input.files[0];
+
+    let reader = new FileReader();
+
+    reader.readAsText(file);
+
+    reader.onload = function() {
+      var hash = CryptoJS.MD5(reader.result).toString();
+      console.log($(`input[name = "checksum${id}"]`))
+      $(`input[name = "checksum${id}"]`).attr('value', hash)
+      console.log("HASH: " + hash)
+    };
+
+    reader.onerror = function() {
+      console.log(reader.error);
+    };
+}
+
+// returns the manifest
+function getManifestString(files){
+    var total = parseInt($('#anotherFile').attr('class')) + 1
     var str = ''
-    for (var [key, value] of Object.entries(obj)) { 
-        str += `${value} data/${key}\n`
+    for(var i = 0; i < total; i++){
+        var elem = $(`input[name = "checksum${i}"]`)
+        var hash = elem.attr('value')
+        var file = files[i]
+        str += `${hash} data/${file}\n`
     }
     return str
 }
 
-// hash the files
+// calculate the hash
 function calculateMd5(blob, callback) {
     var reader = new FileReader();
     reader.readAsBinaryString(blob);
