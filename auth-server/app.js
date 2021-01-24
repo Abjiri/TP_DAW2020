@@ -45,9 +45,9 @@ passport.use('signup-auth', new LocalStrategy(
         if (dados) return done(null, {strat: 'signup-auth', success: false, invalidInput: 'email', message: 'Email já existe!\n'})
         else {
           User.inserir({
-              email, password, 
-              nome: req.body.nome,
+              email, password,
               nivel: "produtor",
+              nome: req.body.nome,
               estatuto: {
                 tipo: req.body.tipo, 
                 filiacao: req.body.filiacao

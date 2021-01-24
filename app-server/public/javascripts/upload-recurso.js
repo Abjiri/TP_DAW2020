@@ -1,8 +1,20 @@
+function checkMimetype(type) {
+    return Array.prototype.reduce.call(navigator.plugins, function (supported, plugin) {
+        return supported || Array.prototype.reduce.call(plugin, function (supported, mime) {
+            return supported || mime.type == type;
+        }, supported);
+    }, false);
+};
+
 function showImage(name, type){
-    if (type == 'image/png' || type == 'image/jpeg')
-        var file = '<img src="/fileStore/' + name + '" width="80%"/>';
+    var file;
+
+    if (type == 'image/png' || type == 'image/jpeg' || type == 'image/gif')
+        file = '<img src="/fileStore/' + name + '" width="80%"/>';
+    else if (checkMimetype(type))
+        file = `<iframe src="/fileStore/${name}" width="80%"/>`;
     else 
-        var file = '<p>' + name + ', ' + type + '<p>';
+        file = '<p>' + name + ', ' + type + '<p>';
     
     var fileObj = $(`
         <div class="w3-row w3-margin">
@@ -15,11 +27,10 @@ function showImage(name, type){
             </div>
         </div>
     `);
-
-    var download = $('<div><a href="/files/download/' + name + '">Download</a></div>');
-    $('#display').empty();
-    $('#display').append(fileObj,download);
-    $('#display').modal();
+    
+    $('#display_recurso').empty();
+    $('#display_recurso').append(file);
+    $('#display_recurso').modal();
 }
 
 function injectForm() {

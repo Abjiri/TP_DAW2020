@@ -12,8 +12,11 @@ var recursoSchema = new mongoose.Schema({
     descricao: {type: String, required: false},
     dataCriacao: {type: String, required: true},
     dataRegisto: {type: String, default: new Date().toISOString().substr(0,10)},
-    dataUltimaMod: {type: String, default: new Date().toISOString().substr(0,10)},
-    classificacao: {type: String, required: false},
+    dataUltimaMod: {type: String, default: new Date().toISOString().substr(0,16)},
+    classificacao: {type: [{
+        user: {type: String, required: true},
+        pontuacao: {type: Number, required: true}
+    }], default: []},
     visibilidade: {type: String, required: true},
     idAutor: {type: String, required: true},
     nomeAutor: {type: String, required: true},

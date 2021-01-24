@@ -1,0 +1,407 @@
+/*
+start by styling the box around the star.
+the only important parts are display and width, which force the container to constrain to the star widths. Note that using padding is problematic and unadvised.
+*/
+.stars {
+	display:inline-block;
+	width:auto;
+	position:relative;
+	font-size:28px;
+    margin:5px;
+}
+/*
+the BEFORE:pseudo element. This will represent the number of stars in the actual rating.
+it floats above the AFTER element.
+*/
+.stars:BEFORE {
+	content:"★★★★★";
+	position:absolute;
+	overflow:hidden;
+	z-index:1;
+	left:0px;
+	top:0px;
+/* everything below here is optional. */
+	color:#FC0;
+	text-shadow:0px 1px 0 #000, 0 -1px 0 rgb(160, 160, 160);;
+}
+/*
+the AFTER:pseudo element. This will represent the total possible  stars available. It is set to relative to ensure it takes up the proper amount of space.
+*/
+.stars:AFTER {
+	content:"★★★★★";
+	position: relative;
+	color:rgb(160, 160, 160);
+}
+/*
+if including user rating controls, float the AFTER element.
+*/
+.stars.rate:AFTER {
+	position:absolute;
+	left:0px;
+}
+/*
+default state for the  user rating controls. invisible, but floating above the BEFORE and AFTER elements
+*/
+.stars.rate > A {
+	color:transparent;
+	text-decoration:none;
+	position:relative;
+	z-index:2;
+}
+/*
+if the user is floating thier mouse above the rating, hide the display stars.
+*/
+.stars.rate:HOVER:BEFORE,
+.stars.rate:HOVER:AFTER {
+	display:none;
+}
+/*
+turn all sthe start "ON" by default.
+*/
+.stars.rate:HOVER > A {
+	color:#FC0;
+	text-shadow:0px 1px 0 #000, 0 -1px 0 rgb(160, 160, 160);;
+}
+/*
+optional style for the specific star control a user is directly above.
+*/
+.stars.rate:HOVER > A:HOVER {
+	color:#FC0;
+	text-shadow:0px 2px 0 #000, 0 -1px 0 rgb(160, 160, 160);;
+	top:-1px;
+}
+/*
+turn "OFF" all stars after the one the user is hovering over.
+*/
+.stars.rate >A:HOVER ~ A {
+	color:rgb(160, 160, 160);;
+	text-shadow:none;
+}
+/* 
+  all the styles below are used to display the apropriate portion of the BEFORE element based on percentage rating. unfortunately you will need to create a specific rule for each level of granularity you wish to display.
+*/
+.stars:NOT([data-percent]):BEFORE,
+.rating > span:hover:before {
+    content: "\2605";
+    position: absolute;
+}
+        
+.rating {
+    unicode-bidi: bidi-override;
+    direction: rtl;
+}
+.rating > span:hover:before,
+.rating > span:hover ~ span:before {
+    content: "\2605";
+    position: absolute;
+}
+
+.stars[data-percent="null"]:BEFORE {
+	display:none;
+}
+.stars[data-percent="0"]:BEFORE {
+	display:none;
+}
+.stars[data-percent="1"]:BEFORE {
+    width:1%;
+}
+.stars[data-percent="2"]:BEFORE {
+    width:2%;
+}
+.stars[data-percent="3"]:BEFORE {
+    width:3%;
+}
+.stars[data-percent="4"]:BEFORE {
+    width:4%;
+}
+.stars[data-percent="5"]:BEFORE {
+    width:5%;
+}
+.stars[data-percent="6"]:BEFORE {
+    width:6%;
+}
+.stars[data-percent="7"]:BEFORE {
+    width:7%;
+}
+.stars[data-percent="8"]:BEFORE {
+    width:8%;
+}
+.stars[data-percent="9"]:BEFORE {
+    width:9%;
+}
+/* 1/2 a star */
+.stars[data-percent="10"]:BEFORE {
+    width:10%;
+}
+.stars[data-percent="11"]:BEFORE {
+    width:11%;
+}
+.stars[data-percent="12"]:BEFORE {
+    width:12%;
+}
+.stars[data-percent="13"]:BEFORE {
+    width:13%;
+}
+.stars[data-percent="14"]:BEFORE {
+    width:14%;
+}
+.stars[data-percent="15"]:BEFORE {
+    width:15%;
+}
+.stars[data-percent="16"]:BEFORE {
+    width:16%;
+}
+.stars[data-percent="17"]:BEFORE {
+    width:17%;
+}
+.stars[data-percent="18"]:BEFORE {
+    width:18%;
+}
+.stars[data-percent="19"]:BEFORE {
+    width:19%;
+}
+.stars[data-percent="20"]:BEFORE {
+    width:20%;
+}
+.stars[data-percent="21"]:BEFORE {
+    width:21%;
+}
+.stars[data-percent="22"]:BEFORE {
+    width:22%;
+}
+.stars[data-percent="23"]:BEFORE {
+    width:23%;
+}
+.stars[data-percent="24"]:BEFORE {
+    width:24%;
+}
+.stars[data-percent="25"]:BEFORE {
+    width:25%;
+}
+.stars[data-percent="26"]:BEFORE {
+    width:26%;
+}
+.stars[data-percent="27"]:BEFORE {
+    width:27%;
+}
+.stars[data-percent="28"]:BEFORE {
+    width:28%;
+}
+.stars[data-percent="29"]:BEFORE {
+    width:29%;
+}
+/* 1 & 1/2 stars */
+.stars[data-percent="30"]:BEFORE {
+	width:30%;
+}
+.stars[data-percent="31"]:BEFORE {
+    width:31%;
+}
+.stars[data-percent="32"]:BEFORE {
+    width:32%;
+}
+.stars[data-percent="33"]:BEFORE {
+    width:33%;
+}
+.stars[data-percent="34"]:BEFORE {
+    width:34%;
+}
+.stars[data-percent="35"]:BEFORE {
+    width:35%;
+}
+.stars[data-percent="36"]:BEFORE {
+    width:36%;
+}
+.stars[data-percent="37"]:BEFORE {
+    width:37%;
+}
+.stars[data-percent="38"]:BEFORE {
+    width:38%;
+}
+.stars[data-percent="39"]:BEFORE {
+    width:39%;
+}
+/* etc. */
+.stars[data-percent="40"]:BEFORE {
+	width:40%;
+}
+.stars[data-percent="41"]:BEFORE {
+    width:41%;
+}
+.stars[data-percent="42"]:BEFORE {
+    width:42%;
+}
+.stars[data-percent="43"]:BEFORE {
+    width:43%;
+}
+.stars[data-percent="44"]:BEFORE {
+    width:44%;
+}
+.stars[data-percent="45"]:BEFORE {
+    width:45%;
+}
+.stars[data-percent="46"]:BEFORE {
+    width:46%;
+}
+.stars[data-percent="47"]:BEFORE {
+    width:47%;
+}
+.stars[data-percent="48"]:BEFORE {
+    width:48%;
+}
+.stars[data-percent="49"]:BEFORE {
+    width:49%;
+}
+.stars[data-percent="50"]:BEFORE {
+	width:50%;
+}
+.stars[data-percent="51"]:BEFORE {
+    width:51%;
+}
+.stars[data-percent="52"]:BEFORE {
+    width:52%;
+}
+.stars[data-percent="53"]:BEFORE {
+    width:53%;
+}
+.stars[data-percent="54"]:BEFORE {
+    width:54%;
+}
+.stars[data-percent="55"]:BEFORE {
+    width:55%;
+}
+.stars[data-percent="56"]:BEFORE {
+    width:56%;
+}
+.stars[data-percent="57"]:BEFORE {
+    width:57%;
+}
+.stars[data-percent="58"]:BEFORE {
+    width:58%;
+}
+.stars[data-percent="59"]:BEFORE {
+    width:59%;
+}
+.stars[data-percent="60"]:BEFORE {
+	width:60%;
+}
+.stars[data-percent="61"]:BEFORE {
+    width:61%;
+}
+.stars[data-percent="62"]:BEFORE {
+    width:62%;
+}
+.stars[data-percent="63"]:BEFORE {
+    width:63%;
+}
+.stars[data-percent="64"]:BEFORE {
+    width:64%;
+}
+.stars[data-percent="65"]:BEFORE {
+    width:65%;
+}
+.stars[data-percent="66"]:BEFORE {
+    width:66%;
+}
+.stars[data-percent="67"]:BEFORE {
+    width:67%;
+}
+.stars[data-percent="68"]:BEFORE {
+    width:68%;
+}
+.stars[data-percent="69"]:BEFORE {
+    width:69%;
+}
+.stars[data-percent="70"]:BEFORE {
+	width:70%;
+}
+.stars[data-percent="71"]:BEFORE {
+    width:71%;
+}
+.stars[data-percent="72"]:BEFORE {
+    width:72%;
+}
+.stars[data-percent="73"]:BEFORE {
+    width:73%;
+}
+.stars[data-percent="74"]:BEFORE {
+    width:74%;
+}
+.stars[data-percent="75"]:BEFORE {
+    width:75%;
+}
+.stars[data-percent="76"]:BEFORE {
+    width:76%;
+}
+.stars[data-percent="77"]:BEFORE {
+    width:77%;
+}
+.stars[data-percent="78"]:BEFORE {
+    width:78%;
+}
+.stars[data-percent="79"]:BEFORE {
+    width:79%;
+}
+.stars[data-percent="80"]:BEFORE {
+	width:80%;
+}
+.stars[data-percent="81"]:BEFORE {
+    width:81%;
+}
+.stars[data-percent="82"]:BEFORE {
+    width:82%;
+}
+.stars[data-percent="83"]:BEFORE {
+    width:83%;
+}
+.stars[data-percent="84"]:BEFORE {
+    width:84%;
+}
+.stars[data-percent="85"]:BEFORE {
+    width:85%;
+}
+.stars[data-percent="86"]:BEFORE {
+    width:86%;
+}
+.stars[data-percent="87"]:BEFORE {
+    width:87%;
+}
+.stars[data-percent="88"]:BEFORE {
+    width:88%;
+}
+.stars[data-percent="89"]:BEFORE {
+    width:89%;
+}
+.stars[data-percent="90"]:BEFORE {
+	width:90%;
+}
+.stars[data-percent="91"]:BEFORE {
+    width:91%;
+}
+.stars[data-percent="92"]:BEFORE {
+    width:92%;
+}
+.stars[data-percent="93"]:BEFORE {
+    width:93%;
+}
+.stars[data-percent="94"]:BEFORE {
+    width:94%;
+}
+.stars[data-percent="95"]:BEFORE {
+    width:95%;
+}
+.stars[data-percent="96"]:BEFORE {
+    width:96%;
+}
+.stars[data-percent="97"]:BEFORE {
+    width:97%;
+}
+.stars[data-percent="98"]:BEFORE {
+    width:98%;
+}
+.stars[data-percent="99"]:BEFORE {
+    width:99%;
+}
+.stars[data-percent="100"]:BEFORE {
+	width:100%;
+}

@@ -10,6 +10,10 @@ $(document).ready(function()
         document.getElementById('signup_modal').style.display='block';   
     });
 
+    $("#recurso_preview").click(function() {
+        document.getElementById('recurso_modal').style.display='block';   
+    });
+
     $(".login_close").click(function() {
         document.getElementById('login_modal').style.display='none';   
     });
@@ -26,7 +30,7 @@ $(document).ready(function()
         document.getElementById('signup_modal').style.display='none';   
     });
 
-    $("#tipo_estatuto").change(function() {
+    $("#tipo_estatuto_signup").change(function() {
         var tipo = $(this).val();
         var filiacao = document.getElementById('filiacao');
 
@@ -63,5 +67,9 @@ $(document).ready(function()
     $("#close_new_resource").click(function(event) {
         event.preventDefault();
         document.getElementById('new_resource_modal').style.display='none';   
+    });
+
+    $(".download_recurso").click(function() {
+        location.reload() 
     });
   });

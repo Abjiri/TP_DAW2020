@@ -8,10 +8,9 @@
             "tipo": "Estudante",
             "filiacao": "MIEI"
         },
-        "dataRegisto": "2021-01-21T11:35",
-        "dataUltimoAcesso": "2021-01-21T11:37",
-        "descricao": "Sou o chefe disto",
-        "foto": "url para a foto"
+        "dataRegisto": "2021-01-23",
+        "dataUltimoAcesso": "2021-01-23",
+        "descricao": "Sou o chefe disto"
     },
         {
         "email": "produtor@email",
@@ -22,9 +21,8 @@
             "tipo": "Docente",
             "filiacao": "História"
         },
-        "dataRegisto": "2021-01-01T01:35",
-        "dataUltimoAcesso": "2021-01-21T04:48",
-        "descricao": "Ando aqui infiltrado",
-        "foto": "url para a foto"
+        "dataRegisto": "2021-01-23",
+        "dataUltimoAcesso": "2021-01-23",
+        "descricao": "Ando aqui infiltrado"
     }
 ]

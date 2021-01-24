@@ -75,7 +75,7 @@ span.forgot_passwd {
     padding-top: 16px;
 }
 
-.modal {
+.my-modal {
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
     left: 0;
@@ -88,7 +88,7 @@ span.forgot_passwd {
     padding-top: 60px;
 }
 
-.modal-content {
+.my-modal-content {
     background-color: #fefefe;
     margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
     border: 1px solid #888;
@@ -193,7 +193,6 @@ span.forgot_passwd {
   color: #f44336;
   cursor: pointer;
 }
-
 
 .clearfix::after {
     content: "";

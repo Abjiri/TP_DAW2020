@@ -2,28 +2,17 @@
     {
         "tipo": "relatorio",
         "titulo": "Relatorio",
-        "subtitulo": "Bem relatado",
-        "dataCriacao": "2021-01-16T11:35",
-        "dataRegisto": "2021-01-20T17:46",
+        "dataCriacao": "2021-01-16",
+        "dataRegisto": "2021-01-16",
+        "dataUltimaMod": "2021-01-16T15:32",
         "visibilidade": "publico",
-        "autor" : "produtor@email"
-    },
-    {
-        "tipo": "tese",
-        "titulo": "Tese",
-        "subtitulo": "Bem tesa",
-        "dataCriacao": "2021-01-16T11:35",
-        "dataRegisto": "2021-01-20T17:46",
-        "visibilidade": "privado",
-        "autor" : "produtor@email"
-    },
-    {
-        "tipo": "artigo",
-        "titulo": "Artigo",
-        "subtitulo": "Cheio de ortigas",
-        "dataCriacao": "2021-01-16T11:35",
-        "dataRegisto": "2021-01-20T17:46",
-        "visibilidade": "publico",
-        "autor" : "produtor@email"
+        "idAutor": "600c597127869f310fbb03d4",
+        "nomeAutor": "Hugo Coelho",
+        "comentarios": [],
+        "nrDownloads": 0,
+        "classificacao": [],
+        "nome_ficheiro": "Screenshot from 2020-12-14 20-18-24.png",
+        "tamanho": 244018,
+        "tipo_mime": "image/png"
     }
 ]

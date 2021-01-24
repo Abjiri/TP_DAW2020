@@ -6,20 +6,18 @@ var Recurso = require('../models/recurso')
 module.exports.listar = () => {
     return Recurso
         .aggregate([{
-            $lookup: {
-                from: "users",
-                localField: "autor",
-                foreignField: "_id",
-                as: "users_docs"
-            },
             $project: {
                 titulo: 1,
                 tipo: 1,
+                idAutor: 1,
+                nomeAutor: 1,
                 nrComentarios: {$size: '$comentarios'},
-                classificacao: 1,
+                classificacao: {$round: [{$avg: '$classificacao.pontuacao'}, 0]},
                 dataUltimaMod: 1,
                 tamanho: 1,
                 nrDownloads: 1,
+                nome_ficheiro: 1,
+                tipo_mime: 1
             }
         }])
         .sort('-_id')
@@ -38,6 +36,28 @@ module.exports.consultar = id => {
         .findOne({_id: id})
         .exec()
 }
+
+module.exports.classificar = (idRecurso,classif) => {
+    return Recurso.findOneAndUpdate(
+        {"_id": idRecurso},
+        {$push: {classificacao: classif}}, 
+        {new: true})
+}
+
+module.exports.atualizarClassificacao = (idRecurso,classif) => {
+    return Recurso.findOneAndUpdate(
+        {"_id": idRecurso, "classificacao.user": classif.user},
+        {$set: {'classificacao.$.pontuacao': classif.pontuacao}}, 
+        {new: true})
+}
+
+module.exports.incrementarDownloads = (idRecurso) => {
+    return Recurso.findOneAndUpdate(
+        {"_id": idRecurso},
+        {$inc: {nrDownloads: 1}}, 
+        {new: true})
+}
+
 
 module.exports.contar = () => {
     return Recurso

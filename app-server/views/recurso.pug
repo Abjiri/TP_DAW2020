@@ -1,0 +1,24 @@
+extends layout 
+
+block content
+    div(class="w3-card-4 modal" id="recurso_modal")
+
+    h1= r.titulo
+    p Tipo: #{r.tipo}
+    p Descrição: #{r.descricao}
+    p Data de criação: #{r.dataCriacao}
+    p Data de registo: #{r.dataRegisto}
+    p Data da última modificação: #{r.dataUltimaMod}
+    p Classificação: #{r.classificacao}
+    p Visibilidade: #{r.visibilidade}
+    p Autor: #{r.nomeAutor}
+    p Comentários: #{r.comentarios}
+    p Número de downloads: #{r.nrDownloads}
+    p Nome do ficheiro: #{r.nome_ficheiro}
+    p Tamanho: #{r.tamanho} B
+    p Mimetype: #{r.tipo_mime}
+
+    button(id="recurso_preview" onclick=`showImage("${r.nome_ficheiro}", "${r.tipo_mime}")`) Preview
+
+    p
+        a(href=`/recursos/${r.idAutor}-${r.nome_ficheiro}/download/`) Download

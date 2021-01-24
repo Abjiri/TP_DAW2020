@@ -3,12 +3,15 @@ html
   head
     title Gestão de recursos educativos
     link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/rating.css')
     link(rel='stylesheet', href='/stylesheets/navbar.css')
     link(rel='stylesheet', href='/stylesheets/imageform.css')
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css")
     script(src="/javascripts/jquery-3.5.1.min.js")
     script(src="/javascripts/navbar.js")
     script(src="/javascripts/showedit.js")
     script(src="/javascripts/upload-recurso.js")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js")
     
   body
   
@@ -23,8 +26,8 @@ html
         a(href="/users/logout" style="float: right") Logout
 
 
-    div(id="login_modal" class="modal" style=invalidLField ? "display: block" : "display: none")
-      form(class="modal-content" action="/users/login" method="POST")
+    div(id="login_modal" class="my-modal" style=invalidLField ? "display: block" : "display: none")
+      form(class="my-modal-content" action="/users/login" method="POST")
         div(class="login_img")
           span(class="login_close" title="Fechar") &times;
 
@@ -55,8 +58,8 @@ html
             a(href="#") Esqueceste-te da password?
 
 
-    div(id="signup_modal" class="modal" style=invalidSField ? "display: block" : "display: none")
-      form(class="modal-content" action="/users/signup" method="POST")
+    div(id="signup_modal" class="my-modal" style=invalidSField ? "display: block" : "display: none")
+      form(class="my-modal-content" action="/users/signup" method="POST")
         span(class="signup_close" title="Fechar") &times;
 
         div(class="signup_container")
@@ -74,11 +77,11 @@ html
 
           label(for="estatuto")
             b Estatuto
-          select(id="tipo_estatuto" name="tipo" required)
+          select(id="tipo_estatuto_signup" name="tipo" required)
             option(hidden disabled selected value)
-            option(value="estudante" selected=(tipo == "estudante") ? true : false) Estudante
-            option(value="docente" selected=(tipo == "docente") ? true : false) Docente
-            option(value="trabalhador" selected=(tipo == "trabalhador") ? true : false) Trabalhador
+            option(value="Estudante" selected=(tipo == "Estudante") ? true : false) Estudante
+            option(value="Docente" selected=(tipo == "Docente") ? true : false) Docente
+            option(value="Trabalhador" selected=(tipo == "Trabalhador") ? true : false) Trabalhador
           input(id="filiacao" type="text" name="filiacao" class="signup_input" style=(invalidSField == "filiacao") ? "background-color: #ffb3b3" : "" value=invalidSField ? filiacao : '' required)
 
           label(for="password")
@@ -91,7 +94,7 @@ html
                 button(id="signup_reveal_pwd" type="button" class="login_btn reveal_pwd") 👀
                 
           label(for="password_again")
-            b Password
+            b Password de novo
           table
             tr
               th(style= "width: 95%")

@@ -1,18 +1,18 @@
 const mongoose = require('mongoose')
 
 var userSchema = new mongoose.Schema({
-    email: { type: String, required: true },
-    password: { type: String, required: true },
+    email: {type: String, required: true},
+    password: {type: String, required: true},
     nivel: {type: String, required: true},
-    nome: String,
+    nome: {type: String, required: true},
     estatuto: {
-        tipo: String, 
-        filiacao: String
+        tipo: {type: String, required: true},
+        filiacao: {type: String, required: true},
     },
     dataRegisto: {type: String, default: new Date().toISOString().substr(0,10)},
-    dataUltimoAcesso: String,
-    descricao: String,
-    foto: String
+    dataUltimoAcesso: {type: String, default: new Date().toISOString().substr(0,10)},
+    descricao: {type: String, required: false},
+    foto: {type: String, required: false}
   });
 
 module.exports = mongoose.model('user', userSchema)

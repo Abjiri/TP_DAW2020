@@ -2,6 +2,8 @@ extends layout
 
 block content
   .w3-container.w3-margin
+    div(class="w3-card-4 modal" id="display_recurso")
+
     h1 Lista de recursos
 
     table.w3-table-all
@@ -17,16 +19,27 @@ block content
           th Nr downloads
         each r in lista
           tr
-            td= r.titulo
+            td
+              a(href="/recursos/" + r._id) #{r.titulo}
             td= r.tipo
-            td= r.autor
+            td
+              a(href="/perfil/" + r.idAutor) #{r.nomeAutor}
             td= r.nrComentarios
             td
-              if (r.classificacao)
-                r.classificacao
-              else
-                -
+              div(class="stars rate" data-percent=`${r.classificacao}`)
+                a(href=`/recursos/${r._id}/classificar/20` title="Horrível") ★
+                a(href=`/recursos/${r._id}/classificar/40` title="Decente") ★
+                a(href=`/recursos/${r._id}/classificar/60` title="Bom") ★
+                a(href=`/recursos/${r._id}/classificar/80` title="Muito bom") ★
+                a(href=`/recursos/${r._id}/classificar/100` title="Excelente") ★
             td= r.dataUltimaMod
             td= r.tamanho
-            td ✏️ 🗑️
+            td
+              button(type="button" class="resource-btn" onclick=`showImage("${r.nome_ficheiro}", "${r.tipo_mime}")`) 👁
+              form(action=`/recursos/${r._id}/${r.idAutor}-${r.nome_ficheiro}/download/` method="GET" style="display: inline-block")
+                button(type="submit" class="resource-btn") ⬇️
+              |
+              if (r.dono)
+                form(action=`/recursos/${r._id}/remover/`, method="GET" style="display: inline-block")
+                  button(type="submit" class="resource-btn") 🗑️
             td= r.nrDownloads

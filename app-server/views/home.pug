@@ -3,8 +3,8 @@ extends layout
 block content
   h1 Gestão de recursos educativos
 
-  div(id="new_resource_modal" class="modal" style="display: none")            
-    form(class="modal-content" action="/recursos/upload" method="POST" enctype="multipart/form-data")
+  div(id="new_resource_modal" class="my-modal" style="display: none")            
+    form(class="my-modal-content" action="/recursos/upload" method="POST" enctype="multipart/form-data")
       h2(style="margin: 10px 20px 20px 20px") Upload de recursos
 
       div(class="login_container")
@@ -39,13 +39,13 @@ block content
           div(class="w3-col s9 w3-border")
             select(id="tipo_estatuto" class="w3-input w3-border w3-light-grey" name="tipo" required)
               option(hidden disabled selected value)
-              option(value="relatorio") Relatório
-              option(value="tese") Tese
-              option(value="artigo") Artigo
-              option(value="aplicacao") Aplicação
-              option(value="slides") Slides
-              option(value="testeexame") Teste/Exame
-              option(value="problemaresolvido") Problema resolvido
+              option(value="Relatório") Relatório
+              option(value="Tese") Tese
+              option(value="Artigo") Artigo
+              option(value="Aplicacao") Aplicação
+              option(value="Slides") Slides
+              option(value="Teste/Exame") Teste/Exame
+              option(value="Problema resolvido") Problema resolvido
 
         div(class="login_container")
           div(class="w3-col s3")

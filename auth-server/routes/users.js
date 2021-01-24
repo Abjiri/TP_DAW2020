@@ -23,9 +23,9 @@ router.post('/', function(req, res) {
 router.post('/login', passport.authenticate('login-auth'), function(req, res) {
   if (req.user.success) {
     jwt.sign({
-      email: req.user.user.email, 
-      nivel: req.user.user.nivel,
       _id: req.user.user._id,
+      nome: req.user.user.nome,
+      nivel: req.user.user.nivel,
       sub: 'TP_DAW2020'}, 
       "TP_DAW2020",
       {expiresIn: "1d"},

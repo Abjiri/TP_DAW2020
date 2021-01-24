@@ -23,7 +23,7 @@ block content
               .profile-header-content
                 // BEGIN profile-header-img
                 .profile-header-img
-                  img(src='' + foto  alt='' onClick='pictureForm(' +'\'' + user._id +'\'' + ');' style="cursor:pointer")
+                  img(src= user.foto ? user.foto : '/images/login_avatar.png' onClick='pictureForm(' +'\'' + user._id +'\'' + ');' style="cursor:pointer")
                 // END profile-header-img
                 // BEGIN profile-header-info
                 .profile-header-info
@@ -36,7 +36,7 @@ block content
                    |  #{user.email}
                   p.m-b-10 
                    i.fa.fa-plus-square(style='font-size:24px;color:#7FDBFF')  Registado em: 
-                   |  #{moment(user.dataRegisto).format('MM/DD/YYYY')}
+                   |  #{user.dataRegisto}
                   p.m-b-10 
                    i.fa.fa-info-circle(style='font-size:24px;color:#7FDBFF')  Desrição: 
                    |  #{user.descricao} 
@@ -197,8 +197,6 @@ block content
                           |                                     795 Folsom Ave, Suite 600 San   Francisco, CA 94107
                         p
                           | In hac habitasse platea dictumst. Pellentesque bibendum id sem nec   faucibus. Maecenas molestie, augue vel accumsan rutrum, massa mi   rutrum odio, id luctus mauris nibh ut leo.
-                        p.m-t-20
-                          img(src='../assets/img/gallery/gallery-5.jpg' alt='')
                       .timeline-footer
                         a.m-r-15.text-inverse-lighter(href='javascript:;')
                           i.fa.fa-thumbs-up.fa-fw.fa-lg.m-r-3

@@ -20,7 +20,7 @@ function showEdit(){
 
 function pictureForm(id){
     var form = `
-    <form class="w3-container modal-content" action="/perfil/${id}/editar/imagem/" method="POST" style="border: 0; width: 100%" enctype='multipart/form-data'>
+    <form class="w3-container my-modal-content" action="/perfil/${id}/editar/imagem/" method="POST" style="border: 0; width: 100%" enctype='multipart/form-data'>
     <div class="login_img">
         <span class="picture_close" title="Fechar" onclick="fechar()"> &times;</span>
     </div>
