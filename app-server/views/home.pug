@@ -4,19 +4,19 @@ block content
   h1 Gestão de recursos educativos
 
   div(id="new_resource_modal" class="my-modal" style="display: none")            
-    form(class="my-modal-content" action="/recursos/upload" method="POST" enctype="multipart/form-data")
+    form(id ="myForm" class="my-modal-content" action="/recursos/upload" method="POST" enctype="multipart/form-data")
       h2(style="margin: 10px 20px 20px 20px") Upload de recursos
 
       div(class="login_container")
 
         input(hidden name="nr_visibilidade" value="0")
-
+        input(hidden name="checksum0" value="") 
         div(class="login_container")
           div(class="w3-col s3")
             label(class="w3-text-teal")
               b Ficheiro: 
           div(class="w3-col s9 w3-border")
-            input(class="w3-input w3-border w3-light-grey" type="file" name="recurso" required)
+            input(class="w3-input w3-border w3-light-grey" onchange="getChecksum(this,0)" type="file" name="recurso" required)
       
         div(class="login_container")
           div(class="w3-col s3")
@@ -64,11 +64,11 @@ block content
             input(type="radio" class="w3-input w3-border w3-light-grey" name="visibilidade0" value="privado")
             label(for="privado") Privado
 
-      div(id="anotherFile" style="login-container" class="1")
+      div(id="anotherFile" style="login-container" class="0")
 
       div(class="login_container")
         input(class="w3-btn w3-blue-grey" type="button" value="+ 1" onclick='injectForm()')
-        input(class="w3-btn w3-blue-grey" style="float:right" type="submit" value="Submeter")
+        input(class="w3-btn w3-blue-grey" style="float:right" type="button" id="upload" value="Submeter")
         input(id="close_new_resource" class="w3-btn w3-blue-grey" style="float:right; margin-right: 10px" type="button" value="Cancelar")
 
   if (auth)
