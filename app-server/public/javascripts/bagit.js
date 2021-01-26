@@ -2,10 +2,12 @@ $(document).ready(function()
   {
     $('body').on('click', '#upload', function(e){
         e.preventDefault();
-
+        var total = parseInt($('#anotherFile').attr('class')) + 1
         var i = 0; 
         var form = document.getElementById('myForm');
         var formData = new FormData(form);
+        console.log("START")
+        console.log([...formData])
         var fileRadioButton = {}
         var files = {}
         var zip = new JSZip();
@@ -25,13 +27,33 @@ $(document).ready(function()
         zip.generateAsync({type:'blob'}).then((blobdata)=>{
             // create zip blob file
             let zipblob = new Blob([blobdata])
-    
+
+            //o zip chama-se blob
+            formData.delete("recurso")
+            formData.delete("nr_visibilidade")
+            for(var i = 0; i < total; i++){
+              formData.delete("checksum"+i)
+            }
+            formData.append("zip",blobdata)
+            console.log("FIM")
+            console.log([...formData])
+
+            $.ajax({
+              url: "/recursos/upload",
+              type: "POST",
+              data: formData,
+              processData: false,
+              contentType: false,
+              success: function (res){
+                console.log("ok")
+              }
+            });
             // For development and testing purpose
             // Download the zipped file 
-            var elem = window.document.createElement("a")
-            elem.href = window.URL.createObjectURL(zipblob)
-            elem.download = 'compressed.zip'
-            elem.click()
+            //var elem = window.document.createElement("a")
+            //elem.href = window.URL.createObjectURL(zipblob)
+            //elem.download = 'compressed.zip'
+            //elem.click()
         })
     })
 })
