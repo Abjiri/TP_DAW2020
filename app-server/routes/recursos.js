@@ -3,6 +3,8 @@ var router = express.Router();
 
 var multer = require('multer');
 var upload = multer({dest: './uploads'});
+//var JSZip = require('jszip')
+var AdmZip  = require('adm-zip')
 
 var fs = require('fs');
 var axios = require('axios')
@@ -59,10 +61,35 @@ router.get('/:id/remover', (req,res) => {
       .catch(error => res.render('error', {error}))
 })
   
-router.post('/upload', upload.array('recurso'), function(req, res) {
+router.post('/upload', upload.single('zip'), function(req, res) {
+    console.log(JSON.stringify(req.file))
+    console.log(JSON.stringify(req.body))
+    //var hashs = {}
+    var zippath = (__dirname + req.file.path).replace("routes","").replace(/\\/g, "\\\\")
+    var extractpath = (__dirname + "uploads" ).replace("routes","").replace(/\\/g, "\\\\")
+    //var path2 = (__dirname + "uploads\\login.zip").replace("routes","").replace(/\\/g, "\\\\")
+    var zip = new AdmZip(zippath)
+    zip.extractAllTo(extractpath)
+    zip.getEntries().forEach(entry => {
+      if(entry.entryName.match(/data\/.+/)){
+        console.log(entry.toString())
+      }
+      else if (entry.entryName == "manifest-md5.txt") {
+        let entries = entry.getData().toString().split("\n")
+        entries.pop()
+        entries.forEach(a=>{
+          let separated = a.split(" ")
+          let hash = separated[0]
+          //let filename = separated[1].split("data/")[1]
+          //hashs[filename] = hash 
+          var newhash = aux.calculateMd5(extractpath + ("\\" + separated[1]).replace(/\\/g,"\\\\").replace(/\//g,"\\\\"))
+          // aqui dao bem... meter um if talvez mais tarde
+        })
+      }
+    })
     var token = aux.unveilToken(req.cookies.token);
     var files = [];
-  
+  /*
     for (var i = 0; i < req.files.length; i++) {
       try {
         let oldPath = `${__dirname.split('/routes')[0]}/${req.files[i].path}`;
@@ -92,6 +119,7 @@ router.post('/upload', upload.array('recurso'), function(req, res) {
     axios.post('http://localhost:8001/recursos?token=' + req.cookies.token, files)
       .then(dados => res.redirect('/recursos'))
       .catch(error => res.render('error', {error}))
+      */
 })
   
 module.exports = router;
