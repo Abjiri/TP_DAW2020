@@ -2,17 +2,19 @@ var express = require('express');
 var router = express.Router();
 
 const Recurso = require('../controllers/recurso');
+const RecursoTipo = require('../controllers/tipo_recurso')
 
 // Listar todos os recursos
 router.get('/', function(req, res) {
   Recurso.listar()
-    .then(dados => {console.log(dados); res.status(200).jsonp(dados)} )
+    .then(dados => res.status(200).jsonp(dados))
     .catch(e => res.status(500).jsonp({error: e}))
 });
 
-router.get('/numero', function(req, res) {
-  Recurso.contar()
-    .then(dados => res.status(200).jsonp({numero: dados}))
+// Listar tipos de recursos
+router.get('/tipos', function(req, res){
+  RecursoTipo.listar()
+    .then(dados => res.status(201).jsonp(dados))
     .catch(e => res.status(500).jsonp({error: e}))
 })
 
@@ -25,14 +27,19 @@ router.get('/:id', function(req, res) {
 
 // Inserir recursos
 router.post('/', function(req, res){
-  Recurso.inserir(req.body)
-    .then(dados => res.status(201).jsonp({dados}))
+  Recurso.inserir(req.body.ficheiros)
+    .then(dados => {
+      console.log("ficheiros inseridos")
+      console.log(req.body.tiposNovos)
+      RecursoTipo.inserir(req.body.tiposNovos)
+        .then(dados2 => res.status(201).jsonp({dados}))
+        .catch(e => res.status(500).jsonp({error: e}))
+    })
     .catch(e => res.status(500).jsonp({error: e}))
 })
 
 // Inserir recursos
 router.post('/:id/download', function(req, res){
-  console.log("boas")
   Recurso.incrementarDownloads(req.params.id)
     .then(dados => res.status(201).jsonp({dados}))
     .catch(e => res.status(500).jsonp({error: e}))

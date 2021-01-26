@@ -2,7 +2,7 @@ extends layout
 
 block content
   .w3-container.w3-margin
-    div(class="w3-card-4 modal" id="display_recurso")
+    div(class="modal" id="display_recurso")
 
     h1 Lista de recursos
 
@@ -35,7 +35,7 @@ block content
             td= r.dataUltimaMod
             td= r.tamanho
             td
-              button(type="button" class="resource-btn" onclick=`showImage("${r.nome_ficheiro}", "${r.tipo_mime}")`) 👁
+              button(type="button" class="resource-btn" onclick=`showImage("${r.idAutor}", "${r.nome_ficheiro}", "${r.tipo_mime}")`) 👁
               form(action=`/recursos/${r._id}/${r.idAutor}-${r.nome_ficheiro}/download/` method="GET" style="display: inline-block")
                 button(type="submit" class="resource-btn") ⬇️
               |

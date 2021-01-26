@@ -39,13 +39,17 @@ router.get('/:id', function(req, res) {
 router.get('/:id/:fname/download', (req,res) => {
   axios.post('http://localhost:8001/recursos/' + req.params.id + '/download?token=' + req.cookies.token)
     .then(dados => {
-      res.download(__dirname.split('/routes')[0] + '/public/fileStore/' + req.params.fname)
+      var dir = __dirname.split('/routes')[0] + '/public/fileStore/' + req.params.fname
+      var filename = req.params.fname.split('-')[1]
+
+      res.download(dir,filename)
     })
     .catch(error => res.render('error', {error}))
 })
 
 router.get('/:id/classificar/:pont', (req,res) => {
   var token = aux.unveilToken(req.cookies.token);
+  console.log("boas")
 
   axios.put(`http://localhost:8001/recursos/${req.params.id}/classificar/?token=${req.cookies.token}`,
     {user: token._id, pontuacao: Number.parseInt(req.params.pont)})
@@ -61,7 +65,8 @@ router.get('/:id/remover', (req,res) => {
   
 router.post('/upload', upload.array('recurso'), function(req, res) {
     var token = aux.unveilToken(req.cookies.token);
-    var files = [];
+    var ficheiros = [];
+    var tiposNovos = [];
   
     for (var i = 0; i < req.files.length; i++) {
       try {
@@ -71,9 +76,17 @@ router.post('/upload', upload.array('recurso'), function(req, res) {
         fs.rename(oldPath, newPath, (err) => {
           if (err) throw err;
         });
+
+        var tipo = req.files.length == 1 ? req.body.tipo : req.body.tipo[i]
+        if (tipo == "Outro") {
+          tipo = req.files.length == 1 ? req.body.outro_tipo : req.body.outro_tipo[i]
+          tipo = tipo.charAt(0).toUpperCase() + tipo.slice(1)
+
+          tiposNovos.push({tipo})
+        }
   
-        files.push({
-          tipo: req.files.length == 1 ? req.body.tipo : req.body.tipo[i],
+        ficheiros.push({
+          tipo,
           titulo: req.files.length == 1 ? req.body.titulo : req.body.titulo[i],
           descricao: req.files.length == 1 ? req.body.descricao : req.body.descricao[i],
           dataCriacao: req.files.length == 1 ? req.body.dataCriacao : req.body.dataCriacao[i],
@@ -89,8 +102,32 @@ router.post('/upload', upload.array('recurso'), function(req, res) {
       }
     }
   
-    axios.post('http://localhost:8001/recursos?token=' + req.cookies.token, files)
-      .then(dados => res.redirect('/recursos'))
+    axios.post('http://localhost:8001/recursos?token=' + req.cookies.token, {ficheiros, tiposNovos})
+      .then(dados => {
+        console.log(dados.data)
+        var docs = dados.data.dados;
+        var recursos = [];
+        
+        for (var i = 0; i < docs.length; i++) {
+          if (docs[i].visibilidade == 'publico') {
+            recursos.push({
+              id: docs[i]._id,
+              titulo: docs[i].titulo,
+              tipo: docs[i].tipo.toLowerCase()
+            })
+          }
+        }
+
+        var noticia = {
+            idAutor: token._id,
+            nomeAutor: token.nome,
+            recursos
+          }
+
+        axios.post('http://localhost:8001/noticias?token=' + req.cookies.token, noticia)
+          .then(dados => res.redirect('/recursos'))
+          .catch(error => res.render('error', {error}))
+      })
       .catch(error => res.render('error', {error}))
 })
   

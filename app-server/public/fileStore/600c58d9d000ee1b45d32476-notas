@@ -1,0 +1,61 @@
+/login
+/registo
+/perfil/id
+
+/home
+/recursos - lista dos recursos
+/recurso/id
+/post/id
+/create-post
+
+GET foto
+
+
+USER:
+- nome ok
+- email ok 
+- password ok
+- descrição ok
+- filiacao ok
+	- estudante -> curso
+	- docente -> departamento
+	- trabalhador -> empresa
+- nivel (admin, produtor, consumidor) ok
+- dataRegisto ok
+- dataUltimoAcesso ok
+- foto de perfil (diretoria) ok
+
+
+RECURSO:
+- tipo (dropdown)
+- titulo
+- subtitulo
+- descrição
+- dataCriacao
+- dataRegisto
+- lastModified
+- rating
+- nr downloads
+- visibilidade
+- produtor
+- tamanho
+- comments:
+- tags
+
+
+POST:
+- titulo
+- corpo
+- recurso
+- comments: [comment]
+- autor
+- data criação
+
+COMMENT:
+- corpo
+- autor
+- data criação
+
+
+
+

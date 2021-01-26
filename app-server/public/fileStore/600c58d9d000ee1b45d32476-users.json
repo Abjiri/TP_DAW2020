@@ -1,0 +1,28 @@
+[
+    {
+        "email": "admin@email",
+        "password": "123",
+        "nivel": "administrador",
+        "nome": "Administrador",
+        "estatuto": {
+            "tipo": "Estudante",
+            "filiacao": "MIEI"
+        },
+        "dataRegisto": "2021-01-23",
+        "dataUltimoAcesso": "2021-01-23",
+        "descricao": "Sou o chefe disto"
+    },
+        {
+        "email": "produtor@email",
+        "password": "123",
+        "nivel": "produtor",
+        "nome": "Produtor 1",
+        "estatuto": {
+            "tipo": "Docente",
+            "filiacao": "História"
+        },
+        "dataRegisto": "2021-01-23",
+        "dataUltimoAcesso": "2021-01-23",
+        "descricao": "Ando aqui infiltrado"
+    }
+]

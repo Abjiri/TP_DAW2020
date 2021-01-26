@@ -1,0 +1,11 @@
+ mongoimport --db TP_DAW2020 --collection users --file users.json --jsonArray
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InByb2R1dG9yQGVtYWlsIiwibGV2ZWwiOiJwcm9kdXRvciIsInN1YiI6IlRQX0RBVzIwMjAiLCJpYXQiOjE2MTEyNTQzMjgsImV4cCI6MTYxMTM0MDcyOH0.zP_ir5--efaI2mZ1aEJ8RdLHsS2Kw2_0mR-RnmgMOLY
+
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InByb2R1dG9yQGVtYWlsIiwibGV2ZWwiOiJwcm9kdXRvciIsInN1YiI6IlRQX0RBVzIwMjAiLCJpYXQiOjE2MTEyNTUyOTUsImV4cCI6MTYxMTM0MTY5NX0.NHDcXJbzA3_dqJVpjbmCTDivQI-KkEq1RuplmkF2DrU
+
+posso alterar:
+nome 
+estatuto
+descricao

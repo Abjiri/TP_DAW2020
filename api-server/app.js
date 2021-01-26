@@ -17,6 +17,7 @@ db.once('open', function() {
 });
 
 var publicacaoRouter = require('./routes/publicacao');
+var noticiasRouter = require('./routes/noticias');
 var recursoRouter = require('./routes/recurso');
 var usersRouter = require(('./routes/users'))
 
@@ -39,6 +40,7 @@ app.use(function(req, res, next) {
 })
 
 app.use('/publicacoes', publicacaoRouter);
+app.use('/noticias', noticiasRouter);
 app.use('/recursos', recursoRouter);
 app.use('/users', usersRouter);
 

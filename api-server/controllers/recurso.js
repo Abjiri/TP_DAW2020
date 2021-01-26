@@ -41,21 +41,21 @@ module.exports.classificar = (idRecurso,classif) => {
     return Recurso.findOneAndUpdate(
         {"_id": idRecurso},
         {$push: {classificacao: classif}}, 
-        {new: true})
+        {useFindAndModify: false, new: true})
 }
 
 module.exports.atualizarClassificacao = (idRecurso,classif) => {
     return Recurso.findOneAndUpdate(
         {"_id": idRecurso, "classificacao.user": classif.user},
         {$set: {'classificacao.$.pontuacao': classif.pontuacao}}, 
-        {new: true})
+        {useFindAndModify: false, new: true})
 }
 
 module.exports.incrementarDownloads = (idRecurso) => {
     return Recurso.findOneAndUpdate(
         {"_id": idRecurso},
         {$inc: {nrDownloads: 1}}, 
-        {new: true})
+        {useFindAndModify: false, new: true})
 }
 
 

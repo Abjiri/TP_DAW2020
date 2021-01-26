@@ -6,27 +6,15 @@ function checkMimetype(type) {
     }, false);
 };
 
-function showImage(name, type){
+function showImage(idAuthor, name, type){
     var file;
 
     if (type == 'image/png' || type == 'image/jpeg' || type == 'image/gif')
-        file = '<img src="/fileStore/' + name + '" width="80%"/>';
+        file = '<img src="/fileStore/' + idAuthor + '-' + name + '" width="80%"/>';
     else if (checkMimetype(type))
-        file = `<iframe src="/fileStore/${name}" width="80%"/>`;
+        file = `<iframe src="/fileStore/${idAuthor}-${name}" width="80%"/>`;
     else 
         file = '<p>' + name + ', ' + type + '<p>';
-    
-    var fileObj = $(`
-        <div class="w3-row w3-margin">
-            <div class="w3-col s6">
-                ${file}
-            </div>
-            <div class="w3-col s6 w3-border">
-                <p>Filename: ${name}</p>
-                <p>Mimetype: ${type}</p>
-            </div>
-        </div>
-    `);
     
     $('#display_recurso').empty();
     $('#display_recurso').append(file);
@@ -51,7 +39,7 @@ function injectForm() {
                     <label class="w3-text-teal"><b>Ficheiro: </b></label>
                 </div>
                 <div class="w3-col s9 w3-border">
-                    <input class="w3-input w3-border w3-light-grey" onchange="getChecksum(this,${newFileId})" type="file" name="recurso" required>
+                    <input class="w3-input w3-border w3-light-grey" type="file" name="recurso" required>
                 </div>
             </div>
 
@@ -78,17 +66,38 @@ function injectForm() {
                     <label class="w3-text-teal"><b>Tipo: </b></label>
                 </div>
                 <div class="w3-col s9 w3-border">
-                    <select class="w3-input w3-border w3-light-grey" name="tipo" required>
+                    <select id="tipo_recurso${newFileId}" onchange="showNewTypeInput()" class="w3-input w3-border w3-light-grey" name="tipo" required>
                         <option hidden disabled select value></option>
-                        <option value="relatorio"> Relatório </option>
-                        <option value="tese"> Tese </option>
-                        <option value="artigo"> Artigo </option>
-                        <option value="aplicacao"> Aplicação </option>
-                        <option value="slides"> Slides </option>
-                        <option value="testeexame"> Teste/Exame </option>
-                        <option value="problemaresolvido"> Problema resolvido </option>
+                        <option value="Relatório"> Relatório </option>
+                        <option value="Tese"> Tese </option>
+                        <option value="Artigo"> Artigo </option>
+                        <option value="Aplicação"> Aplicação </option>
+                        <option value="Slides"> Slides </option>
+                        <option value="Teste ou exame"> Teste/Exame </option>
+                        <option value="Problema resolvido"> Problema resolvido </option>
+                        <option value="Outro"> Outro </option>
+                    </select>
                 </div>
             </div>
+
+            <div id="outro_tipo_recurso${newFileId}" class="login_container" style="display: none">
+                <div class="w3-col s3">
+                    <label class="w3-text-teal"><b>Outro: </b></label>
+                </div>
+                <div class="w3-col s9 w3-border">
+                    <input class="w3-input w3-border w3-light-grey" type="text" name="outro_tipo">
+                </div>
+            </div>
+
+            <script>
+                function showNewTypeInput() {
+                    var value = document.getElementById("tipo_recurso${newFileId}").value
+                    var input = document.getElementById("outro_tipo_recurso${newFileId}")
+
+                    if (value == "Outro") input.style.display = "block";
+                    else input.style.display = "none";
+                }
+            </script>
 
             <div class="login_container">
                 <div class="w3-col s3">

@@ -1,0 +1,8 @@
+[
+    { "tipo": "Relatório"},
+    { "tipo": "Artigo"},
+    { "tipo": "Aplicação"},
+    { "tipo": "Slides"},
+    { "tipo": "Teste ou exame"},
+    { "tipo": "Problema resolvido"}
+]

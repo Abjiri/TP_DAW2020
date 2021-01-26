@@ -1,0 +1,6 @@
+- renaming do ficheiro no download para tirar o id do produtor só funciona em alguns casos
+- styling das páginas
+- criar post
+
+- inputs invalidos no novo tipo de recurso (p.e. com /)
+- mostrar os tipos de recursos no html injetado
