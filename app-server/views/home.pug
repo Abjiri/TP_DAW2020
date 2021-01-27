@@ -12,13 +12,14 @@ block content
         div(class="login_container")
 
           input(hidden name="nr_visibilidade" value="0")
-          input(hidden name="checksum0" value="") 
+          input(hidden name="checksum0" value="")
+          
           div(class="login_container")
             div(class="w3-col s3")
               label(class="w3-text-teal")
                 b Ficheiro: 
             div(class="w3-col s9 w3-border")
-              input(class="w3-input w3-border w3-light-grey" onchange="getChecksum(this,0)" type="file" name="recurso" required)
+              input(class="w3-input w3-border w3-light-grey" type="file" name="recurso" required)
         
           div(class="login_container")
             div(class="w3-col s3")

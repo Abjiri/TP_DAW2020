@@ -24,7 +24,6 @@ function showImage(idAuthor, name, type){
 function injectForm() {
     var newFileId = parseInt($('#anotherFile').attr('class')) + 1;
     var tipos = $('#tipos').val()
-    console.log(tipos)
 
     //atualizar o id do último ficheiro na class da div onde se inserem os forms extra
     $('#anotherFile').attr('class', newFileId);

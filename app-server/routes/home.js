@@ -8,7 +8,6 @@ router.get('/', function(req, res) {
     axios.get('http://localhost:8001/noticias?token=' + req.cookies.token)
       .then(dados => {
         var noticias = [];
-        console.log(dados.data)
         
         dados.data.forEach(n => {
           var not = `${n.data}`

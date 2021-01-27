@@ -3,5 +3,4 @@
 - criar post
 
 - inputs invalidos no novo tipo de recurso (p.e. com /)
-- mostrar os tipos de recursos no html injetado
 - comparar o "novo" tipo com os existentes a ver se é mesmo novo

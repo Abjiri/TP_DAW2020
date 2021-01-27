@@ -104,64 +104,80 @@ router.post('/upload', upload.single('zip'), function(req, res) {
         })
       }
     })
-    if(valido){
+    
+    if(valido) {
+      axios.get('http://localhost:8001/recursos/tipos?token=' + req.cookies.token)
+        .then(tipos_bd => {
 
-      for (var i = 0; i < total; i++) {
-        var tipo = req.body.tipo[i]
-        if (tipo == "Outro") {
-          tipo = req.body.outro_tipo[i]
-          tipo = tipo.charAt(0).toUpperCase() + tipo.slice(1)
-          tiposNovos.push({tipo})
-        }
-  
-        ficheiros.push({
-          tipo,
-          titulo: req.body.titulo[i],
-          descricao: req.body.descricao[i],
-          dataCriacao: req.body.dataCriacao[i],
-          visibilidade: req.body[`visibilidade${i}`],
-          idAutor: token._id,
-          nomeAutor: token.nome,
-          nome_ficheiro: recursosInfo[i].nome,
-          tamanho: recursosInfo[i].tamanho,
-          tipo_mime: recursosInfo[i].mime,
-          diretoria: recursosInfo[i].path
-        });
-      }
-      aux.clearZipFolder(extractpath,zippath)
-      axios.post('http://localhost:8001/recursos?token=' + req.cookies.token, {ficheiros, tiposNovos})
-      .then(dados => {
-        var docs = dados.data.dados;
-        var recursos = [];
+          for (var i = 0; i < total; i++) {
+            var tipo = req.body.tipo[i]
+
+            if (tipo == "Outro") {
+              tipo = req.body.outro_tipo[i]
+              var novo = true
+
+              for (var j = 0; j < tipos_bd.data.length; i++) {
+                if (tipo.localeCompare(tipos_bd.data[i].tipo, 'pt', { sensitivity: 'base' }) == 0) {
+                  tipo = tipos_bd.data[i].tipo
+                  novo = false
+                  break
+                }
+              }
+              
+              if (novo) {
+                tipo = tipo.charAt(0).toUpperCase() + tipo.slice(1)
+                tiposNovos.push({tipo})
+              }
+            }
         
-        for (var i = 0; i < docs.length; i++) {
-          if (docs[i].visibilidade == 'publico') {
-            recursos.push({
-              id: docs[i]._id,
-              titulo: docs[i].titulo,
-              tipo: docs[i].tipo.toLowerCase()
-            })
+            ficheiros.push({
+              tipo,
+              titulo: req.body.titulo[i],
+              descricao: req.body.descricao[i],
+              dataCriacao: req.body.dataCriacao[i],
+              visibilidade: req.body[`visibilidade${i}`],
+              idAutor: token._id,
+              nomeAutor: token.nome,
+              nome_ficheiro: recursosInfo[i].nome,
+              tamanho: recursosInfo[i].tamanho,
+              tipo_mime: recursosInfo[i].mime,
+              diretoria: recursosInfo[i].path
+            });
           }
-        }
-
-        var noticia = {
-            idAutor: token._id,
-            nomeAutor: token.nome,
-            recursos
-        }
-
-        axios.post('http://localhost:8001/noticias?token=' + req.cookies.token, noticia)
+          aux.clearZipFolder(extractpath,zippath)
+          axios.post('http://localhost:8001/recursos?token=' + req.cookies.token, {ficheiros, tiposNovos})
           .then(dados => {
-            console.log("ESTO AQUI ")
-            res.redirect('/recursos')
+            var docs = dados.data.dados;
+            var recursos = [];
+              
+            for (var i = 0; i < docs.length; i++) {
+              if (docs[i].visibilidade == 'publico') {
+                recursos.push({
+                  id: docs[i]._id,
+                  titulo: docs[i].titulo,
+                  tipo: docs[i].tipo.toLowerCase()
+                })
+              }
+            }
+      
+            var noticia = {
+                idAutor: token._id,
+                nomeAutor: token.nome,
+                recursos
+            }
+      
+            axios.post('http://localhost:8001/noticias?token=' + req.cookies.token, noticia)
+              .then(dados => {
+                console.log("ESTO AQUI ")
+                res.redirect('/recursos')
+              })
+              .catch(error => res.render('error', {error}))
           })
           .catch(error => res.render('error', {error}))
-      })
-      .catch(error => res.render('error', {error}))
+        })
+        .catch(error => res.render('error', {error}))
     }
-    else {
-      res.render('error', {error})
-    }
+    else res.render('error', {error})
 })
   
 module.exports = router;
