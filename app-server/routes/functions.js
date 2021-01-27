@@ -22,10 +22,14 @@ function unveilToken(token){
 function calculateSize(bytes) {
   if (bytes < 1024) return `${bytes} B`;
   else {
-    var mb = bytes/1024;
-    if (mb < 1024) return `${(mb.toFixed(2))} MB`;
-    
-    return `${(mb/1024).toFixed(2)} MB`;
+    var kb = bytes/1024;
+    if (kb < 1024) return `${(kb.toFixed(2))} KB`;
+    else {
+      var mb = kb/1024;
+      if (mb < 1024) return `${(mb.toFixed(2))} MB`;
+
+      return `${(mb/1024).toFixed(2)} GB`;
+    }
   }
 }
 
