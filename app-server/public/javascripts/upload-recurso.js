@@ -23,6 +23,8 @@ function showImage(idAuthor, name, type){
 
 function injectForm() {
     var newFileId = parseInt($('#anotherFile').attr('class')) + 1;
+    var tipos = $('#tipos').val()
+    console.log(tipos)
 
     //atualizar o id do último ficheiro na class da div onde se inserem os forms extra
     $('#anotherFile').attr('class', newFileId);
@@ -66,16 +68,16 @@ function injectForm() {
                     <label class="w3-text-teal"><b>Tipo: </b></label>
                 </div>
                 <div class="w3-col s9 w3-border">
-                    <select id="tipo_recurso${newFileId}" onchange="showNewTypeInput()" class="w3-input w3-border w3-light-grey" name="tipo" required>
-                        <option hidden disabled select value></option>
-                        <option value="Relatório"> Relatório </option>
-                        <option value="Tese"> Tese </option>
-                        <option value="Artigo"> Artigo </option>
-                        <option value="Aplicação"> Aplicação </option>
-                        <option value="Slides"> Slides </option>
-                        <option value="Teste ou exame"> Teste/Exame </option>
-                        <option value="Problema resolvido"> Problema resolvido </option>
-                        <option value="Outro"> Outro </option>
+                    <select id="tipo_recurso${newFileId}" onchange="showNewTypeInput()" class="w3-input w3-border w3-light-grey" name="tipo" required>`
+
+    var splitTipos = tipos.split('"tipo":"')
+
+    for (var i = 1; i < splitTipos.length; i++) {
+        var tipo = splitTipos[i].split('"')[0]
+        form += `<option value="${tipo}"> ${tipo} </option>`
+    }
+
+    form += `           <option value="Outro"> Outro </option>
                     </select>
                 </div>
             </div>
@@ -124,6 +126,7 @@ function injectForm() {
         </div>`;
         
     $('#anotherFile').append(form);
+    $(`#tipo_recurso${newFileId}`).prepend("<option hidden disabled select value></option>").val('');
 }
 
 function removeFormChunk(id) {

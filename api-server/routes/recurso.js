@@ -29,8 +29,6 @@ router.get('/:id', function(req, res) {
 router.post('/', function(req, res){
   Recurso.inserir(req.body.ficheiros)
     .then(dados => {
-      console.log("ficheiros inseridos")
-      console.log(req.body.tiposNovos)
       RecursoTipo.inserir(req.body.tiposNovos)
         .then(dados2 => res.status(201).jsonp({dados}))
         .catch(e => res.status(500).jsonp({error: e}))

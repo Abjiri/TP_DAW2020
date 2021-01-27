@@ -3,78 +3,82 @@ extends layout
 block content
   h1 Gestão de recursos educativos
 
-  div(id="new_resource_modal" class="my-modal" style="display: none")            
-    form(id="myForm" class="my-modal-content" action="/recursos/upload" method="POST" enctype="multipart/form-data")
-      h2(style="margin: 10px 20px 20px 20px") Upload de recursos
-
-      div(class="login_container")
-
-        input(hidden name="nr_visibilidade" value="0")
-        input(hidden name="checksum0" value="") 
-        div(class="login_container")
-          div(class="w3-col s3")
-            label(class="w3-text-teal")
-              b Ficheiro: 
-          div(class="w3-col s9 w3-border")
-            input(class="w3-input w3-border w3-light-grey" onchange="getChecksum(this,0)" type="file" name="recurso" required)
-      
-        div(class="login_container")
-          div(class="w3-col s3")
-            label(class="w3-text-teal")
-              b Nome: 
-          div(class="w3-col s9 w3-border")
-            input(class="w3-input w3-border w3-light-grey" type="text" name="titulo" required)
-
-        div(class="login_container")
-          div(class="w3-col s3")
-            label(class="w3-text-teal")
-              b Descrição: 
-          div(class="w3-col s9 w3-border")
-            input(class="w3-input w3-border w3-light-grey" type="text" name="descricao" required)
-
-        div(class="login_container")
-          div(class="w3-col s3")
-            label(class="w3-text-teal")
-              b Tipo: 
-          div(class="w3-col s9 w3-border")
-            select(id="tipo_recurso0" class="w3-input w3-border w3-light-grey" name="tipo" required)
-              option(hidden disabled selected value)
-              each t in tipos
-                option(value= t.tipo) #{t.tipo}
-              option(value="Outro") Outro
-              
-        div(id="outro_tipo_recurso0" class="login_container" style="display: none")
-          div(class="w3-col s3")
-            label(class="w3-text-teal")
-              b Outro: 
-          div(class="w3-col s9 w3-border")
-            input(class="w3-input w3-border w3-light-grey" type="text" name="outro_tipo")
-
-        div(class="login_container")
-          div(class="w3-col s3")
-            label(class="w3-text-teal")
-              b Data de criação: 
-          div(class="w3-col s9 w3-border")
-            input(class="w3-input w3-border w3-light-grey" type="date" name="dataCriacao" required)
-
-        div(class="w3-row login_container w3-margin-bottom")
-          div(class="w3-col s3")
-            label(class="w3-text-teal")
-              b Visibilidade: 
-          div(class="w3-col s9" style="display: block")
-            input(type="radio" class="w3-input w3-border w3-light-grey" name="visibilidade0" value="publico")
-            label(for="publico") Público
-            input(type="radio" class="w3-input w3-border w3-light-grey" name="visibilidade0" value="privado")
-            label(for="privado") Privado
-
-      div(id="anotherFile" style="login-container" class="0")
-
-      div(class="login_container")
-        input(class="w3-btn w3-blue-grey" type="button" value="+ 1" onclick='injectForm()')
-        input(class="w3-btn w3-blue-grey" style="float:right" type="submit" id="upload" value="Submeter")
-        input(id="close_new_resource" class="w3-btn w3-blue-grey" style="float:right; margin-right: 10px" type="button" value="Cancelar")
-
   if (auth)
+
+    div(id="new_resource_modal" class="my-modal" style="display: none")            
+      form(id="myForm" class="my-modal-content" action="/recursos/upload" method="POST" enctype="multipart/form-data")
+        h2(style="margin: 10px 20px 20px 20px") Upload de recursos
+
+        div(class="login_container")
+
+          input(hidden name="nr_visibilidade" value="0")
+          input(hidden name="checksum0" value="") 
+          div(class="login_container")
+            div(class="w3-col s3")
+              label(class="w3-text-teal")
+                b Ficheiro: 
+            div(class="w3-col s9 w3-border")
+              input(class="w3-input w3-border w3-light-grey" onchange="getChecksum(this,0)" type="file" name="recurso" required)
+        
+          div(class="login_container")
+            div(class="w3-col s3")
+              label(class="w3-text-teal")
+                b Nome: 
+            div(class="w3-col s9 w3-border")
+              input(class="w3-input w3-border w3-light-grey" type="text" name="titulo" required)
+
+          div(class="login_container")
+            div(class="w3-col s3")
+              label(class="w3-text-teal")
+                b Descrição: 
+            div(class="w3-col s9 w3-border")
+              input(class="w3-input w3-border w3-light-grey" type="text" name="descricao" required)
+
+          input(id="tipos" hidden value=tipos)
+
+          div(class="login_container")
+            div(class="w3-col s3")
+              label(class="w3-text-teal")
+                b Tipo: 
+            div(class="w3-col s9 w3-border")
+              select(id="tipo_recurso0" class="w3-input w3-border w3-light-grey" name="tipo" required)
+                option(hidden disabled selected value)
+                each t in tipos
+                  option(value= t.tipo) #{t.tipo}
+                option(value="Outro") Outro
+                
+          div(id="outro_tipo_recurso0" class="login_container" style="display: none")
+            div(class="w3-col s3")
+              label(class="w3-text-teal")
+                b Outro: 
+            div(class="w3-col s9 w3-border")
+              input(class="w3-input w3-border w3-light-grey" type="text" name="outro_tipo")
+
+          div(class="login_container")
+            div(class="w3-col s3")
+              label(class="w3-text-teal")
+                b Data de criação: 
+            div(class="w3-col s9 w3-border")
+              input(class="w3-input w3-border w3-light-grey" type="date" name="dataCriacao" required)
+
+          div(class="w3-row login_container w3-margin-bottom")
+            div(class="w3-col s3")
+              label(class="w3-text-teal")
+                b Visibilidade: 
+            div(class="w3-col s9" style="display: block")
+              input(type="radio" class="w3-input w3-border w3-light-grey" name="visibilidade0" value="publico")
+              label(for="publico") Público
+              input(type="radio" class="w3-input w3-border w3-light-grey" name="visibilidade0" value="privado")
+              label(for="privado") Privado
+
+        div(id="anotherFile" style="login-container" class="0")
+
+        div(class="login_container")
+          input(class="w3-btn w3-blue-grey" type="button" value="+ 1" onclick='injectForm()')
+          input(class="w3-btn w3-blue-grey" style="float:right" type="submit" id="upload" value="Submeter")
+          input(id="close_new_resource" class="w3-btn w3-blue-grey" style="float:right; margin-right: 10px" type="button" value="Cancelar")
+
+
     button(id="new_resource" type="button") Carregar recursos
 
     each n in noticias
