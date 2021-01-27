@@ -1,8 +1,8 @@
 var jwt = require('jsonwebtoken')
 var keyToken = "TP_DAW2020"
 var crypto = require("crypto")
-var CryptoJS = require("crypto-js")
 var fs = require('fs')
+var mime = require('mime-types')
 
 function unveilToken(token){  
     var t = null;
@@ -30,17 +30,34 @@ function calculateSize(bytes) {
 }
 
 function calculateMd5(file){
-  console.log(file)
   let file_buffer = fs.readFileSync(file);
   let sum = crypto.createHash('md5');
   sum.update(String(file_buffer));
   const hex = sum.digest('hex');
-  console.log(hex);
   return hex
+}
+
+function getSize(file){
+  var stats = fs.statSync(file);
+  var fileSizeInBytes = stats.size;
+  return fileSizeInBytes/1024;
+}
+
+function getMimeType(file){
+  return mime.lookup(file)
+}
+
+function clearZipFolder(folder, zipfile){
+  fs.rmSync(zipfile)
+  fs.rmSync(folder + "\\\\data", {recursive:true})
+  fs.rmSync(folder +"\\\\manifest-md5.txt",{recursive:true})
 }
 
 module.exports = {
     unveilToken,
     calculateSize,
-    calculateMd5
+    calculateMd5,
+    getSize,
+    getMimeType,
+    clearZipFolder
 }

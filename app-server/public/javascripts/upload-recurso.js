@@ -39,7 +39,7 @@ function injectForm() {
                     <label class="w3-text-teal"><b>Ficheiro: </b></label>
                 </div>
                 <div class="w3-col s9 w3-border">
-                    <input class="w3-input w3-border w3-light-grey" type="file" name="recurso" required>
+                    <input class="w3-input w3-border w3-light-grey" type="file" name="recurso" onchange="getChecksum(this,${newFileId})" required>
                 </div>
             </div>
 

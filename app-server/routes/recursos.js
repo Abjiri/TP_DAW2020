@@ -66,17 +66,21 @@ router.get('/:id/remover', (req,res) => {
 })
   
 router.post('/upload', upload.single('zip'), function(req, res) {
-    console.log(JSON.stringify(req.file))
-    console.log(JSON.stringify(req.body))
-    //var hashs = {}
+    var token = aux.unveilToken(req.cookies.token);
+    var ficheiros = [];
+    var tiposNovos = [];
+
+    var total = 0
+    var recursos = []
+    var recursosInfo = []
+    var valido = true
     var zippath = (__dirname + req.file.path).replace("routes","").replace(/\\/g, "\\\\")
     var extractpath = (__dirname + "uploads" ).replace("routes","").replace(/\\/g, "\\\\")
-    //var path2 = (__dirname + "uploads\\login.zip").replace("routes","").replace(/\\/g, "\\\\")
     var zip = new AdmZip(zippath)
     zip.extractAllTo(extractpath)
     zip.getEntries().forEach(entry => {
       if(entry.entryName.match(/data\/.+/)){
-        console.log(entry.toString())
+        recursos[total++] = entry.name
       }
       else if (entry.entryName == "manifest-md5.txt") {
         let entries = entry.getData().toString().split("\n")
@@ -84,54 +88,49 @@ router.post('/upload', upload.single('zip'), function(req, res) {
         entries.forEach(a=>{
           let separated = a.split(" ")
           let hash = separated[0]
-          //let filename = separated[1].split("data/")[1]
-          //hashs[filename] = hash 
-          var newhash = aux.calculateMd5(extractpath + ("\\" + separated[1]).replace(/\\/g,"\\\\").replace(/\//g,"\\\\"))
-          // aqui dao bem... meter um if talvez mais tarde
+          let nome_ficheiro = separated[1].split("data/")[1]
+          let diretoria = extractpath + ("\\" + separated[1]).replace(/\\/g,"\\\\").replace(/\//g,"\\\\")
+          let nova_diretoria = extractpath.replace("uploads","public\\\\fileStore\\\\") + Date.now() + "-" + nome_ficheiro
+          let newhash = aux.calculateMd5(diretoria)
+          recursosInfo.push({nome: nome_ficheiro, mime: aux.getMimeType(diretoria), tamanho: aux.getSize(diretoria), path: nova_diretoria.split("app-server\\\\")[1]})
+          fs.rename(diretoria, nova_diretoria, err => {
+            if (err) throw err
+          })
+          let pertence = false
+          recursos.forEach(r=>{
+            if(r==nome_ficheiro) pertence = true
+          })
+          if(newhash != hash || !pertence) valido = false
         })
       }
     })
-    var token = aux.unveilToken(req.cookies.token);
-    var ficheiros = [];
-    var tiposNovos = [];
-  
-    for (var i = 0; i < req.files.length; i++) {
-      try {
-        let oldPath = `${__dirname.split('/routes')[0]}/${req.files[i].path}`;
-        let newPath = `${__dirname.split('/routes')[0]}/public/fileStore/${token._id}-${req.files[i].originalname}`;
-  
-        fs.rename(oldPath, newPath, (err) => {
-          if (err) throw err;
-        });
+    if(valido){
 
-        var tipo = req.files.length == 1 ? req.body.tipo : req.body.tipo[i]
+      for (var i = 0; i < total; i++) {
+        var tipo = req.body.tipo[i]
         if (tipo == "Outro") {
-          tipo = req.files.length == 1 ? req.body.outro_tipo : req.body.outro_tipo[i]
+          tipo = req.body.outro_tipo[i]
           tipo = tipo.charAt(0).toUpperCase() + tipo.slice(1)
-
           tiposNovos.push({tipo})
         }
   
         ficheiros.push({
           tipo,
-          titulo: req.files.length == 1 ? req.body.titulo : req.body.titulo[i],
-          descricao: req.files.length == 1 ? req.body.descricao : req.body.descricao[i],
-          dataCriacao: req.files.length == 1 ? req.body.dataCriacao : req.body.dataCriacao[i],
-          visibilidade: req.body[`visibilidade${req.body.nr_visibilidade[i]}`],
+          titulo: req.body.titulo[i],
+          descricao: req.body.descricao[i],
+          dataCriacao: req.body.dataCriacao[i],
+          visibilidade: req.body[`visibilidade${i}`],
           idAutor: token._id,
           nomeAutor: token.nome,
-          nome_ficheiro: req.files[i].originalname,
-          tamanho: req.files[i].size,
-          tipo_mime: req.files[i].mimetype
+          nome_ficheiro: recursosInfo[i].nome,
+          tamanho: recursosInfo[i].tamanho,
+          tipo_mime: recursosInfo[i].mime,
+          diretoria: recursosInfo[i].path
         });
-      } catch (err) {
-        console.log("Erro ao renomear um dos ficheiros: " + err);
       }
-    }
-  
-    axios.post('http://localhost:8001/recursos?token=' + req.cookies.token, {ficheiros, tiposNovos})
+      aux.clearZipFolder(extractpath,zippath)
+      axios.post('http://localhost:8001/recursos?token=' + req.cookies.token, {ficheiros, tiposNovos})
       .then(dados => {
-        console.log(dados.data)
         var docs = dados.data.dados;
         var recursos = [];
         
@@ -149,13 +148,17 @@ router.post('/upload', upload.single('zip'), function(req, res) {
             idAutor: token._id,
             nomeAutor: token.nome,
             recursos
-          }
+        }
 
         axios.post('http://localhost:8001/noticias?token=' + req.cookies.token, noticia)
           .then(dados => res.redirect('/recursos'))
           .catch(error => res.render('error', {error}))
       })
       .catch(error => res.render('error', {error}))
+    }
+    else {
+      res.render('error', {error})
+    }
 })
   
 module.exports = router;
