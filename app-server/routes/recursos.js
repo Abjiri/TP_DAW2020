@@ -92,7 +92,7 @@ router.post('/upload', upload.single('zip'), function(req, res) {
           let diretoria = extractpath + ("\\" + separated[1]).replace(/\\/g,"\\\\").replace(/\//g,"\\\\")
           let nova_diretoria = extractpath.replace("uploads","public\\\\fileStore\\\\") + Date.now() + "-" + nome_ficheiro
           let newhash = aux.calculateMd5(diretoria)
-          recursosInfo.push({nome: nome_ficheiro, mime: aux.getMimeType(diretoria), tamanho: aux.getSize(diretoria), path: nova_diretoria.split("app-server\\\\")[1]})
+          recursosInfo.push({nome: nome_ficheiro, mime: aux.getMimeType(diretoria), tamanho: aux.getSize(diretoria), path: nova_diretoria.split("app-server\\\\")[1].replace(/\\\\/g,"\\")})
           fs.rename(diretoria, nova_diretoria, err => {
             if (err) throw err
           })
@@ -151,7 +151,10 @@ router.post('/upload', upload.single('zip'), function(req, res) {
         }
 
         axios.post('http://localhost:8001/noticias?token=' + req.cookies.token, noticia)
-          .then(dados => res.redirect('/recursos'))
+          .then(dados => {
+            console.log("ESTO AQUI ")
+            res.redirect('/recursos')
+          })
           .catch(error => res.render('error', {error}))
       })
       .catch(error => res.render('error', {error}))

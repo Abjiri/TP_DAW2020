@@ -44,8 +44,8 @@ $(document).ready(function()
               data: formData,
               processData: false,
               contentType: false,
-              success: function (res){
-                console.log("ok")
+              success: function (response){
+                window.location.replace("/recursos");
               }
             });
             // For development and testing purpose
