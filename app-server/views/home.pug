@@ -79,8 +79,37 @@ block content
           input(class="w3-btn w3-blue-grey" style="float:right" type="submit" id="upload" value="Submeter")
           input(id="close_new_resource" class="w3-btn w3-blue-grey" style="float:right; margin-right: 10px" type="button" value="Cancelar")
 
+    div(id="new_post_modal" class="my-modal" style="display: none") 
+      form(id="myForm2" class="my-modal-content" action="/publicacoes" method="POST" enctype="multipart/form-data")
+        h2(style="margin: 10px 20px 20px 20px") Criar Publicação
 
-    button(id="new_resource" type="button") Carregar recursos
+        div(class="login_container")
+          div(class="login_container")
+            div(class="w3-col s3")
+              label(class="w3-text-teal")
+                b Título: 
+            div(class="w3-col s9 w3-border")
+              input(class="w3-input w3-border w3-light-grey" type="text" name="titulo" required)
+
+            div(class="w3-col s3")
+              label(class="w3-text-teal")
+                b Recurso: 
+            div(class="w3-col s9 w3-border")
+              input(class="w3-input w3-border w3-light-grey" type="text" name="recurso" required)   
+
+          div(class="login_container")
+            div(class="w3-col s3")
+              label(class="w3-text-teal")
+                b Corpo: 
+            div(class="w3-col s9 w3-border")
+              input(class="w3-input w3-border w3-light-grey" type="text" name="corpo" required)
+          div(class="w3-row login_container w3-margin-bottom")
+
+            input(class="w3-btn w3-blue-grey w3-margin-top" style="float:right" type="submit" id="upload" value="Submeter")
+            input(id="close_new_post" class="w3-btn w3-blue-grey w3-margin-top" style="float:right; margin-right: 10px" type="button" value="Cancelar")
+
+    button(id="new_resource" type="button") Carregar Recursos
+    button(id="new_post" type="button") Criar Publicação
 
     each n in noticias
       p!= n
