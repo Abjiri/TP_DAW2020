@@ -44,7 +44,7 @@ function calculateMd5(file){
 function getSize(file){
   var stats = fs.statSync(file);
   var fileSizeInBytes = stats.size;
-  return fileSizeInBytes/1024;
+  return fileSizeInBytes;
 }
 
 function getMimeType(file){
