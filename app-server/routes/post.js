@@ -2,15 +2,19 @@ var express = require('express');
 var router = express.Router();
 
 var axios = require('axios');
+var func = require('./functions')
 
-router.get('/:id/classificar/:pont', (req,res) => {
-    var token = aux.unveilToken(req.cookies.token);
-    console.log("boas")
-  
-    axios.put(`http://localhost:8001/recursos/${req.params.id}/classificar/?token=${req.cookies.token}`,
-      {user: token._id, pontuacao: Number.parseInt(req.params.pont)})
-        .then(dados => res.redirect('/recursos'))
-        .catch(error => res.render('error', {error}))
+router.post('/', function(req, res, next){
+    if (!req.cookies.token) res.redirect('/')
+    else {
+        var token = func.unveilToken(req.cookies.token)
+        var dados = req.body
+        console.log(dados)
+        /*axios.post('http://localhost:8001/posts/' + req.params.id +'?token=' + req.cookies.token, fixed)
+            .then(dados => res.redirect("/perfil"))
+            .catch(error => res.render('error', {error}))
+            */
+    }
 })
 
 module.exports = router;

@@ -19,7 +19,7 @@ block content
               label(class="w3-text-teal")
                 b Ficheiro: 
             div(class="w3-col s9 w3-border")
-              input(class="w3-input w3-border w3-light-grey" type="file" name="recurso" required)
+              input(class="w3-input w3-border w3-light-grey" type="file" name="recurso" onchange="getChecksum(this,0)" required)
         
           div(class="login_container")
             div(class="w3-col s3")
@@ -76,11 +76,11 @@ block content
 
         div(class="login_container")
           input(class="w3-btn w3-blue-grey" type="button" value="+ 1" onclick='injectForm()')
-          input(class="w3-btn w3-blue-grey" style="float:right" type="submit" id="upload" value="Submeter")
+          input(class="w3-btn w3-blue-grey" style="float:right" type="button" id="upload" value="Submeter")
           input(id="close_new_resource" class="w3-btn w3-blue-grey" style="float:right; margin-right: 10px" type="button" value="Cancelar")
 
     div(id="new_post_modal" class="my-modal" style="display: none") 
-      form(id="myForm2" class="my-modal-content" action="/publicacoes" method="POST" enctype="multipart/form-data")
+      form(id="myForm2" class="my-modal-content" action="/publicacoes" method="POST")
         h2(style="margin: 10px 20px 20px 20px") Criar Publicação
 
         div(class="login_container")
@@ -105,7 +105,7 @@ block content
               input(class="w3-input w3-border w3-light-grey" type="text" name="corpo" required)
           div(class="w3-row login_container w3-margin-bottom")
 
-            input(class="w3-btn w3-blue-grey w3-margin-top" style="float:right" type="submit" id="upload" value="Submeter")
+            input(class="w3-btn w3-blue-grey w3-margin-top" style="float:right" type="submit" id="upload2" value="Submeter")
             input(id="close_new_post" class="w3-btn w3-blue-grey w3-margin-top" style="float:right; margin-right: 10px" type="button" value="Cancelar")
 
     button(id="new_resource" type="button") Carregar Recursos
