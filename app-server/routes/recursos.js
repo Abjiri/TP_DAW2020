@@ -139,7 +139,7 @@ router.post('/upload', upload.single('zip'), function(req, res) {
               nome_ficheiro: recursosInfo[i].nome,
               tamanho: recursosInfo[i].tamanho,
               tipo_mime: recursosInfo[i].mime,
-              diretoria: recursosInfo[i].path
+              diretoria: recursosInfo[i].path.replace(/^public/, "")
             });
           }
           aux.clearZipFolder(extractpath,zippath)
