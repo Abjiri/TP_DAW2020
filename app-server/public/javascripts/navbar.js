@@ -42,9 +42,7 @@ $(document).ready(function()
     });
 
     $('select').change(function() {
-        console.log(this.id)
         if (this.id.match(/tipo_recurso[0-9]+/)) {
-            console.log(this.id)
             let nr = this.id.split('tipo_recurso')[1]
 
             if ($(this).val() == "Outro") $(`#outro_tipo_recurso${nr}`).show()

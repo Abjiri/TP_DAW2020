@@ -6,6 +6,7 @@ var mime = require('mime-types')
 
 function unveilToken(token){  
     var t = null;
+    
     jwt.verify(token,keyToken,function(e,decoded){
       if(e){
         console.log('Erro: ' + e)
@@ -15,8 +16,30 @@ function unveilToken(token){
         return t = decoded
       } 
     })
-    console.log("DECODE: " + JSON.stringify(t))
+
     return t
+}
+
+function variaveisRecursos(recursos, cookiesToken) {
+  var token = unveilToken(cookiesToken)
+
+  var nomesAutores = []
+  var idsAutores = []
+  var tipos = []
+
+  recursos.forEach(r => {
+    r.tamanho = calculateSize(r.tamanho)
+    r.dono = token._id == r.idAutor
+            
+    if (!tipos.includes(r.tipo)) tipos.push(r.tipo)
+
+    if (!idsAutores.includes(r.idAutor)) {
+      idsAutores.push(r.idAutor)
+      nomesAutores.push(r.nomeAutor)
+    }
+  })
+
+  return {auth: true, recursos, tipos, autores: nomesAutores.sort()}
 }
 
 function calculateSize(bytes) {
@@ -59,6 +82,7 @@ function clearZipFolder(folder, zipfile){
 
 module.exports = {
     unveilToken,
+    variaveisRecursos,
     calculateSize,
     calculateMd5,
     getSize,

@@ -236,3 +236,35 @@ hr{border:0;border-top:1px solid #eee;margin:20px 0}
     background-color: transparent;
     display: inline-block;
 }
+
+
+/* .search-container {
+    float: right;
+    text-align: center;
+}
+
+.search-container input[type=text] {
+    padding: 6px;
+    margin-top: 8px;
+    font-size: 17px;
+    border: none;
+}
+
+.search-container * {
+    float: right;
+}
+
+.search-container button {
+    float: right;
+    padding: 6px 10px;
+    margin-top: 8px;
+    margin-right: 16px;
+    background: #ddd;
+    font-size: 17px;
+    border: none;
+    cursor: pointer;
+}
+
+.search-container button:hover {
+    background: #ccc;
+} */

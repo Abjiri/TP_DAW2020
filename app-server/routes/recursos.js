@@ -11,30 +11,64 @@ var axios = require('axios')
 
 var aux = require('./functions')
 
-
 router.get('/', function(req, res) {
     if (!req.cookies.token) res.redirect('/')
     else {
       axios.get('http://localhost:8001/recursos?token=' + req.cookies.token)
         .then(dados => {
-          var token = aux.unveilToken(req.cookies.token)
-
-          dados.data.forEach(r => {
-            r.tamanho = aux.calculateSize(r.tamanho)
-            r.dono = token._id == r.idAutor
-          })
-          res.render('recursos', {lista: dados.data, auth: true})
+          var vars = aux.variaveisRecursos(dados.data, req.cookies.token)
+                
+          res.render('recursos', vars)
         })
         .catch(error => res.render('error', {error}))
     }
 })
 
+router.post('/ordenar/:criterio/:sentido', function(req, res) {
+  if (!req.cookies.token) res.redirect('/')
+  else {
+    axios.get(`http://localhost:8001/recursos/ordenar/${req.params.criterio}/${req.params.sentido}?token=` + req.cookies.token)
+        .then(dados => {
+          var vars = aux.variaveisRecursos(dados.data, req.cookies.token)
+          vars.ordemAtual = req.params.criterio + '/' + req.params.sentido
+
+          res.render('recursos', vars)
+        })
+        .catch(error => res.render('error', {error}))
+  }
+})
+
+router.post('/ordenarFiltragem/:criterio/:sentido', function(req, res) {
+  if (!req.cookies.token) res.redirect('/')
+  else {
+    var recursos = JSON.parse(req.body.recursos)
+    var autores = JSON.parse(req.body.autores)
+    var tipos = JSON.parse(req.body.tipos)
+    var filtroAtual = JSON.parse(req.body.filtroAtual)
+    var crit = req.params.criterio
+    var sentido = req.params.sentido
+
+    if (sentido == '0') {
+      recursos.sort((a, b) => (a[crit] > b[crit]) ? -1 : 1)
+    }
+    else {
+      recursos.sort((a, b) => (a[crit] > b[crit]) ? sentido : 
+                    (a[crit] == b[crit]) ? ((a.dataUltimaMod > b.dataUltimaMod) ? -1 : 1) : -sentido)
+    }
+
+    var vars = {auth: true, recursos, tipos, autores, filtroAtual}
+    if (sentido != '0') vars.ordemAtual = crit + '/' + sentido
+
+    res.render('recursos', vars)
+  }
+})
+
 router.get('/:id', function(req, res) {
     if (!req.cookies.token) res.redirect('/')
     else {
-        axios.get('http://localhost:8001/recursos/' + req.params.id + '?token=' + req.cookies.token)
-            .then(dados => {console.log(dados.data); res.render('recurso', {r: dados.data, auth: true})})
-            .catch(error => res.render('error', {error}))
+      axios.get('http://localhost:8001/recursos/' + req.params.id + '?token=' + req.cookies.token)
+        .then(dados => {console.log(dados.data); res.render('recurso', {r: dados.data, auth: true})})
+        .catch(error => res.render('error', {error}))
     }
 })
 
@@ -62,6 +96,26 @@ router.get('/:id/remover', (req,res) => {
   axios.delete('http://localhost:8001/recursos/' + req.params.id + '?token=' + req.cookies.token)
       .then(dados => res.redirect('/recursos'))
       .catch(error => res.render('error', {error}))
+})
+
+router.post('/pesquisar', (req, res) => {
+  axios.post(`http://localhost:8001/recursos/pesquisar?token=${req.cookies.token}`, req.body)
+    .then(dados => {
+      var novoFiltro;
+
+      switch (req.body.filtro) {
+        case 'titulo': novoFiltro = {"tipo": "Título", "valor": req.body.titulo}; break;
+        case 'tipo': novoFiltro = {"tipo": "Tipo", "valor": req.body.tipo}; break;
+        case 'autor': novoFiltro = {"tipo": "Autor", "valor": req.body.autor}; break;
+        case 'ano': novoFiltro = {"tipo": "Ano", "valor": req.body.ano}; break;
+      }
+
+      var vars = aux.variaveisRecursos(dados.data, req.cookies.token)
+      vars.filtroAtual = novoFiltro
+      
+      res.render('recursos', vars)
+    })
+    .catch(error => res.render('error', {error}))
 })
   
 router.post('/upload', upload.single('zip'), function(req, res) {
