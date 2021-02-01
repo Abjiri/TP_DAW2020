@@ -7,6 +7,7 @@ module.exports.listar = () => {
     return Recurso
         .aggregate([{
             $project: {
+                _id: 1,
                 titulo: 1,
                 tipo: 1,
                 idAutor: 1,
@@ -29,6 +30,7 @@ module.exports.pesquisarPorAutor = nome => {
         .aggregate([
             { $match: { nomeAutor: { $regex: nome, $options: 'i'} } },
             { $project: {
+                _id: 1,
                 titulo: 1,
                 tipo: 1,
                 idAutor: 1,
@@ -51,6 +53,7 @@ module.exports.pesquisarPorTitulo = titulo => {
         .aggregate([
             { $match: { titulo: { $regex: titulo, $options: 'i'} } },
             { $project: {
+                _id: 1,
                 titulo: 1,
                 tipo: 1,
                 idAutor: 1,
@@ -73,6 +76,7 @@ module.exports.pesquisarPorTipo = tipo => {
         .aggregate([
             { $match: { tipo: { $regex: tipo, $options: 'i'} } },
             { $project: {
+                _id: 1,
                 titulo: 1,
                 tipo: 1,
                 idAutor: 1,
@@ -94,6 +98,7 @@ module.exports.pesquisarPorAno = ano => {
         .aggregate([
             { $match: { dataCriacao: new RegExp("^" + ano, "i") } },
             { $project: {
+                _id: 1,
                 titulo: 1,
                 tipo: 1,
                 idAutor: 1,
@@ -121,6 +126,7 @@ module.exports.ordenarPor = params => {
     return Recurso
         .aggregate([{
             $project: {
+                _id: 1,
                 titulo: 1,
                 tipo: 1,
                 idAutor: 1,
