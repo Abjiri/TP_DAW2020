@@ -17,7 +17,6 @@ router.get('/', function(req, res) {
       axios.get('http://localhost:8001/recursos?token=' + req.cookies.token)
         .then(dados => {
           var vars = aux.variaveisRecursos(dados.data, req.cookies.token)
-                
           res.render('recursos', vars)
         })
         .catch(error => res.render('error', {error}))
@@ -122,7 +121,6 @@ router.post('/upload', upload.single('zip'), function(req, res) {
     var token = aux.unveilToken(req.cookies.token);
     var ficheiros = [];
     var tiposNovos = [];
-
     var total = 0
     var recursos = []
     var recursosInfo = []
@@ -157,15 +155,14 @@ router.post('/upload', upload.single('zip'), function(req, res) {
         })
       }
     })
-    console.log("AAAAAAAAAAAAAAAAA")
     if(valido) {
       axios.get('http://localhost:8001/recursos/tipos?token=' + req.cookies.token)
         .then(tipos_bd => {
           for (var i = 0; i < total; i++) {
-            var tipo = req.body.tipo[i]
+            var tipo = total==1 ? req.body.tipo : req.body.tipo[i]
 
             if (tipo == "Outro") {
-              tipo = req.body.outro_tipo[i]
+              tipo = total==1 ? req.body.outro_tipo : req.body.outro_tipo[i]
               var novo = true
 
               for (var j = 0; j < tipos_bd.data.length; i++) {
@@ -184,9 +181,9 @@ router.post('/upload', upload.single('zip'), function(req, res) {
         
             ficheiros.push({
               tipo,
-              titulo: req.body.titulo[i],
-              descricao: req.body.descricao[i],
-              dataCriacao: req.body.dataCriacao[i],
+              titulo: total==1 ? req.body.titulo : req.body.titulo[i],
+              descricao: total==1 ? req.body.descricao : req.body.descricao[i],
+              dataCriacao: total==1 ? req.body.dataCriacao : req.body.dataCriacao[i],
               visibilidade: req.body[`visibilidade${i}`],
               idAutor: token._id,
               nomeAutor: token.nome,
@@ -220,7 +217,6 @@ router.post('/upload', upload.single('zip'), function(req, res) {
       
             axios.post('http://localhost:8001/noticias?token=' + req.cookies.token, noticia)
               .then(dados => {
-                console.log("ESTO AQUI ")
                 res.redirect('/recursos')
               })
               .catch(error => res.render('error', {error}))
