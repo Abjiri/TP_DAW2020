@@ -160,19 +160,17 @@ router.post('/upload', upload.single('zip'), function(req, res) {
         .then(tipos_bd => {
           for (var i = 0; i < total; i++) {
             var tipo = total==1 ? req.body.tipo : req.body.tipo[i]
-
+            
             if (tipo == "Outro") {
               tipo = total==1 ? req.body.outro_tipo : req.body.outro_tipo[i]
               var novo = true
-
-              for (var j = 0; j < tipos_bd.data.length; i++) {
-                if (tipo.localeCompare(tipos_bd.data[i].tipo, 'pt', { sensitivity: 'base' }) == 0) {
-                  tipo = tipos_bd.data[i].tipo
+              for (var j = 0; j < tipos_bd.data.length; j++) {
+                if (tipo.localeCompare(tipos_bd.data[j].tipo, 'pt', { sensitivity: 'base' }) == 0) {
+                  tipo = tipos_bd.data[j].tipo
                   novo = false
                   break
                 }
               }
-              
               if (novo) {
                 tipo = tipo.charAt(0).toUpperCase() + tipo.slice(1)
                 tiposNovos.push({tipo})
