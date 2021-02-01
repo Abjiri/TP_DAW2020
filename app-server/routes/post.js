@@ -9,7 +9,7 @@ router.get('/:id', function(req,res,next){
     if (!req.cookies.token) res.redirect('/')
     else {
         axios.get('http://localhost:8001/publicacoes/' + req.params.id + '?token=' + req.cookies.token)
-            .then(dados => res.render('publicacao', {publicacao: dados.data}))
+            .then(dados => res.render('publicacao', {publicacao: dados.data, auth: true}))
             .catch(error => res.render('error', {error}))
     }
 })

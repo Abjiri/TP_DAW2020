@@ -6,7 +6,8 @@ block content
         h1= publicacao.titulo
         p Titulo: #{publicacao.titulo}
         p Descrição: #{publicacao.corpo}
-        p Recurso: #{publicacao.recurso}
+        p Recurso: 
+            a(href="/recursos/" + publicacao.recurso) #{publicacao.recurso}
         p Data de criação: #{publicacao.dataCriacao}
     form(id="comentarPostForm" action='/publicacoes/comentar/'+ publicacao._id method="POST")
         textarea(id="commentPost" name="corpo" placeholder="Insira o seu comentário..." maxlength="255" style="height:200px; width: 100%")
