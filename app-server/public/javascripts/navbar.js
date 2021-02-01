@@ -73,6 +73,11 @@ $(document).ready(function()
         document.getElementById('new_resource_modal').style.display='block';   
     });
 
+    $("#new_post").click(function(event) {
+        event.preventDefault();
+        document.getElementById('new_post_modal').style.display='block';   
+    });
+
     $("#close_new_resource").click(function(event) {
         event.preventDefault();
         document.getElementById('new_resource_modal').style.display='none';   

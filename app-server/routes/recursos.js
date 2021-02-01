@@ -157,11 +157,10 @@ router.post('/upload', upload.single('zip'), function(req, res) {
         })
       }
     })
-    
+    console.log("AAAAAAAAAAAAAAAAA")
     if(valido) {
       axios.get('http://localhost:8001/recursos/tipos?token=' + req.cookies.token)
         .then(tipos_bd => {
-
           for (var i = 0; i < total; i++) {
             var tipo = req.body.tipo[i]
 

@@ -1,0 +1,27 @@
+extends layout
+
+block content
+
+    div(class="w3-card-4")
+        h1= publicacao.titulo
+        p Titulo: #{publicacao.titulo}
+        p Descrição: #{publicacao.corpo}
+        p Recurso: 
+            a(href="/recursos/" + publicacao.recurso) #{publicacao.recurso}
+        p Data de criação: #{publicacao.dataCriacao}
+    form(id="comentarPostForm" action='/publicacoes/comentar/'+ publicacao._id method="POST")
+        textarea(id="commentPost" name="corpo" placeholder="Insira o seu comentário..." maxlength="255" style="height:150px; width: 30%; resize: none")
+        br
+        input(class="w3-btn w3-blue-grey" type="submit" id="commentButton" value="Comentar")
+    div(class="w3-card-4")
+        if publicacao.comments.size == 0
+            p Sem comments 
+        else 
+            h2 Comentários
+            ul.w3-ul
+                each c in publicacao.comments
+                  li
+                    p Corpo: #{c.corpo}
+                    p Autor: 
+                        a(href="/perfil/" + c.id_autor) #{c.id_autor}
+                    p Data de Criação: #{c.dataCriacao}

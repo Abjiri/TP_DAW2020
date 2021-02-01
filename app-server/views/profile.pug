@@ -29,16 +29,16 @@ block content
                 .profile-header-info
                   h3.m-t-10.m-b-5 #{user.nome}
                   p.m-b-10
-                   i.fa.fa-address-card-o(style='font-size:24px;color:#7FDBFF')  Afiliação: 
+                   i.fa.fa-paper-plane-o(style='font-size:24px;color:#7FDBFF')  Afiliação: 
                    |  #{user.estatuto.filiacao} (#{user.estatuto.tipo})
                   p.m-b-10 
                    i.fa.fa-envelope-o(style='font-size:24px;color:#7FDBFF')  E-mail: 
                    |  #{user.email}
                   p.m-b-10 
-                   i.fa.fa-plus-square(style='font-size:24px;color:#7FDBFF')  Registado em: 
+                   i.fa.fa-user-o(style='font-size:24px;color:#7FDBFF')  Registado em: 
                    |  #{user.dataRegisto}
                   p.m-b-10 
-                   i.fa.fa-info-circle(style='font-size:24px;color:#7FDBFF')  Desrição: 
+                   i.fa.fa-file-o(style='font-size:24px;color:#7FDBFF')  Descrição: 
                    |  #{user.descricao} 
                   a.btn.btn-sm.btn-info.mb-2(href='#' onclick='editForm(' +'\'' + JSON.stringify(user) +'\'' + ');') Editar Perfil
                   |  

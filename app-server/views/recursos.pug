@@ -44,7 +44,8 @@ block content
                 button(id="resources_searchbtn" type="submit" class="fa fa-search" style="display: none")
               else
                 a(type="button" href='/recursos') Limpar...
-        
+
+    div(id="new_post_modal" class="my-modal" style="display: none") 
 
     table.w3-table-all
         tr(class="resources_fields")
@@ -96,6 +97,7 @@ block content
               if (r.dono)
                 form(action=`/recursos/${r._id}/remover/`, method="GET" style="display: inline-block")
                   button(type="submit" class="resource-btn") 🗑️
+              button(type="button" onclick=`showPostForm("${r._id}")`) &#10095;
             td
               div(class="stars rate" data-percent=`${r.classificacao}`)
                 a(href=`/recursos/${r._id}/classificar/20` title="Horrível") ★

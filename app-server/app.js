@@ -8,6 +8,7 @@ var homeRouter = require('./routes/home');
 var usersRouter = require('./routes/users');
 var profileRouter = require('./routes/profile');
 var recursosRouter = require('./routes/recursos');
+var pubRouter = require('./routes/post');
 
 var app = express();
 app.locals.moment = require('moment')
@@ -18,7 +19,7 @@ app.set('view engine', 'pug');
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -26,7 +27,7 @@ app.use('/', homeRouter);
 app.use('/users', usersRouter);
 app.use('/perfil', profileRouter);
 app.use('/recursos', recursosRouter);
-
+app.use('/publicacoes', pubRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
