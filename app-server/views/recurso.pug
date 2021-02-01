@@ -2,7 +2,7 @@ extends layout
 
 block content
     div(class="w3-card-4 modal" id="recurso_modal")
-
+    div(id="new_post_modal" class="my-modal" style="display: none") 
     h1= r.titulo
     p Tipo: #{r.tipo}
     p Descrição: #{r.descricao}
@@ -19,6 +19,7 @@ block content
     p Mimetype: #{r.tipo_mime}
 
     button(id="recurso_preview" onclick=`showImage("${r.nome_ficheiro}", "${r.tipo_mime}")`) Preview
+    button(onclick=`showPostForm("${r._id}")`) Publicar
 
     p
         a(href=`/recursos/${r.idAutor}-${r.nome_ficheiro}/download/`) Download
