@@ -12,7 +12,7 @@ module.exports.listar = () => {
                 idAutor: 1,
                 nomeAutor: 1,
                 nrComentarios: {$size: '$comentarios'},
-                classificacao: {$round: [{$avg: '$classificacao.pontuacao'}, 0]},
+                classificacao: {$ifNull: [{$round: [{$avg: '$classificacao.pontuacao'}, 0]}, 0]},
                 dataUltimaMod: 1,
                 tamanho: 1,
                 nrDownloads: 1,
@@ -23,12 +23,117 @@ module.exports.listar = () => {
         .sort('-_id')
 }
 
-// lista os recursos do produtor
-module.exports.listarAutor = email => {
+// pesquisar recursos por autor
+module.exports.pesquisarPorAutor = nome => {
     return Recurso
-        .find({}, {autor: email})
-        .sort('-dataRegisto')
-        .exec()
+        .aggregate([
+            { $match: { nomeAutor: { $regex: nome, $options: 'i'} } },
+            { $project: {
+                titulo: 1,
+                tipo: 1,
+                idAutor: 1,
+                nomeAutor: 1,
+                nrComentarios: {$size: '$comentarios'},
+                classificacao: {$ifNull: [{$round: [{$avg: '$classificacao.pontuacao'}, 0]}, 0]},
+                dataUltimaMod: 1,
+                tamanho: 1,
+                nrDownloads: 1,
+                nome_ficheiro: 1,
+                tipo_mime: 1
+            }
+        }])
+        .sort('-dataUltimaMod')
+}
+
+// pesquisar recursos por título
+module.exports.pesquisarPorTitulo = titulo => {
+    return Recurso
+        .aggregate([
+            { $match: { titulo: { $regex: titulo, $options: 'i'} } },
+            { $project: {
+                titulo: 1,
+                tipo: 1,
+                idAutor: 1,
+                nomeAutor: 1,
+                nrComentarios: {$size: '$comentarios'},
+                classificacao: {$ifNull: [{$round: [{$avg: '$classificacao.pontuacao'}, 0]}, 0]},
+                dataUltimaMod: 1,
+                tamanho: 1,
+                nrDownloads: 1,
+                nome_ficheiro: 1,
+                tipo_mime: 1
+            }
+        }])
+        .sort('-dataUltimaMod')
+}
+
+// pesquisar recursos por tipo
+module.exports.pesquisarPorTipo = tipo => {
+    return Recurso
+        .aggregate([
+            { $match: { tipo: { $regex: tipo, $options: 'i'} } },
+            { $project: {
+                titulo: 1,
+                tipo: 1,
+                idAutor: 1,
+                nomeAutor: 1,
+                nrComentarios: {$size: '$comentarios'},
+                classificacao: {$ifNull: [{$round: [{$avg: '$classificacao.pontuacao'}, 0]}, 0]},
+                dataUltimaMod: 1,
+                tamanho: 1,
+                nrDownloads: 1,
+                nome_ficheiro: 1,
+                tipo_mime: 1
+            }
+        }, { $sort: {dataUltimaMod: -1} }])
+}
+
+// pesquisar recursos por ano de criação
+module.exports.pesquisarPorAno = ano => {
+    return Recurso
+        .aggregate([
+            { $match: { dataCriacao: new RegExp("^" + ano, "i") } },
+            { $project: {
+                titulo: 1,
+                tipo: 1,
+                idAutor: 1,
+                nomeAutor: 1,
+                nrComentarios: {$size: '$comentarios'},
+                classificacao: {$ifNull: [{$round: [{$avg: '$classificacao.pontuacao'}, 0]}, 0]},
+                dataUltimaMod: 1,
+                tamanho: 1,
+                nrDownloads: 1,
+                nome_ficheiro: 1,
+                tipo_mime: 1
+            }
+        }])
+        .sort('-dataUltimaMod')
+}
+
+// ordenar recursos por um critério
+module.exports.ordenarPor = params => {
+    var criteriosArr = [{"chave": "titulo", "valor": 1}]
+    criteriosArr.unshift({"chave": params.criterio, "valor": parseInt(params.sentido)})
+    
+    var criteriosObj = criteriosArr.reduce(
+        (obj, item) => Object.assign(obj, { [item.chave]: item.valor }), {});
+        
+    return Recurso
+        .aggregate([{
+            $project: {
+                titulo: 1,
+                tipo: 1,
+                idAutor: 1,
+                nomeAutor: 1,
+                nrComentarios: {$size: '$comentarios'},
+                classificacao: {$ifNull: [{$round: [{$avg: '$classificacao.pontuacao'}, 0]}, 0]},
+                dataUltimaMod: 1,
+                tamanho: 1,
+                nrDownloads: 1,
+                nome_ficheiro: 1,
+                tipo_mime: 1
+            }
+        }, { $sort: criteriosObj }])
 }
 
 module.exports.consultar = id => {
@@ -56,13 +161,6 @@ module.exports.incrementarDownloads = (idRecurso) => {
         {"_id": idRecurso},
         {$inc: {nrDownloads: 1}}, 
         {useFindAndModify: false, new: true})
-}
-
-
-module.exports.contar = () => {
-    return Recurso
-        .countDocuments()
-        .exec()
 }
 
 module.exports.inserir = recursos => {

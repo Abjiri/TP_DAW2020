@@ -18,6 +18,39 @@ router.get('/tipos', function(req, res){
     .catch(e => res.status(500).jsonp({error: e}))
 })
 
+// Listar recursos ordenados por critério
+router.get('/ordenar/:criterio/:sentido', function(req, res){
+  Recurso.ordenarPor(req.params)
+    .then(dados => res.status(201).jsonp(dados))
+    .catch(e => res.status(500).jsonp({error: e}))
+})
+
+// Pesquisar certo tipo de recursos
+router.post('/pesquisar', function(req, res) {
+  switch (req.body.filtro) {
+    case 'titulo': 
+      Recurso.pesquisarPorTitulo(req.body.titulo)
+        .then(dados => res.status(201).jsonp(dados))
+        .catch(e => res.status(500).jsonp({error: e}))
+      break;
+    case 'tipo': 
+      Recurso.pesquisarPorTipo(req.body.tipo)
+        .then(dados => res.status(201).jsonp(dados))
+        .catch(e => res.status(500).jsonp({error: e}))
+      break;
+    case 'autor': 
+      Recurso.pesquisarPorAutor(req.body.autor)
+        .then(dados => res.status(201).jsonp(dados))
+        .catch(e => res.status(500).jsonp({error: e}))
+      break;
+    case 'ano': 
+      Recurso.pesquisarPorAno(req.body.ano)
+        .then(dados => res.status(201).jsonp(dados))
+        .catch(e => res.status(500).jsonp({error: e}))
+      break;
+  }
+})
+
 // Consultar um recurso
 router.get('/:id', function(req, res) {
   Recurso.consultar(req.params.id)

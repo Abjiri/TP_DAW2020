@@ -6,33 +6,87 @@ block content
 
     h1 Lista de recursos
 
+    input(id="autores" hidden value=autores)
+    input(id="tipos" hidden value=tipos)
+    input(id="ordemAtual" hidden value=ordemAtual)
+
+    div(class="search-container")
+      table(style= "width: 100%")
+        form(autocomplete="off" action="/recursos/pesquisar" method="POST")
+          tr
+            th(class="th-left")
+              if !filtroAtual
+                select(id="resources_filter" class="w3-btn w3-white" name="filtro" required)
+                  option(selected disabled hidden) Filtrar por...
+                  option(value="titulo") Título
+                  option(value="tipo") Tipo
+                  option(value="autor") Autor
+                  option(value="ano") Data
+              else
+                p #{filtroAtual.tipo}:
+
+            th(class="th-left") &nbsp;
+
+            th(class="th-left")
+              if !filtroAtual
+                div(class="autocomplete")
+                  input(id="search_title" placeholder="Título..." name="titulo" style="display: none")
+                  input(id="search_type" placeholder="Tipo..." name="tipo" style="display: none")
+                  input(id="search_author" placeholder="Autor..." name="autor" style="display: none")
+                  input(id="search_year" placeholder="Ano de criação..." name="ano" type="number" min="1900" max="2099" step="1" style="display: none")
+              else
+                input(value=filtroAtual.valor disabled)
+
+            th(class="th-left") &nbsp;
+            
+            th(class="th-left")
+              if !filtroAtual
+                button(id="resources_searchbtn" type="submit" class="fa fa-search" style="display: none")
+              else
+                a(type="button" href='/recursos') Limpar...
+        
+
     table.w3-table-all
-        tr
+        tr(class="resources_fields")
           th Título
           th Tipo
           th Autor
-          th Nr comentários
-          th Classificação
-          th Última modificação
           th Tamanho
           th Operações
-          th Nr downloads
-        each r in lista
+
+          form(id="formOrdenacao" method="POST")
+            input(name="recursos" value=recursos hidden)
+            input(name="tipos" value=tipos hidden)
+            input(name="autores" value=autores hidden)
+            input(id="filtroAtual" name="filtroAtual" value=filtroAtual hidden)
+            
+            th Classificação &nbsp;
+              a(href="classificacao/+1" class="ordenarRecursos")= ordemAtual == 'classificacao/+1' ? '▴' : '▵'
+              | &nbsp;&nbsp;
+              a(href="classificacao/-1" class="ordenarRecursos")= ordemAtual == 'classificacao/-1' ? '▾' : '▿'
+
+            th Última modificação &nbsp;
+              a(href="dataUltimaMod/+1" class="ordenarRecursos")= ordemAtual == 'dataUltimaMod/+1' ? '▴' : '▵'
+              | &nbsp;&nbsp;
+              a(href="dataUltimaMod/-1" class="ordenarRecursos")= ordemAtual == 'dataUltimaMod/-1' ? '▾' : '▿'
+          
+            th Nr comentários &nbsp;
+              a(href="nrComentarios/+1" class="ordenarRecursos")= ordemAtual == 'nrComentarios/+1' ? '▴' : '▵'
+              | &nbsp;&nbsp;
+              a(href="nrComentarios/-1" class="ordenarRecursos")= ordemAtual == 'nrComentarios/-1' ? '▾' : '▿'
+
+            th Nr downloads &nbsp;
+              a(href="nrDownloads/+1" class="ordenarRecursos")= ordemAtual == 'nrDownloads/+1' ? '▴' : '▵'
+              | &nbsp;&nbsp;
+              a(href="nrDownloads/-1" class="ordenarRecursos")= ordemAtual == 'nrDownloads/-1' ? '▾' : '▿'
+
+        each r in recursos
           tr
             td
               a(href="/recursos/" + r._id) #{r.titulo}
             td= r.tipo
             td
               a(href="/perfil/" + r.idAutor) #{r.nomeAutor}
-            td= r.nrComentarios
-            td
-              div(class="stars rate" data-percent=`${r.classificacao}`)
-                a(href=`/recursos/${r._id}/classificar/20` title="Horrível") ★
-                a(href=`/recursos/${r._id}/classificar/40` title="Decente") ★
-                a(href=`/recursos/${r._id}/classificar/60` title="Bom") ★
-                a(href=`/recursos/${r._id}/classificar/80` title="Muito bom") ★
-                a(href=`/recursos/${r._id}/classificar/100` title="Excelente") ★
-            td= r.dataUltimaMod
             td= r.tamanho
             td
               button(type="button" class="resource-btn" onclick=`showImage("${r.idAutor}", "${r.nome_ficheiro}", "${r.tipo_mime}")`) 👁
@@ -42,4 +96,13 @@ block content
               if (r.dono)
                 form(action=`/recursos/${r._id}/remover/`, method="GET" style="display: inline-block")
                   button(type="submit" class="resource-btn") 🗑️
+            td
+              div(class="stars rate" data-percent=`${r.classificacao}`)
+                a(href=`/recursos/${r._id}/classificar/20` title="Horrível") ★
+                a(href=`/recursos/${r._id}/classificar/40` title="Decente") ★
+                a(href=`/recursos/${r._id}/classificar/60` title="Bom") ★
+                a(href=`/recursos/${r._id}/classificar/80` title="Muito bom") ★
+                a(href=`/recursos/${r._id}/classificar/100` title="Excelente") ★
+            td= r.dataUltimaMod
+            td= r.nrComentarios
             td= r.nrDownloads

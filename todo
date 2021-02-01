@@ -4,3 +4,18 @@
 
 - inputs invalidos no novo tipo de recurso (p.e. com /)
 - comparar o "novo" tipo com os existentes a ver se é mesmo novo - TESTAR
+
+- trocar o id do user pela data no nome do ficheiro guardado
+
+
+FILTROS:
+
+- titulo -> input text
+- tipo -> dropdown tipos
+- autor -> input text
+- ano -> input text
+
+- nr comentarios -> ordenar
+- classificacao -> ordenar
+- dataUltimaMod -> ordenar
+- nrDownloads -> ordenar
