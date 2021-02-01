@@ -10,7 +10,8 @@ block content
             a(href="/recursos/" + publicacao.recurso) #{publicacao.recurso}
         p Data de criação: #{publicacao.dataCriacao}
     form(id="comentarPostForm" action='/publicacoes/comentar/'+ publicacao._id method="POST")
-        textarea(id="commentPost" name="corpo" placeholder="Insira o seu comentário..." maxlength="255" style="height:200px; width: 100%")
+        textarea(id="commentPost" name="corpo" placeholder="Insira o seu comentário..." maxlength="255" style="height:150px; width: 30%; resize: none")
+        br
         input(class="w3-btn w3-blue-grey" type="submit" id="commentButton" value="Comentar")
     div(class="w3-card-4")
         if publicacao.comments.size == 0

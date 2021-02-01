@@ -5,7 +5,7 @@ block content
     div(class="modal" id="display_recurso")
 
     h1 Lista de recursos
-
+    div(id="new_post_modal" class="my-modal" style="display: none") 
     table.w3-table-all
         tr
           th Título
@@ -42,4 +42,5 @@ block content
               if (r.dono)
                 form(action=`/recursos/${r._id}/remover/`, method="GET" style="display: inline-block")
                   button(type="submit" class="resource-btn") 🗑️
+              button(type="button" onclick=`showPostForm("${r._id}")`) &#10095;
             td= r.nrDownloads
