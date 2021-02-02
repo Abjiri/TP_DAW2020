@@ -18,6 +18,7 @@ module.exports.listar = () => {
                 tamanho: 1,
                 nrDownloads: 1,
                 nome_ficheiro: 1,
+                diretoria: 1,
                 tipo_mime: 1
             }
         }])
@@ -41,6 +42,7 @@ module.exports.pesquisarPorAutor = nome => {
                 tamanho: 1,
                 nrDownloads: 1,
                 nome_ficheiro: 1,
+                diretoria: 1,
                 tipo_mime: 1
             }
         }])
@@ -64,6 +66,7 @@ module.exports.pesquisarPorTitulo = titulo => {
                 tamanho: 1,
                 nrDownloads: 1,
                 nome_ficheiro: 1,
+                diretoria: 1,
                 tipo_mime: 1
             }
         }])
@@ -87,6 +90,7 @@ module.exports.pesquisarPorTipo = tipo => {
                 tamanho: 1,
                 nrDownloads: 1,
                 nome_ficheiro: 1,
+                diretoria: 1,
                 tipo_mime: 1
             }
         }, { $sort: {dataUltimaMod: -1} }])
@@ -109,6 +113,7 @@ module.exports.pesquisarPorAno = ano => {
                 tamanho: 1,
                 nrDownloads: 1,
                 nome_ficheiro: 1,
+                diretoria: 1,
                 tipo_mime: 1
             }
         }])
@@ -137,6 +142,7 @@ module.exports.ordenarPor = params => {
                 tamanho: 1,
                 nrDownloads: 1,
                 nome_ficheiro: 1,
+                diretoria: 1,
                 tipo_mime: 1
             }
         }, { $sort: criteriosObj }])
