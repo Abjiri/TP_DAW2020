@@ -5,6 +5,8 @@ var axios = require('axios')
 var multer = require('multer')
 
 var func = require('./functions')
+var moment = require('moment')
+moment.defineLocale("pt")
 
 var storage = multer.diskStorage({
   destination: (req,file,cb) => {
@@ -26,6 +28,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/:id', function(req, res, next) {
+  
   axios.get('http://localhost:8001/users/' + req.params.id +'?token=' + req.cookies.token)
   .then(dados => {
     var token = func.unveilToken(req.cookies.token)

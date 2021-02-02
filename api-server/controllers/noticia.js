@@ -13,3 +13,10 @@ module.exports.listar = () => {
 module.exports.inserir = noticia => {
     return Noticia.insertMany(noticia)
 }
+
+module.exports.noticiasUtilizador = id =>{
+    return Noticia
+        .find({idAutor: id})
+        .sort('-data')
+        .exec()
+}
