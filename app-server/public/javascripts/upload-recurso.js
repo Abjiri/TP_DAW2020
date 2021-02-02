@@ -6,15 +6,15 @@ function checkMimetype(type) {
     }, false);
 };
 
-function showImage(idAuthor, name, type){
+function showImage(nome, diretoria, tipo_mime){
     var file;
 
-    if (type == 'image/png' || type == 'image/jpeg' || type == 'image/gif')
-        file = '<img src="/fileStore/' + idAuthor + '-' + name + '" width="80%"/>';
-    else if (checkMimetype(type))
-        file = `<iframe src="/fileStore/${idAuthor}-${name}" width="80%"/>`;
+    if (tipo_mime == 'image/png' || tipo_mime == 'image/jpeg' || tipo_mime == 'image/gif')
+        file = `<img src="${diretoria}" width="80%"/>`;
+    else if (checkMimetype(tipo_mime))
+        file = `<iframe src="${diretoria}" width="80%"/>`;
     else 
-        file = '<p>' + name + ', ' + type + '<p>';
+        file = '<p>' + nome + ', ' + tipo_mime + '<p>';
     
     $('#display_recurso').empty();
     $('#display_recurso').append(file);

@@ -8,14 +8,5 @@
 - trocar o id do user pela data no nome do ficheiro guardado
 
 
-FILTROS:
-
-- titulo -> input text
-- tipo -> dropdown tipos
-- autor -> input text
-- ano -> input text
-
-- nr comentarios -> ordenar
-- classificacao -> ordenar
-- dataUltimaMod -> ordenar
-- nrDownloads -> ordenar
+- corrigir o link de download para a diretoria do recurso
+- selecionar os recursos para fazer download

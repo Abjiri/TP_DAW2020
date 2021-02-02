@@ -27,13 +27,13 @@ router.post('/ordenar/:criterio/:sentido', function(req, res) {
   if (!req.cookies.token) res.redirect('/')
   else {
     axios.get(`http://localhost:8001/recursos/ordenar/${req.params.criterio}/${req.params.sentido}?token=` + req.cookies.token)
-        .then(dados => {
-          var vars = aux.variaveisRecursos(dados.data, req.cookies.token)
-          vars.ordemAtual = req.params.criterio + '/' + req.params.sentido
+      .then(dados => {
+        var vars = aux.variaveisRecursos(dados.data, req.cookies.token)
+        vars.ordemAtual = req.params.criterio + '/' + req.params.sentido
 
-          res.render('recursos', vars)
-        })
-        .catch(error => res.render('error', {error}))
+        res.render('recursos', vars)
+      })
+      .catch(error => res.render('error', {error}))
   }
 })
 
@@ -71,17 +71,6 @@ router.get('/:id', function(req, res) {
     }
 })
 
-router.get('/:id/:fname/download', (req,res) => {
-  axios.post('http://localhost:8001/recursos/' + req.params.id + '/download?token=' + req.cookies.token)
-    .then(dados => {
-      var dir = __dirname.split('/routes')[0] + '/public/fileStore/' + req.params.fname
-      var filename = req.params.fname.split('-')[1]
-
-      res.download(dir,filename)
-    })
-    .catch(error => res.render('error', {error}))
-})
-
 router.get('/:id/classificar/:pont', (req,res) => {
   var token = aux.unveilToken(req.cookies.token);
 
@@ -95,6 +84,17 @@ router.get('/:id/remover', (req,res) => {
   axios.delete('http://localhost:8001/recursos/' + req.params.id + '?token=' + req.cookies.token)
       .then(dados => res.redirect('/recursos'))
       .catch(error => res.render('error', {error}))
+})
+
+router.post('/download', (req,res) => {
+  var diretorias = JSON.parse(req.body.selecionados)
+  
+  axios.post('http://localhost:8001/recursos/download?token=' + req.cookies.token, diretorias)
+    .then(() => {
+      /* download zip do DIP */
+      res.redirect('/recursos')
+    })
+    .catch(errors => res.render('error', {error: errors[0]}))
 })
 
 router.post('/pesquisar', (req, res) => {
@@ -214,9 +214,7 @@ router.post('/upload', upload.single('zip'), function(req, res) {
             }
       
             axios.post('http://localhost:8001/noticias?token=' + req.cookies.token, noticia)
-              .then(dados => {
-                res.redirect('/recursos')
-              })
+              .then(dados => res.redirect('/recursos'))
               .catch(error => res.render('error', {error}))
           })
           .catch(error => res.render('error', {error}))

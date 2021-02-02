@@ -12,8 +12,8 @@ block content
 
     div(class="search-container")
       table(style= "width: 100%")
-        form(autocomplete="off" action="/recursos/pesquisar" method="POST")
-          tr
+        tr
+          form(autocomplete="off" action="/recursos/pesquisar" method="POST")
             th(class="th-left")
               if !filtroAtual
                 select(id="resources_filter" class="w3-btn w3-white" name="filtro" required)
@@ -45,10 +45,17 @@ block content
               else
                 a(type="button" href='/recursos') Limpar...
 
+          th(class="th-right")
+            form(action="/recursos/download" method="POST")
+              input(name="selecionados" type="hidden" value='[]')
+              button(id="submit_download" type="submit" disabled) Download
+              
+
     div(id="new_post_modal" class="my-modal" style="display: none") 
 
     table.w3-table-all
         tr(class="resources_fields")
+          th
           th Título
           th Tipo
           th Autor
@@ -84,16 +91,15 @@ block content
         each r in recursos
           tr(id= r._id)
             td
+              input(id=r.diretoria class="recurso-checkbox" type="checkbox") 
+            td
               a(href="/recursos/" + r._id) #{r.titulo}
             td= r.tipo
             td
               a(href="/perfil/" + r.idAutor) #{r.nomeAutor}
             td= r.tamanho
             td
-              button(type="button" class="resource-btn" onclick=`showImage("${r.idAutor}", "${r.nome_ficheiro}", "${r.tipo_mime}")`) 👁
-              form(action=`/recursos/${r._id}/${r.idAutor}-${r.nome_ficheiro}/download/` method="GET" style="display: inline-block")
-                button(type="submit" class="resource-btn") ⬇️
-              |
+              button(type="button" class="resource-btn" onclick=`showImage("${r.nome_ficheiro}", "${r.diretoria}", "${r.tipo_mime}")`) 👁
               if (r.dono)
                 form(action=`/recursos/${r._id}/remover/`, method="GET" style="display: inline-block")
                   button(type="submit" class="resource-btn") 🗑️

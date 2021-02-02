@@ -164,4 +164,21 @@ $(document).ready(function()
         }
       }
     })
+
+    $('.recurso-checkbox').click(function() {
+      var recursos = JSON.parse($('[name=selecionados]').val())
+      var diretoria = $(this).attr('id')
+
+      if($(this).is(':checked')) recursos.push(diretoria)
+      else {
+        var indice = recursos.indexOf(diretoria);
+        if (indice > -1) recursos.splice(indice, 1);
+      }
+
+      $('[name=selecionados]').val(JSON.stringify(recursos)); 
+
+      if ($('.recurso-checkbox:checkbox:checked').length > 0)
+        $('#submit_download').prop('disabled', false)
+      else $('#submit_download').prop('disabled', true)
+    })
   })

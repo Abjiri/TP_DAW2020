@@ -70,10 +70,18 @@ router.post('/', function(req, res){
 })
 
 // Inserir recursos
-router.post('/:id/download', function(req, res){
-  Recurso.incrementarDownloads(req.params.id)
-    .then(dados => res.status(201).jsonp({dados}))
-    .catch(e => res.status(500).jsonp({error: e}))
+router.post('/download', function(req, res){
+  var erros = []
+
+  req.body.forEach(dir => {
+    console.log(dir)
+    Recurso.incrementarDownloads(dir)
+      .then(d => {})
+      .catch(e => erros.push(e))
+  })
+
+  if (!erros.length) res.status(201).jsonp({})
+  else res.status(500).jsonp({erros})
 })
 
 // Alterar um recurso

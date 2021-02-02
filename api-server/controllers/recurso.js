@@ -162,11 +162,11 @@ module.exports.atualizarClassificacao = (idRecurso,classif) => {
         {useFindAndModify: false, new: true})
 }
 
-module.exports.incrementarDownloads = (idRecurso) => {
+module.exports.incrementarDownloads = dir => {
     return Recurso.findOneAndUpdate(
-        {"_id": idRecurso},
-        {$inc: {nrDownloads: 1}}, 
-        {useFindAndModify: false, new: true})
+        { diretoria: dir },
+        { $inc: { nrDownloads: 1 } }
+    )
 }
 
 module.exports.inserir = recursos => {
