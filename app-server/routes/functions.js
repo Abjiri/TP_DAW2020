@@ -31,7 +31,7 @@ function variaveisRecursos(recursos, cookiesToken) {
   recursos.forEach(r => {
     r.tamanho = calculateSize(r.tamanho)
     r.dono = token._id == r.idAutor
-    r.dataUltimaMod = moment(r.dataUltimaMod).format('HH:mm:SS, DD-MM-YYYY')
+    r.dataUltimaMod = moment(r.dataUltimaMod).format('HH:mm:ss, DD-MM-YYYY')
             
     if (!tipos.includes(r.tipo)) tipos.push(r.tipo)
 

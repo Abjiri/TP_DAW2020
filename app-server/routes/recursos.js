@@ -176,12 +176,14 @@ router.post('/upload', upload.single('zip'), function(req, res) {
                 tiposNovos.push({tipo})
               }
             }
-        
+            var dataAtual = new Date().toISOString().substr(0,19)
             ficheiros.push({
               tipo,
               titulo: total==1 ? req.body.titulo : req.body.titulo[i],
               descricao: total==1 ? req.body.descricao : req.body.descricao[i],
               dataCriacao: total==1 ? req.body.dataCriacao : req.body.dataCriacao[i],
+              dataRegisto: dataAtual,
+              dataUltimaMod: dataAtual,
               visibilidade: req.body[`visibilidade${i}`],
               idAutor: token._id,
               nomeAutor: token.nome,
