@@ -10,6 +10,12 @@ router.get('/', function(req, res) {
     .catch(e => res.status(500).jsonp({error: e}))
 })
 
+router.get('/autor/:id',function(req,res){
+  Noticia.noticiasUtilizador(req.params.id)
+    .then(dados => res.status(200).jsonp(dados))
+    .catch(e => res.status(500).jsonp({error: e}))
+})
+
 // Inserir noticia
 router.post('/', function(req, res){
   Noticia.inserir(req.body)

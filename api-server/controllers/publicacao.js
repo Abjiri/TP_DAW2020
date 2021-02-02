@@ -25,6 +25,13 @@ module.exports.adicionarComentario = (id, com) => {
         )
 }
 
+module.exports.pubsUtilizador = (id) => {
+    return Publicacao
+        .find({id_autor: id})
+        .sort('-dataCriacao')
+        .exec()
+}
+
 module.exports.inserir = t => {
     var novo = new Publicacao(t)
     return novo.save()

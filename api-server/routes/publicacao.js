@@ -3,10 +3,15 @@ var router = express.Router();
 
 const Publicacao = require('../controllers/publicacao');
 
-
 router.get('/', function(req, res) {
   Publicacao.listar()
     .then(dados => res.status(200).jsonp(dados))
+    .catch(e => res.status(500).jsonp({error: e}))
+})
+
+router.get('/autor/:id', function(req,res){
+  Publicacao.pubsUtilizador(req.params.id)
+    .then(dados=>res.status(200).jsonp(dados))
     .catch(e => res.status(500).jsonp({error: e}))
 })
 
