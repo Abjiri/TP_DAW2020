@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 var comentarioSchema = new mongoose.Schema({
   corpo: {type: String, required: true},
   id_autor: {type: String, required: true},
-  dataCriacao: {type: String, default: new Date().toISOString().substr(0,10)}
+  dataCriacao: {type: String, default: new Date().toISOString().substr(0,19)}
 });
 
 var recursoSchema = new mongoose.Schema({
@@ -11,8 +11,8 @@ var recursoSchema = new mongoose.Schema({
     titulo: {type: String, required: true},
     descricao: {type: String, required: false},
     dataCriacao: {type: String, required: true},
-    dataRegisto: {type: String, default: new Date().toISOString().substr(0,10)},
-    dataUltimaMod: {type: String, default: new Date().toISOString().substr(0,16)},
+    dataRegisto: {type: String, default: new Date().toISOString().substr(0,19)},
+    dataUltimaMod: {type: String, default: new Date().toISOString().substr(0,19)},
     classificacao: {type: [{
         user: {type: String, required: true},
         pontuacao: {type: Number, required: true}

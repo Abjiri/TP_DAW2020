@@ -9,8 +9,8 @@ var userSchema = new mongoose.Schema({
         tipo: {type: String, required: true},
         filiacao: {type: String, required: true},
     },
-    dataRegisto: {type: String, default: new Date().toISOString().substr(0,10)},
-    dataUltimoAcesso: {type: String, default: new Date().toISOString().substr(0,10)},
+    dataRegisto: {type: String, default: new Date().toISOString().substr(0,19)},
+    dataUltimoAcesso: {type: String, default: new Date().toISOString().substr(0,19)},
     descricao: {type: String, required: false},
     foto: {type: String, required: false}
   });

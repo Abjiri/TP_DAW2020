@@ -1,5 +1,4 @@
 // Controlador para o modelo Recurso
-
 var Recurso = require('../models/recurso')
 
 // lista os recursos

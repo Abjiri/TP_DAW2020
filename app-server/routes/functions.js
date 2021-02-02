@@ -3,6 +3,7 @@ var keyToken = "TP_DAW2020"
 var crypto = require("crypto")
 var fs = require('fs')
 var mime = require('mime-types')
+var moment = require('moment')
 
 function unveilToken(token){  
     var t = null;
@@ -30,6 +31,7 @@ function variaveisRecursos(recursos, cookiesToken) {
   recursos.forEach(r => {
     r.tamanho = calculateSize(r.tamanho)
     r.dono = token._id == r.idAutor
+    r.dataUltimaMod = moment(r.dataUltimaMod).format('HH:mm:SS, DD-MM-YYYY')
             
     if (!tipos.includes(r.tipo)) tipos.push(r.tipo)
 
