@@ -21,7 +21,6 @@ router.get('/', function(req, res, next) {
     if (!req.cookies.token) res.redirect('/')
     else {
         var token = func.unveilToken(req.cookies.token)
-        console.log(token)
         res.redirect('/perfil/' + token._id)
     }
 });
@@ -33,7 +32,7 @@ router.get('/:id', function(req, res, next) {
       axios.get('http://localhost:8001/noticias/autor/' + token._id +'?token=' + req.cookies.token)
       .then(noticias => {
         axios.get('http://localhost:8001/users/' + req.params.id +'?token=' + req.cookies.token)
-          .then(dados => res.render("profile", {auth: true, user: dados.data, owns: token._id == req.params.id, moment: moment, publicacoes: publicacoes.data, noticias: noticias.data}))
+          .then(dados => res.render("profile", {auth: true, user: dados.data, owns: token._id == req.params.id, moment: moment, timeline: func.groupAndSortByDate(publicacoes.data,noticias.data)}))
           .catch(error => res.render('error', {error}))
       })
       .catch(error => res.render('error', {error}))

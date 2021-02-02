@@ -23,7 +23,10 @@ block content
               .profile-header-content
                 // BEGIN profile-header-img
                 .profile-header-img
-                  img(src= user.foto ? user.foto : '/images/login_avatar.png' onClick='pictureForm(' +'\'' + user._id +'\'' + ');' style="cursor:pointer")
+                  if owns 
+                    img(src= user.foto ? user.foto : '/images/login_avatar.png' onClick='pictureForm(' +'\'' + user._id +'\'' + ');' style="cursor:pointer")
+                  else 
+                    img(src= user.foto ? user.foto : '/images/login_avatar.png')
                 // END profile-header-img
                 // BEGIN profile-header-info
                 .profile-header-info
@@ -35,16 +38,14 @@ block content
                    i.fa.fa-envelope-o(style='font-size:24px;color:#7FDBFF')  E-mail: 
                    |  #{user.email}
                   p.m-b-10 
-                   i.fa.fa-user-o(style='font-size:24px;color:#7FDBFF')  Registado em: 
-                   |  #{user.dataRegisto}
-                  p.m-b-10 
                    i.fa.fa-file-o(style='font-size:24px;color:#7FDBFF')  Descrição: 
                    |  #{user.descricao} 
-                  a.btn.btn-sm.btn-info.mb-2(href='#' onclick='editForm(' +'\'' + JSON.stringify(user) +'\'' + ');') Editar Perfil
-                  |  
-                  i.fa.fa-edit 
-                  |  
-                  a.btn.btn-sm.btn-info.mb-2(href='#' onclick='pictureForm(' +'\'' + user._id +'\'' + ');') Mudar Foto
+                  if owns 
+                    a.btn.btn-sm.btn-info.mb-2(href='#' onclick='editForm(' +'\'' + JSON.stringify(user) +'\'' + ');') Editar Perfil
+                    |  
+                    i.fa.fa-edit 
+                    |  
+                    a.btn.btn-sm.btn-info.mb-2(href='#' onclick='pictureForm(' +'\'' + user._id +'\'' + ');') Mudar Foto
                 // END profile-header-info
               // END profile-header-content
           // end profile
@@ -56,55 +57,57 @@ block content
               #profile-post.tab-pane.fade.active.show
                 // begin timeline
                 ul.timeline
-                  li
-                    // begin timeline-time
-                    .timeline-time
-                      span.date yesterday
-                      span.time 20:17
-                    // end timeline-time
-                    // begin timeline-icon
-                    .timeline-icon
-                      a(href='javascript:;') &nbsp;
-                    // end timeline-icon
-                    // begin timeline-body
-                    .timeline-body
-                      .timeline-header
-                        span.userimage
-                          img(src=user.foto alt='')
-                        span.username Sean Ngu
-                        span.pull-right.text-muted 82 Views
-                      .timeline-content
-                        p Location: United States
-                      .timeline-footer
-                        a.m-r-15.text-inverse-lighter(href='javascript:;')
-                          i.fa.fa-thumbs-up.fa-fw.fa-lg.m-r-3
-                          |  Like
-                        a.m-r-15.text-inverse-lighter(href='javascript:;')
-                          i.fa.fa-comments.fa-fw.fa-lg.m-r-3
-                          |  Comment
-                        a.m-r-15.text-inverse-lighter(href='javascript:;')
-                          i.fa.fa-share.fa-fw.fa-lg.m-r-3
-                          |  Share
-                    br
-                    .timeline-body 
-                      .timeline-header
-                        span.userimage
-                          img(src=user.foto alt='')
-                        span.username Sean Ngu
-                        span.pull-right.text-muted 82 Views
-                      .timeline-content
-                        p Location: United States
-                      .timeline-footer
-                        a.m-r-15.text-inverse-lighter(href='javascript:;')
-                          i.fa.fa-thumbs-up.fa-fw.fa-lg.m-r-3
-                          |  Like
-                        a.m-r-15.text-inverse-lighter(href='javascript:;')
-                          i.fa.fa-comments.fa-fw.fa-lg.m-r-3
-                          |  Comment
-                        a.m-r-15.text-inverse-lighter(href='javascript:;')
-                          i.fa.fa-share.fa-fw.fa-lg.m-r-3
-                          |  Share    
-                    // end timeline-body
+                  each [data, items] of Object.entries(timeline) 
+                    li 
+                      .timeline-time
+                        span.date #{new Date(data).getFullYear()}
+                        span.time(style='color:#0074D9') #{moment(new Date(data)).locale('pt').format("D [de] MMMM")}
+                      .timeline-icon
+                        a(href='javascript:;') &nbsp;
+                      .timeline-body
+                        .timeline-header  
+                          span.userimage
+                            img(src=user.foto alt='')
+                          if owns 
+                            span.username Eu
+                          else 
+                            span.username #{user.nome}
+                        .timeline-content 
+                          each item of items 
+                            if item.data
+                              - let dataTimeline = new Date(item.data)
+                              - const OneHourAgo = (date) => {const hour= 1000 * 60 * 60;const hourago= Date.now()-hour;return date > hourago;}
+                              - let print = OneHourAgo(dataTimeline)
+                              - dataTimeline = print ? moment(new Date(item.data)).locale('pt').fromNow() : moment(new Date(item.data)).locale('pt').format("LT")
+                              p 
+                                b 
+                                  span(style='color:#0074D9') #{dataTimeline}:
+                                if owns 
+                                  if item.recursos.length == 1
+                                    if owns  
+                                      |  Notifiquei os utilizadores sobre o recurso:
+                                    else 
+                                      |  Notificou os utilizadores sobre o recurso: 
+                                    a(href=`/recursos/${item.recursos[0].id}`) #{item.recursos[0].titulo}
+                                  else
+                                    if owns
+                                      |  Notifiquei os utilizadores sobre os recursos:
+                                    else
+                                      |  Notificou os utilizadores sobre os recursos: 
+                                    each recurso in item.recursos 
+                                      p 
+                                        span(style="color: #0074D9") &nbsp&nbsp&nbsp&nbsp&bull; 
+                                        a(href=`/recursos/${recurso.id}`) #{recurso.titulo}
+                            else
+                              - let dataTimeline = new Date(item.dataCriacao)
+                              - const OneHourAgo = (date) => {const hour= 1000 * 60 * 60;const hourago= Date.now()-hour;return date > hourago;}
+                              - let print = OneHourAgo(dataTimeline)
+                              - dataTimeline = print ? moment(new Date(item.dataCriacao)).locale('pt').fromNow() : moment(new Date(item.dataCriacao)).locale('pt').format("LT")
+                              p 
+                                b 
+                                  span(style='color:#0074D9') #{dataTimeline}: 
+                                | Criei uma nova publicação: 
+                                a(href=`/publicacoes/${item._id}`) #{item.titulo} 
                   li
                     // begin timeline-icon
                     .timeline-icon
@@ -113,7 +116,7 @@ block content
                       .timeline-header
                         span.username Registo na Plataforma
                       .timeline-content
-                        span.date #{moment(user.dataRegisto).locale('pt').format("dddd, DD [de] MMMM [de] YYYY [às] HH:MM")}  
+                        span.date #{moment(new Date(user.dataRegisto)).locale('pt').format("dddd, DD [de] MMMM [de] YYYY [às] HH:MM")}  
 
               // end #profile-post tab
             // end tab-content

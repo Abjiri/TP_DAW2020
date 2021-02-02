@@ -156,6 +156,7 @@ router.post('/upload', upload.single('zip'), function(req, res) {
       }
     })
     if(valido) {
+      var dataAtual = new Date().toISOString().substr(0,19)
       axios.get('http://localhost:8001/recursos/tipos?token=' + req.cookies.token)
         .then(tipos_bd => {
           for (var i = 0; i < total; i++) {
@@ -176,7 +177,6 @@ router.post('/upload', upload.single('zip'), function(req, res) {
                 tiposNovos.push({tipo})
               }
             }
-            var dataAtual = new Date().toISOString().substr(0,19)
             ficheiros.push({
               tipo,
               titulo: total==1 ? req.body.titulo : req.body.titulo[i],
@@ -210,6 +210,7 @@ router.post('/upload', upload.single('zip'), function(req, res) {
             }
       
             var noticia = {
+                data: dataAtual,
                 idAutor: token._id,
                 nomeAutor: token.nome,
                 recursos
