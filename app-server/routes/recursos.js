@@ -5,6 +5,7 @@ var multer = require('multer');
 var upload = multer({dest: './uploads'});
 //var JSZip = require('jszip')
 var AdmZip  = require('adm-zip')
+var bagit = require('./bagit')
 
 var fs = require('fs');
 var axios = require('axios')
@@ -92,7 +93,15 @@ router.post('/download', (req,res) => {
   axios.post('http://localhost:8001/recursos/download?token=' + req.cookies.token, diretorias)
     .then(() => {
       /* download zip do DIP */
-      res.redirect('/recursos')
+      var zip = bagit.zipRecursos(diretorias)
+      zip.generateAsync({ type: "base64" }).then((base64) => {
+        let zipRet = Buffer.from(base64, "base64");
+        res.writeHead(200, {
+          "Content-Type": "application/zip",
+          "Content-Disposition": `attachment; filename=${Date.now()}.zip`,
+        })
+        res.end(zipRet)
+      })
     })
     .catch(errors => res.render('error', {error: errors[0]}))
 })
