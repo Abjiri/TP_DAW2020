@@ -110,13 +110,20 @@ block content
                                 a(href=`/publicacoes/${item._id}`) #{item.titulo} 
                   li
                     // begin timeline-icon
+                    .timeline-time
+                        span.date #{new Date(user.dataRegisto).getFullYear()}
+                        span.time(style='color:#0074D9') #{moment(new Date(user.dataRegisto)).locale('pt').format("D [de] MMMM")}
                     .timeline-icon
                       a(href='javascript:;') &nbsp;
                     .timeline-body
                       .timeline-header
+                        span.userimage
+                            img(src='https://icons-for-free.com/iconfiles/png/512/add+contact+add+friend+friend+request+icon-1320166593140740220.png' alt='')
                         span.username Registo na Plataforma
                       .timeline-content
-                        span.date #{moment(new Date(user.dataRegisto)).locale('pt').format("dddd, DD [de] MMMM [de] YYYY [às] HH:MM")}  
+                        b
+                          span.time(style='color:#0074D9') #{moment(new Date(user.dataRegisto)).locale('pt').format("HH:MM")}:  
+                        | Registado com sucesso.  
 
               // end #profile-post tab
             // end tab-content
