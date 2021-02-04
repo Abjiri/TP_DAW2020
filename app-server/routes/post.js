@@ -19,7 +19,7 @@ router.post('/', function(req, res, next){
     else {
         var token = func.unveilToken(req.cookies.token)
         req.body["id_autor"] = token._id
-        req.body["dataCriacao"] = new Date().toISOString().substr(0,16)
+        req.body["dataCriacao"] = new Date().toISOString().substr(0,19)
         console.log(req.body)
         axios.post('http://localhost:8001/publicacoes?token=' + req.cookies.token, req.body)
             .then(dados => res.redirect("/publicacoes/"+dados.data._id))
@@ -32,7 +32,7 @@ router.post('/comentar/:id', function(req, res, next){
     else {
         var token = func.unveilToken(req.cookies.token)
         req.body["id_autor"] = token._id
-        req.body["dataCriacao"] = new Date().toISOString().substr(0,16)
+        req.body["dataCriacao"] = new Date().toISOString().substr(0,19)
         axios.post('http://localhost:8001/publicacoes/comentar/' + req.params.id + '?token=' + req.cookies.token, req.body)
             .then(dados => res.redirect("/publicacoes/"+dados.data._id))
             .catch(error => res.render('error', {error}))

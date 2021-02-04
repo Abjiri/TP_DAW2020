@@ -5,6 +5,7 @@ var multer = require('multer');
 var upload = multer({dest: './uploads'});
 //var JSZip = require('jszip')
 var AdmZip  = require('adm-zip')
+var bagit = require('./bagit')
 
 var fs = require('fs');
 var axios = require('axios')
@@ -121,7 +122,15 @@ router.post('/download', (req,res) => {
   axios.post('http://localhost:8001/recursos/download?token=' + req.cookies.token, diretorias)
     .then(() => {
       /* download zip do DIP */
-      res.redirect('/recursos')
+      var zip = bagit.zipRecursos(diretorias)
+      zip.generateAsync({ type: "base64" }).then((base64) => {
+        let zipRet = Buffer.from(base64, "base64");
+        res.writeHead(200, {
+          "Content-Type": "application/zip",
+          "Content-Disposition": `attachment; filename=${Date.now()}.zip`,
+        })
+        res.end(zipRet)
+      })
     })
     .catch(errors => res.render('error', {error: errors[0]}))
 })
@@ -253,6 +262,7 @@ router.post('/upload', upload.single('zip'), function(req, res) {
       }
     })
     if(valido) {
+      var dataAtual = new Date().toISOString().substr(0,19)
       axios.get('http://localhost:8001/recursos/tipos?token=' + req.cookies.token)
         .then(tipos_bd => {
           for (var i = 0; i < total; i++) {
@@ -273,7 +283,6 @@ router.post('/upload', upload.single('zip'), function(req, res) {
                 tiposNovos.push({tipo})
               }
             }
-            var dataAtual = new Date().toISOString().substr(0,19)
             ficheiros.push({
               tipo,
               titulo: total==1 ? req.body.titulo : req.body.titulo[i],
@@ -307,6 +316,7 @@ router.post('/upload', upload.single('zip'), function(req, res) {
             }
       
             var noticia = {
+                data: dataAtual,
                 idAutor: token._id,
                 nomeAutor: token.nome,
                 recursos

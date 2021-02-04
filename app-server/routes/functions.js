@@ -101,6 +101,40 @@ function clearZipFolder(folder, zipfile){
   fs.rmSync(folder +"\\\\manifest-md5.txt",{recursive:true})
 }
 
+// obj1 = publicacoes, obj2 = noticias
+function groupAndSortByDate(obj1,obj2){
+  var grupo = {}
+  obj1.forEach(o => {
+    let dia = o.dataCriacao.split("T")[0]
+    if(!(dia in grupo)) {
+      grupo[dia] = []
+    }
+    grupo[dia].push(o)
+  })
+  obj2.forEach(o => {
+    let dia = o.data.split("T")[0]
+    if(!(dia in grupo)) {
+      grupo[dia] = []
+    }
+    grupo[dia].push(o)
+  })
+  console.log(grupo)
+  for(var [data, lista] of Object.entries(grupo)){
+    lista.sort((a,b) => {
+      let x1 = a.data ? a.data : a.dataCriacao
+      let x2 = b.data ? b.data : b.dataCriacao
+      return new Date(x2).getTime() - new Date(x1).getTime();
+    })
+  }
+  var orderedDates = {}
+  Object.keys(grupo).sort(function(a, b) {
+    return moment(b, 'YYYY/MM/DD').toDate() - moment(a, 'YYYY/MM/DD').toDate();
+    }).forEach(function(key) {
+      orderedDates[key] = grupo[key];
+    })
+  return orderedDates
+}
+
 module.exports = {
     unveilToken,
     variaveisRecursos,
@@ -109,5 +143,6 @@ module.exports = {
     calculateMd5,
     getSize,
     getMimeType,
-    clearZipFolder
+    clearZipFolder,
+    groupAndSortByDate
 }

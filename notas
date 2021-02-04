@@ -54,3 +54,55 @@ COMMENT:
 - corpo
 - autor
 - data criação
+
+https://icons-for-free.com/iconfiles/png/512/add+contact+add+friend+friend+request+icon-1320166593140740220.png
+
+                  li
+                    // begin timeline-time
+                    .timeline-time
+                      span.date yesterday
+                      span.time 20:17
+                    // end timeline-time
+                    // begin timeline-icon
+                    .timeline-icon
+                      a(href='javascript:;') &nbsp;
+                    // end timeline-icon
+                    // begin timeline-body
+                    .timeline-body
+                      .timeline-header
+                        span.userimage
+                          img(src=user.foto alt='')
+                        span.username Sean Ngu
+                        span.pull-right.text-muted 82 Views
+                      .timeline-content
+                        p Location: United States
+                      .timeline-footer
+                        a.m-r-15.text-inverse-lighter(href='javascript:;')
+                          i.fa.fa-thumbs-up.fa-fw.fa-lg.m-r-3
+                          |  Like
+                        a.m-r-15.text-inverse-lighter(href='javascript:;')
+                          i.fa.fa-comments.fa-fw.fa-lg.m-r-3
+                          |  Comment
+                        a.m-r-15.text-inverse-lighter(href='javascript:;')
+                          i.fa.fa-share.fa-fw.fa-lg.m-r-3
+                          |  Share
+                    br
+                    .timeline-body 
+                      .timeline-header
+                        span.userimage
+                          img(src=user.foto alt='')
+                        span.username Sean Ngu
+                        span.pull-right.text-muted 82 Views
+                      .timeline-content
+                        p Location: United States
+                      .timeline-footer
+                        a.m-r-15.text-inverse-lighter(href='javascript:;')
+                          i.fa.fa-thumbs-up.fa-fw.fa-lg.m-r-3
+                          |  Like
+                        a.m-r-15.text-inverse-lighter(href='javascript:;')
+                          i.fa.fa-comments.fa-fw.fa-lg.m-r-3
+                          |  Comment
+                        a.m-r-15.text-inverse-lighter(href='javascript:;')
+                          i.fa.fa-share.fa-fw.fa-lg.m-r-3
+                          |  Share    
+                    // end timeline-body
