@@ -1,7 +1,11 @@
 extends layout
 
 block content
-
+    link(rel='stylesheet', href='/stylesheets/comments.css')
+    link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' integrity='sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm' crossorigin='anonymous')
+    script(src='https://code.jquery.com/jquery-3.2.1.slim.min.js' integrity='sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN' crossorigin='anonymous')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js' integrity='sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q' crossorigin='anonymous')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js' integrity='sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl' crossorigin='anonymous')
     div(class="w3-card-4")
         h1= publicacao.titulo
         p Titulo: #{publicacao.titulo}
@@ -9,19 +13,35 @@ block content
         p Recurso: 
             a(href="/recursos/" + publicacao.recurso) #{publicacao.recurso}
         p Data de criação: #{publicacao.dataCriacao}
-    form(id="comentarPostForm" action='/publicacoes/comentar/'+ publicacao._id method="POST")
-        textarea(id="commentPost" name="corpo" placeholder="Insira o seu comentário..." maxlength="255" style="height:150px; width: 30%; resize: none")
-        br
-        input(class="w3-btn w3-blue-grey" type="submit" id="commentButton" value="Comentar")
-    div(class="w3-card-4")
-        if publicacao.comments.size == 0
-            p Sem comments 
-        else 
-            h2 Comentários
-            ul.w3-ul
-                each c in publicacao.comments
-                  li
-                    p Corpo: #{c.corpo}
-                    p Autor: 
-                        a(href="/perfil/" + c.id_autor) #{c.id_autor}
-                    p Data de Criação: #{c.dataCriacao}
+    .container.bootstrap.snippets.bootdey
+       .row
+        .col-md-12
+         .blog-comment
+            h3.text-primary Comentários
+            hr
+            ul.comments
+             li.clearfix
+                form(id="comentarPostForm" action='/publicacoes/comentar/'+ publicacao._id method="POST")
+                  textarea(id="commentPost" name="corpo" placeholder="Insira o seu comentário..." maxlength="255" style="height:120px; width:100%; resize: none")
+                  input(class="w3-right btn btn-secondary" type="submit" id="commentButton" value="Comentar" style="margin")
+             each c in publicacao.comments
+                - let dataTimeline = new Date(c.dataCriacao)
+                - const OneHourAgo = (date) => {const hour= 1000 * 60 * 60;const hourago= Date.now()-hour;return date > hourago;}
+                - let print = OneHourAgo(dataTimeline)
+                - dataTimeline = moment(new Date(c.dataCriacao)).locale('pt').fromNow() 
+                li.clearfix
+                    figure
+                     img.avatar(src= users[c.id_autor].foto ? users[c.id_autor].foto : '/images/login_avatar.png' alt='' style="border-radius: 50%")
+                    .post-comments
+                     figcaption 
+                      a(href=`/perfil/${c.id_autor}`)
+                       b
+                        if publicacao.id_autor == c.id_autor 
+                         | Eu 
+                        else 
+                         | #{users[c.id_autor].nome}
+                     p.meta
+                        | #{dataTimeline}:
+                        i.pull-right
+                     p 
+                        | #{c.corpo}

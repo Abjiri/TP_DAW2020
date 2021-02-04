@@ -8,8 +8,34 @@ var func = require('./functions')
 router.get('/:id', function(req,res,next){
     if (!req.cookies.token) res.redirect('/')
     else {
+        var token = func.unveilToken(req.cookies.token)
         axios.get('http://localhost:8001/publicacoes/' + req.params.id + '?token=' + req.cookies.token)
-            .then(dados => res.render('publicacao', {publicacao: dados.data, auth: true}))
+            .then(dados => {
+                func.sortComments(dados.data)
+                let users = {}
+                let promises = []
+                let visitante
+                dados.data.comments.forEach(c => {
+                    promises.push(
+                        axios.get('http://localhost:8001/users/' + c.id_autor + '?token=' + req.cookies.token)
+                            .then(userData => {
+                                let user = userData.data
+                                if (!(user._id in users)){
+                                    users[user._id] = user
+                                }
+                            })  
+                            .catch(error => res.render('error', {error}))
+                    )
+                })
+                promises.push(
+                    axios.get('http://localhost:8001/users/' + token._id + '?token=' + req.cookies.token)
+                    .then(visitanteData => {
+                        visitante = visitanteData.data
+                    })  
+                    .catch(error => res.render('error', {error}))
+                )
+                Promise.all(promises).then(() => res.render('publicacao', {publicacao: dados.data, auth: true, users: users, visitante: visitante}));
+            })
             .catch(error => res.render('error', {error}))
     }
 })
