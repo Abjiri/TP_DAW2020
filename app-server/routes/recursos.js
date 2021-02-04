@@ -9,7 +9,6 @@ var bagit = require('./bagit')
 
 var fs = require('fs');
 var axios = require('axios')
-var moment = require('moment')
 
 var aux = require('./functions')
 
