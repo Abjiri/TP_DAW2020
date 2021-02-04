@@ -1,12 +1,16 @@
 - renaming do ficheiro no download para tirar o id do produtor só funciona em alguns casos
 - styling das páginas
-- criar post
 
 - inputs invalidos no novo tipo de recurso (p.e. com /)
-- comparar o "novo" tipo com os existentes a ver se é mesmo novo - TESTAR
 
-- trocar o id do user pela data no nome do ficheiro guardado
-
-
-- corrigir o link de download para a diretoria do recurso
-- selecionar os recursos para fazer download
+/recursos
+	- preview
+	- remover com confirm
+	- criar post sem o id do recurso visivel
+	- editar -> abrir overlay de edição na pagina do recurso
+	
+/recurso
+	- criar post ----
+	- preview
+	- download
+	- editar

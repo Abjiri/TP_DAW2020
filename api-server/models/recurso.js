@@ -17,7 +17,7 @@ var recursoSchema = new mongoose.Schema({
         user: {type: String, required: true},
         pontuacao: {type: Number, required: true}
     }], default: []},
-    visibilidade: {type: String, required: true},
+    visibilidade: {type: Boolean, required: true},
     idAutor: {type: String, required: true},
     nomeAutor: {type: String, required: true},
     comentarios: {type: [comentarioSchema], default: []},

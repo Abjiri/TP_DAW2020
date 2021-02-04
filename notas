@@ -27,16 +27,15 @@ USER:
 
 
 RECURSO:
-- tipo (dropdown)
-- titulo
-- subtitulo
-- descrição
+- tipo (dropdown) ----------
+- titulo -----------
+- descrição ------------
 - dataCriacao
 - dataRegisto
 - lastModified
 - rating
 - nr downloads
-- visibilidade
+- visibilidade --------
 - produtor
 - tamanho
 - comments:

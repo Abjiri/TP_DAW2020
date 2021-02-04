@@ -8,6 +8,7 @@ var AdmZip  = require('adm-zip')
 
 var fs = require('fs');
 var axios = require('axios')
+var moment = require('moment')
 
 var aux = require('./functions')
 
@@ -16,8 +17,8 @@ router.get('/', function(req, res) {
     else {
       axios.get('http://localhost:8001/recursos?token=' + req.cookies.token)
         .then(dados => {
-          var vars = aux.variaveisRecursos(dados.data, req.cookies.token)
-          res.render('recursos', vars)
+          var varsPug = aux.variaveisRecursos(dados.data, req.cookies.token, false)
+          res.render('recursos', varsPug)
         })
         .catch(error => res.render('error', {error}))
     }
@@ -28,10 +29,10 @@ router.post('/ordenar/:criterio/:sentido', function(req, res) {
   else {
     axios.get(`http://localhost:8001/recursos/ordenar/${req.params.criterio}/${req.params.sentido}?token=` + req.cookies.token)
       .then(dados => {
-        var vars = aux.variaveisRecursos(dados.data, req.cookies.token)
-        vars.ordemAtual = req.params.criterio + '/' + req.params.sentido
+        var varsPug = aux.variaveisRecursos(dados.data, req.cookies.token, false)
+        varsPug.ordemAtual = req.params.criterio + '/' + req.params.sentido
 
-        res.render('recursos', vars)
+        res.render('recursos', varsPug)
       })
       .catch(error => res.render('error', {error}))
   }
@@ -43,9 +44,9 @@ router.post('/ordenarFiltragem/:criterio/:sentido', function(req, res) {
     var recursos = JSON.parse(req.body.recursos)
     var autores = JSON.parse(req.body.autores)
     var tipos = JSON.parse(req.body.tipos)
-    var filtroAtual = JSON.parse(req.body.filtroAtual)
     var crit = req.params.criterio
     var sentido = req.params.sentido
+    var meus_recursos = req.body.meus_recursos_ordenacao ? true : false
 
     if (sentido == '0') {
       recursos.sort((a, b) => (a[crit] > b[crit]) ? -1 : 1)
@@ -55,10 +56,31 @@ router.post('/ordenarFiltragem/:criterio/:sentido', function(req, res) {
                     (a[crit] == b[crit]) ? ((a.dataUltimaMod > b.dataUltimaMod) ? -1 : 1) : -sentido)
     }
 
-    var vars = {auth: true, recursos, tipos, autores, filtroAtual}
-    if (sentido != '0') vars.ordemAtual = crit + '/' + sentido
+    var varsPug
 
-    res.render('recursos', vars)
+    if (req.body.filtroAtual) {
+      var filtroAtual = JSON.parse(req.body.filtroAtual)
+      varsPug = {auth: true, recursos, tipos, autores, filtroAtual, meus_recursos}
+    }
+    else varsPug = {auth: true, recursos, tipos, autores, meus_recursos}
+
+    if (sentido != '0') varsPug.ordemAtual = crit + '/' + sentido
+    res.render('recursos', varsPug)
+  }
+})
+
+router.get('/limpar-filtro/:meus_recursos?', (req, res) => {
+  console.log(req.body)
+  if (!req.params.meus_recursos) res.redirect('/recursos')
+  else {
+    var token = aux.unveilToken(req.cookies.token)
+
+    axios.post(`http://localhost:8001/recursos/pesquisar?token=${req.cookies.token}`, {meus_recursos: token._id})
+      .then(dados => {
+        var varsPug = aux.variaveisRecursos(dados.data, req.cookies.token, true)
+        res.render('recursos', varsPug)
+      })
+      .catch(error => res.render('error', {error}))
   }
 })
 
@@ -66,7 +88,14 @@ router.get('/:id', function(req, res) {
     if (!req.cookies.token) res.redirect('/')
     else {
       axios.get('http://localhost:8001/recursos/' + req.params.id + '?token=' + req.cookies.token)
-        .then(dados => {console.log(dados.data); res.render('recurso', {r: dados.data, auth: true})})
+        .then(dados => {
+          axios.get('http://localhost:8001/recursos/tipos?token=' + req.cookies.token)
+            .then(tipos_bd => {
+              var recurso = aux.prepararRecurso(dados.data, tipos_bd, req.cookies.token)
+              res.render('recurso', recurso)
+            })
+            .catch(error => res.render('error', {error}))
+        })
         .catch(error => res.render('error', {error}))
     }
 })
@@ -98,21 +127,89 @@ router.post('/download', (req,res) => {
 })
 
 router.post('/pesquisar', (req, res) => {
-  axios.post(`http://localhost:8001/recursos/pesquisar?token=${req.cookies.token}`, req.body)
-    .then(dados => {
-      var novoFiltro;
+  console.log(req.body)
+  if (!req.body.meus_recursos &&
+      !req.body.filtroAtual && 
+      (!req.body.filtro || !(req.body.titulo || req.body.tipo || req.body.autor || req.body.ano))) {
+    res.redirect('/recursos')
+  }
+  else {
+    var token = aux.unveilToken(req.cookies.token)
+    if (req.body.meus_recursos) req.body.meus_recursos = token._id
 
-      switch (req.body.filtro) {
-        case 'titulo': novoFiltro = {"tipo": "Título", "valor": req.body.titulo}; break;
-        case 'tipo': novoFiltro = {"tipo": "Tipo", "valor": req.body.tipo}; break;
-        case 'autor': novoFiltro = {"tipo": "Autor", "valor": req.body.autor}; break;
-        case 'ano': novoFiltro = {"tipo": "Ano", "valor": req.body.ano}; break;
+    if (req.body.filtro && !(req.body.titulo || req.body.tipo || req.body.autor || req.body.ano))
+      delete req.body.filtro
+
+    if (req.body.filtroAtual) {
+      var filtroAtual = JSON.parse(req.body.filtroAtual)
+      req.body.filtro = filtroAtual.tipoOriginal
+      
+      switch (filtroAtual.tipoOriginal) {
+        case 'titulo': req.body.titulo = filtroAtual.valor; break;
+        case 'tipo': req.body.tipo = filtroAtual.valor; break;
+        case 'autor': req.body.autor = filtroAtual.valor; break;
+        case 'ano': req.body.ano = filtroAtual.valor; break;
+      }
+    }
+
+    axios.post(`http://localhost:8001/recursos/pesquisar?token=${req.cookies.token}`, req.body)
+      .then(dados => {
+        var varsPug = aux.variaveisRecursos(dados.data, req.cookies.token, req.body.meus_recursos ? true : false)
+
+        if (req.body.filtro) {
+          var novoFiltro;
+
+          switch (req.body.filtro) {
+            case 'titulo': novoFiltro = {"tipo": "Título", "valor": req.body.titulo}; break;
+            case 'tipo': novoFiltro = {"tipo": "Tipo", "valor": req.body.tipo}; break;
+            case 'autor': novoFiltro = {"tipo": "Autor", "valor": req.body.autor}; break;
+            case 'ano': novoFiltro = {"tipo": "Ano", "valor": req.body.ano}; break;
+          }
+          novoFiltro.tipoOriginal = req.body.filtro
+          varsPug.filtroAtual = novoFiltro
+        }
+
+        res.render('recursos', varsPug)
+      })
+      .catch(error => res.render('error', {error}))
+  }
+})
+
+router.post('/editar/:id', function(req, res) {
+  axios.get('http://localhost:8001/recursos/tipos?token=' + req.cookies.token)
+    .then(tipos_bd => {
+      req.body.visibilidade = req.body.visibilidade ? false : true
+      var tipo = req.body.tipo
+
+      if (tipo == "Outro") {
+        tipo = req.body.outro_tipo
+        var novo = true
+
+        for (var j = 0; j < tipos_bd.data.length; j++) {
+          if (tipo.localeCompare(tipos_bd.data[j].tipo, 'pt', { sensitivity: 'base' }) == 0) {
+            tipo = tipos_bd.data[j].tipo
+            novo = false
+            break
+          }
+        }
+
+        if (novo) tipo = tipo.charAt(0).toUpperCase() + tipo.slice(1)
+
+        req.body.tipo = tipo
+        req.body.tipoNovo = novo
+        tipos_bd.data.push({tipo})
       }
 
-      var vars = aux.variaveisRecursos(dados.data, req.cookies.token)
-      vars.filtroAtual = novoFiltro
-      
-      res.render('recursos', vars)
+      axios.post(`http://localhost:8001/recursos/editar/${req.params.id}?token=${req.cookies.token}`, req.body)
+        .then(d => {
+          axios.get('http://localhost:8001/recursos/' + req.params.id + '?token=' + req.cookies.token)
+            .then(dados => {
+              var recurso = aux.prepararRecurso(dados.data, tipos_bd, req.cookies.token)
+              res.render('recurso', recurso)
+            })
+            .catch(error => res.render('error', {error}))
+        })
+        .catch(error => res.render('error', {error}))
     })
     .catch(error => res.render('error', {error}))
 })
@@ -184,7 +281,7 @@ router.post('/upload', upload.single('zip'), function(req, res) {
               dataCriacao: total==1 ? req.body.dataCriacao : req.body.dataCriacao[i],
               dataRegisto: dataAtual,
               dataUltimaMod: dataAtual,
-              visibilidade: req.body[`visibilidade${i}`],
+              visibilidade: req.body[`visibilidade${i}`] ? false : true,
               idAutor: token._id,
               nomeAutor: token.nome,
               nome_ficheiro: recursosInfo[i].nome,
@@ -200,7 +297,7 @@ router.post('/upload', upload.single('zip'), function(req, res) {
             var recursos = [];
               
             for (var i = 0; i < docs.length; i++) {
-              if (docs[i].visibilidade == 'publico') {
+              if (docs[i].visibilidade) {
                 recursos.push({
                   id: docs[i]._id,
                   titulo: docs[i].titulo,

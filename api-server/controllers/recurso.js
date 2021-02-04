@@ -21,14 +21,44 @@ module.exports.listar = () => {
                 tipo_mime: 1
             }
         }])
-        .sort('-_id')
+        .sort('-dataUltimaMod')
+}
+
+// pesquisar "meus" recursos
+module.exports.pesquisarMeusRecursos = idAutor => {
+    return Recurso
+        .aggregate([
+            { $match: { idAutor } },
+            { $project: {
+                _id: 1,
+                titulo: 1,
+                tipo: 1,
+                idAutor: 1,
+                nomeAutor: 1,
+                nrComentarios: {$size: '$comentarios'},
+                classificacao: {$ifNull: [{$round: [{$avg: '$classificacao.pontuacao'}, 0]}, 0]},
+                dataUltimaMod: 1,
+                tamanho: 1,
+                nrDownloads: 1,
+                nome_ficheiro: 1,
+                diretoria: 1,
+                tipo_mime: 1
+            }
+        }])
+        .sort('-dataUltimaMod')
 }
 
 // pesquisar recursos por autor
-module.exports.pesquisarPorAutor = nome => {
+module.exports.pesquisarPorAutor = (nome, meus_recursos) => {
+    var nomeAutor = { $regex: nome, $options: 'i'}
+    var matchObj
+    
+    if (meus_recursos) matchObj = { idAutor: meus_recursos, nomeAutor }
+    else matchObj = {nomeAutor}
+
     return Recurso
         .aggregate([
-            { $match: { nomeAutor: { $regex: nome, $options: 'i'} } },
+            { $match: matchObj },
             { $project: {
                 _id: 1,
                 titulo: 1,
@@ -49,10 +79,16 @@ module.exports.pesquisarPorAutor = nome => {
 }
 
 // pesquisar recursos por título
-module.exports.pesquisarPorTitulo = titulo => {
+module.exports.pesquisarPorTitulo = (titulo, meus_recursos) => {
+    var titulo = { $regex: titulo, $options: 'i'}
+    var matchObj
+    
+    if (meus_recursos) matchObj = { idAutor: meus_recursos, titulo }
+    else matchObj = {titulo}
+    
     return Recurso
         .aggregate([
-            { $match: { titulo: { $regex: titulo, $options: 'i'} } },
+            { $match: matchObj },
             { $project: {
                 _id: 1,
                 titulo: 1,
@@ -73,10 +109,16 @@ module.exports.pesquisarPorTitulo = titulo => {
 }
 
 // pesquisar recursos por tipo
-module.exports.pesquisarPorTipo = tipo => {
+module.exports.pesquisarPorTipo = (tipo, meus_recursos) => {
+    var tipo = { $regex: tipo, $options: 'i'}
+    var matchObj
+    
+    if (meus_recursos) matchObj = { idAutor: meus_recursos, tipo }
+    else matchObj = {tipo}
+    
     return Recurso
         .aggregate([
-            { $match: { tipo: { $regex: tipo, $options: 'i'} } },
+            { $match: matchObj },
             { $project: {
                 _id: 1,
                 titulo: 1,
@@ -96,10 +138,16 @@ module.exports.pesquisarPorTipo = tipo => {
 }
 
 // pesquisar recursos por ano de criação
-module.exports.pesquisarPorAno = ano => {
+module.exports.pesquisarPorAno = (ano, meus_recursos) => {
+    var dataCriacao = { $regex: "^"+ano, $options: 'i'}
+    var matchObj
+    
+    if (meus_recursos) matchObj = { idAutor: meus_recursos, dataCriacao }
+    else matchObj = {dataCriacao}
+    
     return Recurso
         .aggregate([
-            { $match: { dataCriacao: new RegExp("^" + ano, "i") } },
+            { $match: matchObj },
             { $project: {
                 _id: 1,
                 titulo: 1,
@@ -164,6 +212,20 @@ module.exports.atualizarClassificacao = (idRecurso,classif) => {
     return Recurso.findOneAndUpdate(
         {"_id": idRecurso, "classificacao.user": classif.user},
         {$set: {'classificacao.$.pontuacao': classif.pontuacao}}, 
+        {useFindAndModify: false, new: true})
+}
+
+module.exports.editarRecurso = (id, novos) => {
+    console.log(novos)
+    return Recurso.findOneAndUpdate(
+        {"_id": id},
+        { $set: {
+                    'titulo': novos.titulo,
+                    'descricao': novos.descricao,
+                    'tipo': novos.tipo,
+                    'visibilidade': novos.visibilidade
+                }
+        }, 
         {useFindAndModify: false, new: true})
 }
 

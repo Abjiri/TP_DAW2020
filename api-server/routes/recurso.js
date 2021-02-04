@@ -29,22 +29,27 @@ router.get('/ordenar/:criterio/:sentido', function(req, res){
 router.post('/pesquisar', function(req, res) {
   switch (req.body.filtro) {
     case 'titulo': 
-      Recurso.pesquisarPorTitulo(req.body.titulo)
+      Recurso.pesquisarPorTitulo(req.body.titulo, req.body.meus_recursos)
         .then(dados => res.status(201).jsonp(dados))
         .catch(e => res.status(500).jsonp({error: e}))
       break;
     case 'tipo': 
-      Recurso.pesquisarPorTipo(req.body.tipo)
+      Recurso.pesquisarPorTipo(req.body.tipo, req.body.meus_recursos)
         .then(dados => res.status(201).jsonp(dados))
         .catch(e => res.status(500).jsonp({error: e}))
       break;
-    case 'autor': 
-      Recurso.pesquisarPorAutor(req.body.autor)
+    case 'autor':
+      Recurso.pesquisarPorAutor(req.body.autor, req.body.meus_recursos)
         .then(dados => res.status(201).jsonp(dados))
         .catch(e => res.status(500).jsonp({error: e}))
       break;
     case 'ano': 
-      Recurso.pesquisarPorAno(req.body.ano)
+      Recurso.pesquisarPorAno(req.body.ano, req.body.meus_recursos)
+        .then(dados => res.status(201).jsonp(dados))
+        .catch(e => res.status(500).jsonp({error: e}))
+      break;
+    default:
+      Recurso.pesquisarMeusRecursos(req.body.meus_recursos)
         .then(dados => res.status(201).jsonp(dados))
         .catch(e => res.status(500).jsonp({error: e}))
       break;
@@ -69,12 +74,25 @@ router.post('/', function(req, res){
     .catch(e => res.status(500).jsonp({error: e}))
 })
 
+// Atualizar recurso
+router.post('/editar/:id', function(req, res) {
+  Recurso.editarRecurso(req.params.id, req.body)
+    .then(dados => {console.log(dados);
+      if (req.body.tipoNovo) {
+        RecursoTipo.inserir([{tipo: req.body.tipo}])
+          .then(dados2 => res.status(201).jsonp({dados}))
+          .catch(e => res.status(500).jsonp({error: e}))
+      }
+      else res.status(201).jsonp({dados})
+    })
+    .catch(e => res.status(500).jsonp({error: e}))
+})
+
 // Inserir recursos
 router.post('/download', function(req, res){
   var erros = []
 
   req.body.forEach(dir => {
-    console.log(dir)
     Recurso.incrementarDownloads(dir)
       .then(d => {})
       .catch(e => erros.push(e))

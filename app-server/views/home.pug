@@ -67,10 +67,9 @@ block content
               label(class="w3-text-teal")
                 b Visibilidade: 
             div(class="w3-col s9" style="display: block")
-              input(type="radio" class="w3-input w3-border w3-light-grey" name="visibilidade0" value="publico")
-              label(for="publico") Público
-              input(type="radio" class="w3-input w3-border w3-light-grey" name="visibilidade0" value="privado")
-              label(for="privado") Privado
+              label(id="switch" class="switch")
+                input(type="checkbox" name="visibilidade0" id="slider")
+                span(class="slider round")
 
         div(id="anotherFile" style="login-container" class="0")
 

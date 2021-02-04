@@ -13,16 +13,24 @@ block content
     div(class="search-container")
       table(style= "width: 100%")
         tr
-          form(autocomplete="off" action="/recursos/pesquisar" method="POST")
+          th(class="th-right")
+            form(action="/recursos/download" method="POST")
+              input(name="selecionados" type="hidden" value='[]')
+              button(id="submit_download" type="submit" disabled) Download
+
+          th(class="th-right") &nbsp;
+
+          form(id="formPesquisa" autocomplete="off" action="/recursos/pesquisar" method="POST")
             th(class="th-left")
               if !filtroAtual
                 select(id="resources_filter" class="w3-btn w3-white" name="filtro" required)
                   option(selected disabled hidden) Filtrar por...
-                  option(value="titulo") Título
-                  option(value="tipo") Tipo
                   option(value="autor") Autor
                   option(value="ano") Data
+                  option(value="tipo") Tipo
+                  option(value="titulo") Título
               else
+                input(name="filtroAtual" value=filtroAtual hidden)
                 p #{filtroAtual.tipo}:
 
             th(class="th-left") &nbsp;
@@ -43,12 +51,15 @@ block content
               if !filtroAtual
                 button(id="resources_searchbtn" type="submit" class="fa fa-search" style="display: none")
               else
-                a(type="button" href='/recursos') Limpar...
+                a(type="submit" href=`/recursos/limpar-filtro${meus_recursos ? '/meus_recursos' : ''}`) Limpar...
 
-          th(class="th-right")
-            form(action="/recursos/download" method="POST")
-              input(name="selecionados" type="hidden" value='[]')
-              button(id="submit_download" type="submit" disabled) Download
+            th(class="th-right")
+              if meus_recursos
+                input(id="meus_recursos" name="meus_recursos" type="checkbox" checked)
+              else
+                input(id="meus_recursos" name="meus_recursos" type="checkbox")                
+              | &nbsp;
+              label(for="meus_recursos") Meus Recursos
               
 
     div(id="new_post_modal" class="my-modal" style="display: none") 
@@ -66,7 +77,12 @@ block content
             input(name="recursos" value=recursos hidden)
             input(name="tipos" value=tipos hidden)
             input(name="autores" value=autores hidden)
-            input(id="filtroAtual" name="filtroAtual" value=filtroAtual hidden)
+            if filtroAtual
+              input(id="filtroAtual" name="filtroAtual" value=filtroAtual hidden)
+            if meus_recursos
+              input(name="meus_recursos_ordenacao" type="checkbox" checked hidden)
+            else
+              input(name="meus_recursos_ordenacao" type="checkbox" hidden)     
             
             th Classificação &nbsp;
               a(href="classificacao/+1" class="ordenarRecursos")= ordemAtual == 'classificacao/+1' ? '▴' : '▵'
@@ -100,7 +116,7 @@ block content
             td= r.tamanho
             td
               button(type="button" class="resource-btn" onclick=`showImage("${r.nome_ficheiro}", "${r.diretoria}", "${r.tipo_mime}")`) 👁
-              if (r.dono)
+              if r.dono
                 form(action=`/recursos/${r._id}/remover/`, method="GET" style="display: inline-block")
                   button(type="submit" class="resource-btn") 🗑️
               button(type="button" onclick=`showPostForm("${r._id}")`) &#10095;

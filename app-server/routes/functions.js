@@ -21,7 +21,7 @@ function unveilToken(token){
     return t
 }
 
-function variaveisRecursos(recursos, cookiesToken) {
+function variaveisRecursos(recursos, cookiesToken, meus_recursos) {
   var token = unveilToken(cookiesToken)
 
   var nomesAutores = []
@@ -41,7 +41,26 @@ function variaveisRecursos(recursos, cookiesToken) {
     }
   })
 
-  return {auth: true, recursos, tipos, autores: nomesAutores.sort()}
+  return {auth: true, recursos, tipos, autores: nomesAutores.sort(), meus_recursos}
+}
+
+function prepararRecurso(r, tipos_bd, cookiesToken) {
+  var token = unveilToken(cookiesToken)
+  var tipos = []
+              
+  tipos_bd.data.forEach(t => tipos.push(t.tipo))
+
+  var classif = r.classificacao
+  r.dono = token._id == r.idAutor
+
+  r.tamanho = calculateSize(r.tamanho)
+  r.nrComentarios = r.comentarios.length
+  r.classificacao = classif.reduce((total, prox) => total + prox.pontuacao, 0) / classif.length
+  r.dataCriacao = moment(r.dataCriacao).format('DD-MM-YYYY')
+  r.dataRegisto = moment(r.dataRegisto).format('HH:mm:ss, DD-MM-YYYY')
+  r.dataUltimaMod = moment(r.dataUltimaMod).format('HH:mm:ss, DD-MM-YYYY')
+
+  return {r, tipos, auth: true}
 }
 
 function calculateSize(bytes) {
@@ -85,6 +104,7 @@ function clearZipFolder(folder, zipfile){
 module.exports = {
     unveilToken,
     variaveisRecursos,
+    prepararRecurso,
     calculateSize,
     calculateMd5,
     getSize,

@@ -23,7 +23,7 @@ function showImage(nome, diretoria, tipo_mime){
 
 function injectForm() {
     var newFileId = parseInt($('#anotherFile').attr('class')) + 1;
-    var tipos = $('#tipos').val()
+    var tipos = JSON.parse($('#tipos').val())
 
     //atualizar o id do último ficheiro na class da div onde se inserem os forms extra
     $('#anotherFile').attr('class', newFileId);
@@ -69,12 +69,7 @@ function injectForm() {
                 <div class="w3-col s9 w3-border">
                     <select id="tipo_recurso${newFileId}" onchange="showNewTypeInput()" class="w3-input w3-border w3-light-grey" name="tipo" required>`
 
-    var splitTipos = tipos.split('"tipo":"')
-
-    for (var i = 1; i < splitTipos.length; i++) {
-        var tipo = splitTipos[i].split('"')[0]
-        form += `<option value="${tipo}"> ${tipo} </option>`
-    }
+    tipos.forEach(t => form += `<option value="${t}"> ${t} </option>`)
 
     form += `           <option value="Outro"> Outro </option>
                     </select>
@@ -114,10 +109,10 @@ function injectForm() {
                     <label class="w3-text-teal"><b>Visibilidade: </b></label>
                 </div>
                 <div class="w3-col s9">
-                    <input type="radio" class="w3-input w3-border w3-light-grey" name="visibilidade${newFileId}" value="publico">
-                    <label for="publico"> Público </label>
-                    <input type="radio" class="w3-input w3-border w3-light-grey" name="visibilidade${newFileId}" value="privado">
-                    <label for="privado"> Privado </label>
+                    <label id="switch" class="switch">
+                        <input type="checkbox" name="visibilidade${newFileId}" id="slider">
+                        <span class="slider round"></span>
+                    </label>
                 </div>
             </div>
             

@@ -142,8 +142,9 @@ $(document).ready(function()
       var href = $(this).attr('href');
       var filtroAtual = $('#filtroAtual').val()
       var ordemAtual = $('#ordemAtual').val()
+      var meus_recursos = $('#meus_recursos').is(":checked")
 
-      if (filtroAtual == '') {
+      if (filtroAtual == '' && !meus_recursos) {
         if (ordemAtual != href) {
           $('#formOrdenacao').attr('action', `/recursos/ordenar/${href}`)
           $('#formOrdenacao').submit()
@@ -163,6 +164,10 @@ $(document).ready(function()
           $('#formOrdenacao').submit()
         }
       }
+    })
+
+    $('#meus_recursos').click(function() {
+      $('#formPesquisa').submit()      
     })
 
     $('.recurso-checkbox').click(function() {

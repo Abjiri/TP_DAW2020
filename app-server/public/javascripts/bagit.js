@@ -8,19 +8,14 @@ $(document).ready(function()
         var formData = new FormData(form);
         console.log("START")
         console.log([...formData])
-        var fileRadioButton = {}
         var files = {}
         var zip = new JSZip();
         for (var [key, value] of formData.entries()) { 
-            if(key.match(/^visibilidade[0-9]+$/)){
-                fileRadioButton[key.split(/visibilidade/)[1]] = value
-            }
-            else if(key == "recurso"){
+            if(key == "recurso"){
                 zip.file("data/" + value.name, value)
                 files[i++] = value.name
             }
         }
-        console.log(JSON.stringify(fileRadioButton))
         var manifest = getManifestString(files)
         zip.file("manifest-md5.txt",manifest)
 
