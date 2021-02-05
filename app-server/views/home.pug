@@ -1,6 +1,12 @@
 extends layout
 
 block content
+  link(rel='stylesheet', href='/stylesheets/comments.css')
+  link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' integrity='sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm' crossorigin='anonymous')
+  script(src='https://code.jquery.com/jquery-3.2.1.slim.min.js' integrity='sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN' crossorigin='anonymous')
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js' integrity='sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q' crossorigin='anonymous')
+  script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js' integrity='sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl' crossorigin='anonymous')
+  
   h1 Gestão de recursos educativos
 
   if (nivel == 'produtor' || nivel == 'admin')
@@ -79,8 +85,30 @@ block content
 
     button(id="new_resource" type="button") Carregar Recursos
 
-  each n in noticias
-    p!= n
+  div(class="w3-row")
+    div(class="w3-green w3-container w3-twothird")
+      h2 2/3
+    div(class="w3-container w3-third")
+      h2 Novos Recursos: 
+
+      each n in noticias
+        .d-flex.flex-row.align-items-center.text-left.comment-top.p-2.bg-light.border-bottom.px-4
+          .profile-image
+            img.rounded-circle(src=n.foto ? n.foto : '/images/login_avatar.png' width='50' height='50')
+          .d-flex.flex-column-reverse.flex-grow-0.align-items-center.votings.ml-1
+            .d-flex.flex-column.ml-3
+              .d-flex.flex-row.post-title
+                h5.text-primary
+                  a(href=`/recursos/${n.recursos[0].id}`) #{n.recursos[0].titulo}
+              .d-flex.flex-row.align-items-center.align-content-center.post-title
+                span Tipo:&nbsp;
+                b #{n.recursos[0].tipo}
+              .d-flex.flex-row.align-items-center.align-content-center.post-title
+                span.mr-2
+                  a(href=`/perfil/${n.id_autor}`) #{n.nomeAutor}
+                span 
+                  b #{moment(new Date(n.data)).locale('pt').fromNow()}
+
 
     //- ul.w3-ul
     //-   each p in publicacoes

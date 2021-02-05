@@ -14,12 +14,13 @@ router.get('/', function(req, res) {
         var noticias = [];
           
         dados.data.forEach(n => {
-          var not = `${moment(n.data).format('HH:mm:ss, DD-MM-YYYY')}`
+          /* var not = `${moment(n.data).format('HH:mm:ss, DD-MM-YYYY')}`
           not += `<p>O produtor <a href="/perfil/${n.idAutor}">${n.nomeAutor}</a> disponibilizou ${n.recursos.length > 1 ? 'os seguintes recursos' : 'o seguinte recurso'}: <ul>`
           n.recursos.forEach(r => not += `<li> <a href="/recursos/${r.id}">${r.titulo}</a> (${r.tipo})`)
           not += `</ul></p><hr>`
 
-          noticias.push(not)
+          noticias.push(not) */
+          if (n.recursos.length > 0) noticias.push(n)
         })
 
         var token = aux.unveilToken(req.cookies.token)

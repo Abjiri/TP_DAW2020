@@ -11,7 +11,8 @@ module.exports.listar = () => {
 }
 
 module.exports.inserir = noticia => {
-    return Noticia.insertMany(noticia)
+    var nova = new Noticia(noticia)
+    return nova.save()
 }
 
 module.exports.noticiasUtilizador = id =>{
