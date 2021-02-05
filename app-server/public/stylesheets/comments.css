@@ -92,3 +92,33 @@ a {
 	line-height: 30px;
 	font-weight: 800;
 }
+
+.hit-voting:hover {
+    color: blue
+}
+
+.hit-voting {
+    cursor: pointer
+}
+
+.textarea2 {
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+	padding: 15px 20px;
+	border-radius: 10px;
+	box-sizing: border-box;
+	color:  #565658;
+	border: 1px solid #F5F5F5;
+	font-size: 16px;
+	height: 120px !important;
+	width: 80%
+}
+
+.textarea2:focus {
+	-moz-box-shadow: none !important;
+	-webkit-box-shadow: none !important;
+	box-shadow: none !important;
+	border: 1px solid #007bff !important;
+	outline-width: 0 !important
+}

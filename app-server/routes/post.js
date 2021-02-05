@@ -14,7 +14,7 @@ router.get('/:id', function(req,res,next){
                 func.sortComments(dados.data)
                 let users = {}
                 let promises = []
-                let visitante
+                let visitante, autor
                 dados.data.comments.forEach(c => {
                     promises.push(
                         axios.get('http://localhost:8001/users/' + c.id_autor + '?token=' + req.cookies.token)
@@ -34,7 +34,14 @@ router.get('/:id', function(req,res,next){
                     })  
                     .catch(error => res.render('error', {error}))
                 )
-                Promise.all(promises).then(() => res.render('publicacao', {publicacao: dados.data, auth: true, users: users, visitante: visitante}));
+                promises.push(
+                    axios.get('http://localhost:8001/users/' + dados.data.id_autor + '?token=' + req.cookies.token)
+                    .then(autorData => {
+                        autor = autorData.data
+                    })  
+                    .catch(error => res.render('error', {error}))
+                )
+                Promise.all(promises).then(() => res.render('publicacao', {publicacao: dados.data, auth: true, users: users, visitante: visitante, autor: autor}));
             })
             .catch(error => res.render('error', {error}))
     }
