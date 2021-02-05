@@ -6,6 +6,14 @@ var comentarioSchema = new mongoose.Schema({
   dataCriacao: {type: String, default: new Date().toISOString().substr(0,19)}
 });
 
+var ficheiroSchema = new mongoose.Schema({
+  nome_ficheiro: {type: String, required: true},
+  tamanho: {type: Number, required: true},
+  tipo_mime: {type: String, required: true},
+  diretoria: {type: String, required: true}, 
+  hash: {type: String, required: true}
+})
+
 var recursoSchema = new mongoose.Schema({
     tipo: {type: String, required: true},
     titulo: {type: String, required: true},
@@ -22,10 +30,7 @@ var recursoSchema = new mongoose.Schema({
     nomeAutor: {type: String, required: true},
     comentarios: {type: [comentarioSchema], default: []},
     nrDownloads: {type: Number, default: 0},
-    nome_ficheiro: {type: String, required: true},
-    tamanho: {type: Number, required: true},
-    tipo_mime: {type: String, required: true},
-    diretoria: {type: String, required: true}
+    ficheiros: {type: [ficheiroSchema], default: []}
   });
 
 module.exports = mongoose.model('recurso', recursoSchema)

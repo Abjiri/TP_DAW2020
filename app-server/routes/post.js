@@ -8,11 +8,11 @@ var aux = require('./functions')
 router.get('/:id', function(req,res) {
     if (!req.cookies.token) aux.gerarTokenConsumidor(req.originalUrl, res)
     else {
-        var token = func.unveilToken(req.cookies.token)
+        var token = aux.unveilToken(req.cookies.token)
 
         axios.get('http://localhost:8001/publicacoes/' + req.params.id + '?token=' + req.cookies.token)
             .then(dados => {
-                func.sortComments(dados.data)
+                aux.sortComments(dados.data)
 
                 let users = {}
                 let promises = []
@@ -49,7 +49,7 @@ router.get('/:id', function(req,res) {
 router.post('/', function(req, res) {
     if (!req.cookies.token) aux.gerarTokenConsumidor(req.originalUrl, res)
     else {
-        var token = func.unveilToken(req.cookies.token)
+        var token = aux.unveilToken(req.cookies.token)
 
         if (token.nivel == 'produtor' || token.nivel == 'admin') {
             req.body["id_autor"] = token._id
@@ -65,7 +65,7 @@ router.post('/', function(req, res) {
 router.post('/comentar/:id', function(req, res) {
     if (!req.cookies.token) aux.gerarTokenConsumidor(req.originalUrl, res)
     else {
-        var token = func.unveilToken(req.cookies.token)
+        var token = aux.unveilToken(req.cookies.token)
 
         if (token.nivel == 'produtor' || token.nivel == 'admin') {
             req.body["id_autor"] = token._id
