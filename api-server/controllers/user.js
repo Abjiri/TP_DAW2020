@@ -16,9 +16,9 @@ module.exports.consultar = id => {
         .exec()
 }
 
-module.exports.contar = () => {
+module.exports.consultarImagem = id => {
     return User
-        .countDocuments()
+        .findOne({_id: id}, {foto: 1, _id: 0})
         .exec()
 }
 

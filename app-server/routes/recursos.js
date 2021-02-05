@@ -244,14 +244,12 @@ router.post('/editar/:id', function(req, res) {
 })
   
 router.post('/upload', upload.single('zip'), function(req, res) {
-  console.log(req.body)
   if (!req.cookies.token) aux.gerarTokenConsumidor(req.originalUrl, res)
   else {
     var token = aux.unveilToken(req.cookies.token)
 
     if (token.nivel == 'produtor' || token.nivel == 'admin') {
       var ficheiros = [];
-      var recurso = {}
       var tiposNovos = [];
       var total = 0
       var recursos = []
@@ -259,6 +257,7 @@ router.post('/upload', upload.single('zip'), function(req, res) {
       var zippath = (__dirname + req.file.path).replace("routes","").replace(/\\/g, "/")
       var extractpath = (__dirname + "uploads" ).replace("routes","").replace(/\\/g, "/")
       var zip = new AdmZip(zippath)
+
       zip.extractAllTo(extractpath)
       zip.getEntries().forEach(entry => {
         if(entry.entryName.match(/data\/.+/)){
@@ -292,9 +291,11 @@ router.post('/upload', upload.single('zip'), function(req, res) {
         axios.get('http://localhost:8001/recursos/tipos?token=' + req.cookies.token)
           .then(tipos_bd => {
             var tipo = req.body.tipo
+            
             if (tipo == "Outro") {
               tipo = req.body.outro_tipo
               var novo = true
+
               for (var j = 0; j < tipos_bd.data.length; j++) {
                 if (tipo.localeCompare(tipos_bd.data[j].tipo, 'pt', { sensitivity: 'base' }) == 0) {
                   tipo = tipos_bd.data[j].tipo
@@ -302,50 +303,56 @@ router.post('/upload', upload.single('zip'), function(req, res) {
                   break
                 }
               }
+
               if (novo) {
                 tipo = tipo.charAt(0).toUpperCase() + tipo.slice(1)
                 tiposNovos.push({tipo})
               }
             }
 
-            recurso.tipo = tipo
-            recurso.titulo = req.body.titulo 
-            recurso.descricao = req.body.descricao
-            recurso.dataCriacao = req.body.dataCriacao
-            recurso.dataRegisto = dataAtual
-            recurso.dataUltimaMod = dataAtual
-            recurso.visibilidade = req.body.visibilidade ? false : true
-            recurso.idAutor = token._id
-            recurso.nomeAutor = token.nome
-            recurso.ficheiros = ficheiros
+            var recurso = {
+              tipo,
+              titulo: req.body.titulo,
+              descricao: req.body.descricao,
+              dataCriacao: req.body.dataCriacao,
+              dataRegisto: dataAtual,
+              dataUltimaMod: dataAtual,
+              visibilidade: req.body.visibilidade ? false : true,
+              idAutor: token._id,
+              nomeAutor: token.nome,
+              ficheiros: ficheiros
+            }
 
             aux.clearZipFolder(extractpath,zippath)
-            console.log(recurso)
+            
             axios.post('http://localhost:8001/recursos?token=' + req.cookies.token, {recurso, tiposNovos})
             .then(dados => {
-              var docs = dados.data.dados;
-              var recursos = [];
-                
-              for (var i = 0; i < docs.length; i++) {
-                if (docs[i].visibilidade) {
-                  recursos.push({
-                    id: docs[i]._id,
-                    titulo: docs[i].titulo,
-                    tipo: docs[i].tipo.toLowerCase()
+              if (dados.data.visibilidade) {
+                axios.get('http://localhost:8001/users/imagem/' + token._id + '?token=' + req.cookies.token)
+                  .then(foto => {
+                    var noticia = {
+                      data: dataAtual,
+                      autor: {
+                        id: token._id,
+                        nome: token.nome,
+                        foto: foto.data.foto
+                      },
+                      recurso: {
+                        id: dados.data._id,
+                        titulo: dados.data.titulo,
+                        tipo: dados.data.tipo
+                      }
+                    }
+    
+                    if (dados.data.descricao) noticia.recurso.descricao = dados.data.descricao
+    
+                    axios.post('http://localhost:8001/noticias?token=' + req.cookies.token, noticia)
+                      .then(dados => res.redirect('/recursos'))
+                      .catch(error => res.render('error', {error}))
                   })
-                }
+                  .catch(error => res.render('error', {error}))
               }
-        
-              var noticia = {
-                  data: dataAtual,
-                  idAutor: token._id,
-                  nomeAutor: token.nome,
-                  recursos
-              }
-        
-              axios.post('http://localhost:8001/noticias?token=' + req.cookies.token, noticia)
-                .then(dados => res.redirect('/recursos'))
-                .catch(error => res.render('error', {error}))
+              else res.redirect('/recursos')
             })
             .catch(error => res.render('error', {error}))
           })
