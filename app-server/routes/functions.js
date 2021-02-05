@@ -158,6 +158,12 @@ function groupAndSortByDate(obj1,obj2){
   return orderedDates
 }
 
+function sortComments(publicacao){
+  publicacao.comments.sort((a,b) => {
+    return new Date(b.dataCriacao).getTime() - new Date(a.dataCriacao).getTime();
+  })
+}
+
 module.exports = {
   gerarTokenConsumidor,
   unveilToken,
@@ -169,5 +175,6 @@ module.exports = {
   getSize,
   getMimeType,
   clearZipFolder,
-  groupAndSortByDate
+  groupAndSortByDate,
+  sortComments
 }

@@ -1,27 +1,62 @@
 extends layout
 
 block content
+    link(rel='stylesheet', href='/stylesheets/comments.css')
+    link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' integrity='sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm' crossorigin='anonymous')
+    script(src='https://code.jquery.com/jquery-3.2.1.slim.min.js' integrity='sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN' crossorigin='anonymous')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js' integrity='sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q' crossorigin='anonymous')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js' integrity='sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl' crossorigin='anonymous')
+    .d-flex.flex-row.align-items-center.text-left.comment-top.p-2.bg-light.border-bottom.px-4
+     .profile-image
+        img.rounded-circle(src=autor.foto ? autor.foto : '/images/login_avatar.png' width='80' height='80')
+     .d-flex.flex-column-reverse.flex-grow-0.align-items-center.votings.ml-1
 
-    div(class="w3-card-4")
-        h1= publicacao.titulo
-        p Titulo: #{publicacao.titulo}
-        p Descrição: #{publicacao.corpo}
-        p Recurso: 
-            a(href="/recursos/" + publicacao.recurso) #{publicacao.recurso}
-        p Data de criação: #{publicacao.dataCriacao}
-    form(id="comentarPostForm" action='/publicacoes/comentar/'+ publicacao._id method="POST")
-        textarea(id="commentPost" name="corpo" placeholder="Insira o seu comentário..." maxlength="255" style="height:150px; width: 30%; resize: none")
-        br
-        input(class="w3-btn w3-blue-grey" type="submit" id="commentButton" value="Comentar")
-    div(class="w3-card-4")
-        if publicacao.comments.size == 0
-            p Sem comments 
-        else 
-            h2 Comentários
-            ul.w3-ul
-                each c in publicacao.comments
-                  li
-                    p Corpo: #{c.corpo}
-                    p Autor: 
-                        a(href="/perfil/" + c.id_autor) #{c.id_autor}
-                    p Data de Criação: #{c.dataCriacao}
+     .d-flex.flex-column.ml-3
+        .d-flex.flex-row.post-title
+         h5.text-primary #{publicacao.titulo}
+        .d-flex.flex-row.align-items-center.align-content-center.post-title
+         span.mr-2 
+          b Recurso:  
+          a(href=`/recursos/${publicacao.recurso}`) Ver
+        .d-flex.flex-row.align-items-center.align-content-center.post-title
+         if visitante._id == publicacao.id_autor
+          span.mr-2 Postado por mim
+         else  
+          span.mr-2 Postado por  
+            a(href=`/perfil/${publicacao.id_autor}`) #{autor.nome}
+         span 
+          b #{moment(new Date(publicacao.dataCriacao)).locale('pt').fromNow()}
+        .d-flex.flex-row.align-items-center.align-content-center.post-title
+         span.mr-2.comments (#{publicacao.comments.length} comentários)
+    .d-flex.flex-row.align-items-center.text-left.comment-top.p-2.bg-light.border-bottom.px-4
+        textarea.textarea2(readonly) #{publicacao.corpo}
+    .container.bootstrap.snippets.bootdey.bg-light
+       .row
+        .col-md-12
+         .blog-comment
+            br
+            hr(style="border-top: 3px solid #007bff;")
+            br
+            ul.comments
+             li.clearfix
+                form(id="comentarPostForm" action='/publicacoes/comentar/'+ publicacao._id method="POST")
+                  textarea(id="commentPost" name="corpo" placeholder="Insira o seu comentário..." maxlength="255" style="height:120px; width:100%; resize: none")
+                  input(class="w3-right btn btn-primary" type="submit" id="commentButton" value="Comentar" style="margin")
+             each c in publicacao.comments
+                - dataTimeline = moment(new Date(c.dataCriacao)).locale('pt').fromNow() 
+                li.clearfix
+                    figure
+                     img.avatar(src= users[c.id_autor].foto ? users[c.id_autor].foto : '/images/login_avatar.png' alt='' style="border-radius: 50%")
+                    .post-comments
+                     figcaption 
+                      a(href=`/perfil/${c.id_autor}`)
+                       b
+                        if publicacao.id_autor == c.id_autor 
+                         | Eu 
+                        else 
+                         | #{users[c.id_autor].nome}
+                     p.meta
+                        | #{dataTimeline}:
+                        i.pull-right
+                     p 
+                        | #{c.corpo}

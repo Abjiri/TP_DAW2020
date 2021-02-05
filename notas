@@ -106,3 +106,22 @@ https://icons-for-free.com/iconfiles/png/512/add+contact+add+friend+friend+reque
                           i.fa.fa-share.fa-fw.fa-lg.m-r-3
                           |  Share    
                     // end timeline-body
+
+
+
+
+
+
+li.clearfix
+                img.avatar(src='https://bootdey.com/img/Content/user_1.jpg' alt='')
+                .post-comments
+                p.meta
+                    | Dec 18, 2014 
+                    a(href='#') JohnDoe
+                    |  says : 
+                    i.pull-right
+                    a(href='#')
+                        small Reply
+                p
+                    | Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    | Etiam a sapien odio, sit amet
