@@ -10,9 +10,9 @@ function showImage(nome, diretoria, tipo_mime){
     var file;
 
     if (tipo_mime == 'image/png' || tipo_mime == 'image/jpeg' || tipo_mime == 'image/gif')
-        file = `<img src="${diretoria}" width="80%"/>`;
+        file = `<span class="helper"></span><img class="center" src="${diretoria}" style="max-width:90%; max-height:90%; border: 10px solid #000;"/>`;
     else if (checkMimetype(tipo_mime))
-        file = `<iframe src="${diretoria}" width="80%"/>`;
+        file = `<iframe src="${diretoria}" style="width:100%; height:100%"/>`;
     else 
         file = '<p>' + nome + ', ' + tipo_mime + '<p>';
     
