@@ -254,7 +254,7 @@ router.post('/upload', upload.single('zip'), function(req, res) {
       var recurso = {}
       var tiposNovos = [];
       var total = 0
-      var recursos = []
+      var entradasZip = []
       var valido = true
       var zippath = (__dirname + req.file.path).replace("routes","").replace(/\\/g, "/")
       var extractpath = (__dirname + "uploads" ).replace("routes","").replace(/\\/g, "/")
@@ -262,7 +262,7 @@ router.post('/upload', upload.single('zip'), function(req, res) {
       zip.extractAllTo(extractpath)
       zip.getEntries().forEach(entry => {
         if(entry.entryName.match(/data\/.+/)){
-          recursos[total++] = entry.name
+          entradasZip[total++] = entry.name
         }
         else if (entry.entryName == "manifest-md5.txt") {
           let entries = entry.getData().toString().split("\n")
@@ -279,7 +279,7 @@ router.post('/upload', upload.single('zip'), function(req, res) {
               if (err) throw err
             })
             let pertence = false
-            recursos.forEach(r=>{
+            entradasZip.forEach(r=>{
               if(r==nome_ficheiro) pertence = true
             })
             if(newhash != hash || !pertence) valido = false
