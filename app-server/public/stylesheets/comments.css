@@ -12,6 +12,7 @@ a {
     color: #82b440;
     text-decoration: none;
 }
+
 .blog-comment::before,
 .blog-comment::after,
 .blog-comment-form::before,

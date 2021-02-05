@@ -6,13 +6,11 @@ block content
     script(src='https://code.jquery.com/jquery-3.2.1.slim.min.js' integrity='sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN' crossorigin='anonymous')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js' integrity='sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q' crossorigin='anonymous')
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js' integrity='sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl' crossorigin='anonymous')
-    .d-flex.flex-row.align-items-center.text-left.comment-top.p-2.bg-white.border-bottom.px-4
+    .d-flex.flex-row.align-items-center.text-left.comment-top.p-2.bg-light.border-bottom.px-4
      .profile-image
         img.rounded-circle(src=autor.foto ? autor.foto : '/images/login_avatar.png' width='80' height='80')
      .d-flex.flex-column-reverse.flex-grow-0.align-items-center.votings.ml-1
-        i.fa.fa-sort-down.fa-2x.hit-voting
-        span 127
-        i.fa.fa-sort-up.fa-2x.hit-voting
+
      .d-flex.flex-column.ml-3
         .d-flex.flex-row.post-title
          h5.text-primary #{publicacao.titulo}
@@ -30,20 +28,20 @@ block content
           b #{moment(new Date(publicacao.dataCriacao)).locale('pt').fromNow()}
         .d-flex.flex-row.align-items-center.align-content-center.post-title
          span.mr-2.comments (#{publicacao.comments.length} comentários)
-    .d-flex.flex-row.align-items-center.text-left.comment-top.p-2.bg-white.border-bottom.px-4
+    .d-flex.flex-row.align-items-center.text-left.comment-top.p-2.bg-light.border-bottom.px-4
         textarea.textarea2(readonly) #{publicacao.corpo}
-    br
-    .container.bootstrap.snippets.bootdey
+    .container.bootstrap.snippets.bootdey.bg-light
        .row
         .col-md-12
          .blog-comment
-            h3.text-primary Comentários
-            hr
+            br
+            hr(style="border-top: 3px solid #007bff;")
+            br
             ul.comments
              li.clearfix
                 form(id="comentarPostForm" action='/publicacoes/comentar/'+ publicacao._id method="POST")
                   textarea(id="commentPost" name="corpo" placeholder="Insira o seu comentário..." maxlength="255" style="height:120px; width:100%; resize: none")
-                  input(class="w3-right btn btn-secondary" type="submit" id="commentButton" value="Comentar" style="margin")
+                  input(class="w3-right btn btn-primary" type="submit" id="commentButton" value="Comentar" style="margin")
              each c in publicacao.comments
                 - dataTimeline = moment(new Date(c.dataCriacao)).locale('pt').fromNow() 
                 li.clearfix
