@@ -12,24 +12,16 @@ block content
   if (nivel == 'produtor' || nivel == 'admin')
     div(id="new_resource_modal" class="my-modal" style="display: none")            
       form(id="myForm" class="my-modal-content" action="/recursos/upload" method="POST" enctype="multipart/form-data")
-        h2(style="margin: 10px 20px 20px 20px") Upload de recursos
+        h2(style="margin: 10px 20px 20px 20px") Adicionar Recurso
 
         div(class="login_container")
 
-          input(hidden name="nr_visibilidade" value="0")
           input(hidden name="checksum0" value="")
-          
-          div(class="login_container")
-            div(class="w3-col s3")
-              label(class="w3-text-teal")
-                b Ficheiro: 
-            div(class="w3-col s9 w3-border")
-              input(class="w3-input w3-border w3-light-grey" type="file" name="recurso" onchange="getChecksum(this,0)" required)
         
           div(class="login_container")
             div(class="w3-col s3")
               label(class="w3-text-teal")
-                b Nome: 
+                b Título: 
             div(class="w3-col s9 w3-border")
               input(class="w3-input w3-border w3-light-grey" type="text" name="titulo" required)
 
@@ -66,16 +58,21 @@ block content
                 b Data de criação: 
             div(class="w3-col s9 w3-border")
               input(class="w3-input w3-border w3-light-grey" type="date" name="dataCriacao" required)
-
           div(class="w3-row login_container w3-margin-bottom")
             div(class="w3-col s3")
               label(class="w3-text-teal")
                 b Visibilidade: 
             div(class="w3-col s9" style="display: block")
               label(id="switch" class="switch")
-                input(type="checkbox" name="visibilidade0" id="slider")
+                input(type="checkbox" name="visibilidade" id="slider")
                 span(class="slider round")
-
+                
+          div(class="login_container")
+            div(class="w3-col s3")
+              label(class="w3-text-teal")
+                b Ficheiro: 
+            div(class="w3-col s9 w3-border")
+              input(class="w3-input w3-border w3-light-grey" type="file" name="recurso" onchange="getChecksum(this,0)" required)
         div(id="anotherFile" style="login-container" class="0")
 
         div(class="login_container")

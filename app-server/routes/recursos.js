@@ -244,19 +244,20 @@ router.post('/editar/:id', function(req, res) {
 })
   
 router.post('/upload', upload.single('zip'), function(req, res) {
+  console.log(req.body)
   if (!req.cookies.token) aux.gerarTokenConsumidor(req.originalUrl, res)
   else {
     var token = aux.unveilToken(req.cookies.token)
 
     if (token.nivel == 'produtor' || token.nivel == 'admin') {
       var ficheiros = [];
+      var recurso = {}
       var tiposNovos = [];
       var total = 0
       var recursos = []
-      var recursosInfo = []
       var valido = true
-      var zippath = (__dirname + req.file.path).replace("routes","").replace(/\\/g, "\\\\")
-      var extractpath = (__dirname + "uploads" ).replace("routes","").replace(/\\/g, "\\\\")
+      var zippath = (__dirname + req.file.path).replace("routes","").replace(/\\/g, "/")
+      var extractpath = (__dirname + "uploads" ).replace("routes","").replace(/\\/g, "/")
       var zip = new AdmZip(zippath)
       zip.extractAllTo(extractpath)
       zip.getEntries().forEach(entry => {
@@ -270,10 +271,10 @@ router.post('/upload', upload.single('zip'), function(req, res) {
             let separated = a.split(" ")
             let hash = separated[0]
             let nome_ficheiro = separated[1].split("data/")[1]
-            let diretoria = extractpath + ("\\" + separated[1]).replace(/\\/g,"\\\\").replace(/\//g,"\\\\")
-            let nova_diretoria = extractpath.replace("uploads","public\\\\fileStore\\\\") + Date.now() + "-" + nome_ficheiro
+            let diretoria = extractpath + ("/" + separated[1])
+            let nova_diretoria = extractpath.replace("uploads","public/fileStore/") + Date.now() + "-" + nome_ficheiro
             let newhash = aux.calculateMd5(diretoria)
-            recursosInfo.push({nome: nome_ficheiro, mime: aux.getMimeType(diretoria), tamanho: aux.getSize(diretoria), path: nova_diretoria.split("app-server\\\\")[1].replace(/\\\\/g,"\\")})
+            ficheiros.push({nome_ficheiro: nome_ficheiro, tipo_mime: aux.getMimeType(diretoria), tamanho: aux.getSize(diretoria), diretoria: nova_diretoria.split("app-server/")[1].replace(/^public/, ""), hash: newhash})
             fs.rename(diretoria, nova_diretoria, err => {
               if (err) throw err
             })
@@ -285,46 +286,42 @@ router.post('/upload', upload.single('zip'), function(req, res) {
           })
         }
       })
+
       if (valido) {
         var dataAtual = new Date().toISOString().substr(0,19)
         axios.get('http://localhost:8001/recursos/tipos?token=' + req.cookies.token)
           .then(tipos_bd => {
-            for (var i = 0; i < total; i++) {
-              var tipo = total==1 ? req.body.tipo : req.body.tipo[i]
-              
-              if (tipo == "Outro") {
-                tipo = total==1 ? req.body.outro_tipo : req.body.outro_tipo[i]
-                var novo = true
-                for (var j = 0; j < tipos_bd.data.length; j++) {
-                  if (tipo.localeCompare(tipos_bd.data[j].tipo, 'pt', { sensitivity: 'base' }) == 0) {
-                    tipo = tipos_bd.data[j].tipo
-                    novo = false
-                    break
-                  }
-                }
-                if (novo) {
-                  tipo = tipo.charAt(0).toUpperCase() + tipo.slice(1)
-                  tiposNovos.push({tipo})
+            var tipo = req.body.tipo
+            if (tipo == "Outro") {
+              tipo = req.body.outro_tipo
+              var novo = true
+              for (var j = 0; j < tipos_bd.data.length; j++) {
+                if (tipo.localeCompare(tipos_bd.data[j].tipo, 'pt', { sensitivity: 'base' }) == 0) {
+                  tipo = tipos_bd.data[j].tipo
+                  novo = false
+                  break
                 }
               }
-              ficheiros.push({
-                tipo,
-                titulo: total==1 ? req.body.titulo : req.body.titulo[i],
-                descricao: total==1 ? req.body.descricao : req.body.descricao[i],
-                dataCriacao: total==1 ? req.body.dataCriacao : req.body.dataCriacao[i],
-                dataRegisto: dataAtual,
-                dataUltimaMod: dataAtual,
-                visibilidade: req.body[`visibilidade${i}`] ? false : true,
-                idAutor: token._id,
-                nomeAutor: token.nome,
-                nome_ficheiro: recursosInfo[i].nome,
-                tamanho: recursosInfo[i].tamanho,
-                tipo_mime: recursosInfo[i].mime,
-                diretoria: recursosInfo[i].path.replace(/^public/, "")
-              });
+              if (novo) {
+                tipo = tipo.charAt(0).toUpperCase() + tipo.slice(1)
+                tiposNovos.push({tipo})
+              }
             }
+
+            recurso.tipo = tipo
+            recurso.titulo = req.body.titulo 
+            recurso.descricao = req.body.descricao
+            recurso.dataCriacao = req.body.dataCriacao
+            recurso.dataRegisto = dataAtual
+            recurso.dataUltimaMod = dataAtual
+            recurso.visibilidade = req.body.visibilidade ? false : true
+            recurso.idAutor = token._id
+            recurso.nomeAutor = token.nome
+            recurso.ficheiros = ficheiros
+
             aux.clearZipFolder(extractpath,zippath)
-            axios.post('http://localhost:8001/recursos?token=' + req.cookies.token, {ficheiros, tiposNovos})
+            console.log(recurso)
+            axios.post('http://localhost:8001/recursos?token=' + req.cookies.token, {recurso, tiposNovos})
             .then(dados => {
               var docs = dados.data.dados;
               var recursos = [];

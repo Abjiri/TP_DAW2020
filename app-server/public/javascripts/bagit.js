@@ -20,31 +20,30 @@ $(document).ready(function()
         zip.file("manifest-md5.txt",manifest)
 
         zip.generateAsync({type:'blob'}).then((blobdata)=>{
-            // create zip blob file
-            let zipblob = new Blob([blobdata])
-
-            //o zip chama-se blob
-            formData.delete("recurso")
-            formData.delete("nr_visibilidade")
-            for(var i = 0; i < total; i++){
-              formData.delete("checksum"+i)
+          //o zip chama-se blob
+          formData.delete("recurso")
+          formData.delete("nr_visibilidade")
+          for(var i = 0; i < total; i++){
+            formData.delete("checksum"+i)
+          }
+          formData.append("zip",blobdata)
+          console.log("FIM")
+          console.log([...formData])
+          
+          $.ajax({
+            url: "/recursos/upload",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response){
+              window.location.replace("/recursos");
             }
-            formData.append("zip",blobdata)
-            console.log("FIM")
-            console.log([...formData])
-
-            $.ajax({
-              url: "/recursos/upload",
-              type: "POST",
-              data: formData,
-              processData: false,
-              contentType: false,
-              success: function (response){
-                window.location.replace("/recursos");
-              }
-            });
-            // For development and testing purpose
+          });
+          // For development and testing purpose
+            // create zip blob file
             // Download the zipped file 
+            //let zipblob = new Blob([blobdata])
             //var elem = window.document.createElement("a")
             //elem.href = window.URL.createObjectURL(zipblob)
             //elem.download = 'compressed.zip'

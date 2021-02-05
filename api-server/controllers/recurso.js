@@ -236,8 +236,10 @@ module.exports.incrementarDownloads = dir => {
     )
 }
 
-module.exports.inserir = recursos => {
-    return Recurso.insertMany(recursos)
+module.exports.inserir = recurso => {
+    console.log(recurso)
+    var novoRec = new Recurso(recurso)
+    return novoRec.save()
 }
 
 module.exports.remover = function(id) {

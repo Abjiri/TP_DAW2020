@@ -164,6 +164,10 @@ function sortComments(publicacao){
   })
 }
 
+function cleanTitle(title){
+    return title.replace(/[/\\?%*:|"<>]/g, '-');
+}
+
 module.exports = {
   gerarTokenConsumidor,
   unveilToken,
@@ -176,5 +180,6 @@ module.exports = {
   getMimeType,
   clearZipFolder,
   groupAndSortByDate,
-  sortComments
+  sortComments,
+  cleanTitle
 }
