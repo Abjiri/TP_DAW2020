@@ -12,6 +12,18 @@ router.get('/', function(req, res, next) {
     .catch(error => res.status(500).jsonp({error}))
 });
 
+router.get('/consumidor', function(req, res) {
+  jwt.sign({
+    nivel: 'consumidor',
+    sub: 'TP_DAW2020'}, 
+    "TP_DAW2020",
+    {expiresIn: "1h"},
+    function(e, token) {
+      if(e) res.status(500).jsonp({error: "Erro na geração do token de consumidor: " + e}) 
+      else res.status(201).jsonp({token})
+  })
+})
+
 // inserir novo utilizador
 router.post('/', function(req, res) {
   User.inserir(req.body)

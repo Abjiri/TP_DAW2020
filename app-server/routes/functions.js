@@ -4,6 +4,21 @@ var crypto = require("crypto")
 var fs = require('fs')
 var mime = require('mime-types')
 var moment = require('moment')
+var axios = require('axios')
+
+function gerarTokenConsumidor(url, res) {
+  axios.get('http://localhost:8000/users/consumidor')
+    .then(dados => {
+        res.cookie('token', dados.data.token, {
+          expires: new Date(Date.now() + '1h'),
+          secure: false,
+          httpOnly: true
+        })
+
+        res.redirect(url)
+    })
+    .catch(error => res.render('error', {error}))
+}
 
 function unveilToken(token){  
     var t = null;
@@ -21,12 +36,20 @@ function unveilToken(token){
     return t
 }
 
-function variaveisRecursos(recursos, cookiesToken, meus_recursos) {
-  var token = unveilToken(cookiesToken)
+function getInfoToken(cookiesToken) {
+  if (cookiesToken) {
+    var token = unveilToken(cookiesToken)
+    return {_id: token._id, nivel: token.nivel}
+  }
+  return {_id: null, nivel: 'consumidor'}
+}
 
+function variaveisRecursos(recursos, cookiesToken, meus_recursos) {
   var nomesAutores = []
   var idsAutores = []
   var tipos = []
+
+  var token = unveilToken(cookiesToken)
 
   recursos.forEach(r => {
     r.tamanho = calculateSize(r.tamanho)
@@ -41,13 +64,13 @@ function variaveisRecursos(recursos, cookiesToken, meus_recursos) {
     }
   })
 
-  return {auth: true, recursos, tipos, autores: nomesAutores.sort(), meus_recursos}
+  return {nivel: token.nivel, recursos, tipos, autores: nomesAutores.sort(), meus_recursos}
 }
 
 function prepararRecurso(r, tipos_bd, cookiesToken) {
   var token = unveilToken(cookiesToken)
+
   var tipos = []
-              
   tipos_bd.data.forEach(t => tipos.push(t.tipo))
 
   var classif = r.classificacao
@@ -60,7 +83,7 @@ function prepararRecurso(r, tipos_bd, cookiesToken) {
   r.dataRegisto = moment(r.dataRegisto).format('HH:mm:ss, DD-MM-YYYY')
   r.dataUltimaMod = moment(r.dataUltimaMod).format('HH:mm:ss, DD-MM-YYYY')
 
-  return {r, tipos, auth: true}
+  return {r, tipos, nivel: token.nivel}
 }
 
 function calculateSize(bytes) {
@@ -136,13 +159,15 @@ function groupAndSortByDate(obj1,obj2){
 }
 
 module.exports = {
-    unveilToken,
-    variaveisRecursos,
-    prepararRecurso,
-    calculateSize,
-    calculateMd5,
-    getSize,
-    getMimeType,
-    clearZipFolder,
-    groupAndSortByDate
+  gerarTokenConsumidor,
+  unveilToken,
+  getInfoToken,
+  variaveisRecursos,
+  prepararRecurso,
+  calculateSize,
+  calculateMd5,
+  getSize,
+  getMimeType,
+  clearZipFolder,
+  groupAndSortByDate
 }

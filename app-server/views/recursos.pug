@@ -6,9 +6,11 @@ block content
 
     h1 Lista de recursos
 
+    input(id="nivelAutorizacao" value=nivel hidden)
     input(id="autores" hidden value=autores)
     input(id="tipos" hidden value=tipos)
-    input(id="ordemAtual" hidden value=ordemAtual)
+    if ordemAtual
+      input(id="ordemAtual" hidden value=ordemAtual)
 
     div(class="search-container")
       table(style= "width: 100%")
@@ -53,13 +55,14 @@ block content
               else
                 a(type="submit" href=`/recursos/limpar-filtro${meus_recursos ? '/meus_recursos' : ''}`) Limpar...
 
-            th(class="th-right")
-              if meus_recursos
-                input(id="meus_recursos" name="meus_recursos" type="checkbox" checked)
-              else
-                input(id="meus_recursos" name="meus_recursos" type="checkbox")                
-              | &nbsp;
-              label(for="meus_recursos") Meus Recursos
+            if (nivel == 'produtor' || nivel == 'admin')
+              th(class="th-right")
+                if meus_recursos
+                  input(id="meus_recursos" name="meus_recursos" type="checkbox" checked)
+                else
+                  input(id="meus_recursos" name="meus_recursos" type="checkbox")                
+                | &nbsp;
+                label(for="meus_recursos") Meus Recursos
               
 
     div(id="new_post_modal" class="my-modal" style="display: none") 
@@ -105,9 +108,9 @@ block content
               a(href="nrDownloads/-1" class="ordenarRecursos")= ordemAtual == 'nrDownloads/-1' ? '▾' : '▿'
 
         each r in recursos
-          tr(id= r._id)
+          tr(id= r._id class="linhaRecurso")
             td
-              input(id=r.diretoria class="recurso-checkbox" type="checkbox") 
+              input(id=r.diretoria class="recurso-checkbox" type="checkbox")
             td
               a(href="/recursos/" + r._id) #{r.titulo}
             td= r.tipo
@@ -116,17 +119,22 @@ block content
             td= r.tamanho
             td
               button(type="button" class="resource-btn" onclick=`showImage("${r.nome_ficheiro}", "${r.diretoria}", "${r.tipo_mime}")`) 👁
+
+              if (nivel == 'produtor' || nivel == 'admin')
+                button(type="button" onclick=`showPostForm("${r._id}")`) &#10095;
+              else
+                button(type="button" onclick=`showPostForm("${r._id}")` disabled) &#10095;
+
               if r.dono
-                form(action=`/recursos/${r._id}/remover/`, method="GET" style="display: inline-block")
-                  button(type="submit" class="resource-btn") 🗑️
-              button(type="button" onclick=`showPostForm("${r._id}")`) &#10095;
+                form(action=`/recursos/${r._id}/remover/` method="GET" style="display: inline-block")
+                  button(type="submit" class="resource-btn eliminarRecurso") 🗑️
             td
               div(class="stars rate" data-percent=`${r.classificacao}`)
-                a(href=`/recursos/${r._id}/classificar/20#${r._id}` title="Horrível") ★
-                a(href=`/recursos/${r._id}/classificar/40#${r._id}` title="Decente") ★
-                a(href=`/recursos/${r._id}/classificar/60#${r._id}` title="Bom") ★
-                a(href=`/recursos/${r._id}/classificar/80#${r._id}` title="Muito bom") ★
-                a(href=`/recursos/${r._id}/classificar/100#${r._id}` title="Excelente") ★
+                a(class="classificarRecurso" href=`/recursos/${r._id}/classificar/20#${r._id}` title="Horrível") ★
+                a(class="classificarRecurso" href=`/recursos/${r._id}/classificar/40#${r._id}` title="Decente") ★
+                a(class="classificarRecurso" href=`/recursos/${r._id}/classificar/60#${r._id}` title="Bom") ★
+                a(class="classificarRecurso" href=`/recursos/${r._id}/classificar/80#${r._id}` title="Muito bom") ★
+                a(class="classificarRecurso" href=`/recursos/${r._id}/classificar/100#${r._id}` title="Excelente") ★
             td= r.dataUltimaMod
             td= r.nrComentarios
             td= r.nrDownloads

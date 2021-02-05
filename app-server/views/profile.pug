@@ -23,7 +23,7 @@ block content
               .profile-header-content
                 // BEGIN profile-header-img
                 .profile-header-img
-                  if owns 
+                  if dono 
                     img(src= user.foto ? user.foto : '/images/login_avatar.png' onClick='pictureForm(' +'\'' + user._id +'\'' + ');' style="cursor:pointer")
                   else 
                     img(src= user.foto ? user.foto : '/images/login_avatar.png')
@@ -40,7 +40,7 @@ block content
                   p.m-b-10 
                    i.fa.fa-file-o(style='font-size:24px;color:#7FDBFF')  Descrição: 
                    |  #{user.descricao} 
-                  if owns 
+                  if dono 
                     a.btn.btn-sm.btn-info.mb-2(href='#' onclick='editForm(' +'\'' + JSON.stringify(user) +'\'' + ');') Editar Perfil
                     |  
                     i.fa.fa-edit 
@@ -68,7 +68,7 @@ block content
                         .timeline-header  
                           span.userimage
                             img(src=user.foto alt='')
-                          if owns 
+                          if dono 
                             span.username Eu
                           else 
                             span.username #{user.nome}
@@ -82,15 +82,15 @@ block content
                               p 
                                 b 
                                   span(style='color:#0074D9') #{dataTimeline}:
-                                if owns 
+                                if dono 
                                   if item.recursos.length == 1
-                                    if owns  
+                                    if dono  
                                       |  Notifiquei os utilizadores sobre o recurso: 
                                     else 
                                       |  Notificou os utilizadores sobre o recurso: 
                                     a(href=`/recursos/${item.recursos[0].id}`) #{item.recursos[0].titulo}
                                   else
-                                    if owns
+                                    if dono
                                       |  Notifiquei os utilizadores sobre os recursos: 
                                     else
                                       |  Notificou os utilizadores sobre os recursos: 

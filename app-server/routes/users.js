@@ -3,15 +3,6 @@ var router = express.Router();
 
 var axios = require('axios');
 
-
-router.get('/login', function(req, res) {
-  res.render('login');
-})
-
-router.get('/signup', function(req, res) {
-  res.render('signup');
-})
-
 router.get('/logout', function(req, res) {
   res.clearCookie("token");
   res.redirect('/');
@@ -30,7 +21,7 @@ router.post('/login', function(req, res) {
         res.redirect('/')
       }
       else res.render('home', {
-        auth: false,
+        nivel: 'consumidor',
         invalidLField: dados.data.invalidInput,
         ...req.body,
         error_msg: dados.data.error
@@ -42,7 +33,7 @@ router.post('/login', function(req, res) {
 router.post('/signup', function(req, res) {
   if (req.body.password != req.body.password_again) 
     res.render('home', {
-      auth: false,
+      nivel: 'consumidor',
       invalidSField: "password",
       ...req.body,
       error_msg: "As passwords não coincidem!"
@@ -61,7 +52,7 @@ router.post('/signup', function(req, res) {
           res.redirect('/')
         }
         else res.render('home', {
-          auth: false,
+          nivel: 'consumidor',
           invalidSField: dados.data.invalidInput,
           ...req.body,
           error_msg: dados.data.error

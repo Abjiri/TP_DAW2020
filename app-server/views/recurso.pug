@@ -23,7 +23,7 @@ block content
     button(onclick=`showPostForm("${r._id}")`) Criar publicação
     
     if r.dono
-        button(onclick=`editarRecurso("${r._id}","${r.titulo}","${r.descricao}","${r.tipo}","${r.visibilidade}")`) Editar
+        button(onclick=`editarRecurso("${r._id}","${r.idAutor}","${r.titulo}","${r.descricao}","${r.tipo}","${r.visibilidade}")`) Editar
 
     p
         a(href=`/recursos/${r.idAutor}-${r.nome_ficheiro}/download/`) Download

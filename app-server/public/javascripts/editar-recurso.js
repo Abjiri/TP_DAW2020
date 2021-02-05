@@ -1,4 +1,4 @@
-function editarRecurso(id, nome, desc, tipo, vis, tipos) {
+function editarRecurso(id, idAutor, nome, desc, tipo, vis, tipos) {
     $('#editar_recurso').empty()
     var tipos = JSON.parse($('#tipos_edicao').val())
   
@@ -6,6 +6,7 @@ function editarRecurso(id, nome, desc, tipo, vis, tipos) {
     <form class="my-modal-content" action="/recursos/editar/${id}" method="POST">
       <h2 style="margin: 10px 20px 20px 20px">Editar recurso</h2>
       <div class="login_container">
+        <input type="text" name="idAutor" value="${idAutor}" hidden>
 
         <div class="login_container">
             <div class="w3-col s3">

@@ -3,8 +3,7 @@ extends layout
 block content
   h1 Gestão de recursos educativos
 
-  if (auth)
-
+  if (nivel == 'produtor' || nivel == 'admin')
     div(id="new_resource_modal" class="my-modal" style="display: none")            
       form(id="myForm" class="my-modal-content" action="/recursos/upload" method="POST" enctype="multipart/form-data")
         h2(style="margin: 10px 20px 20px 20px") Upload de recursos
@@ -80,8 +79,8 @@ block content
 
     button(id="new_resource" type="button") Carregar Recursos
 
-    each n in noticias
-      p!= n
+  each n in noticias
+    p!= n
 
     //- ul.w3-ul
     //-   each p in publicacoes

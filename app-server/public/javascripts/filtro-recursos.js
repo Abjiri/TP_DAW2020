@@ -97,6 +97,22 @@ function autocomplete(inp, arr) {
 
 $(document).ready(function()
   {
+    $('.eliminarRecurso').click(function(e) {
+      e.preventDefault()
+      var resposta = window.confirm('Tem a certeza que pretende eliminar este recurso?')
+      
+      if (resposta) $(this).closest("form").submit()
+    })
+
+    $('.classificarRecurso').click(function(e) {
+      e.preventDefault()
+      
+      if ($('#nivelAutorizacao').val() == 'consumidor') {
+        window.alert('Precisas de uma conta para classificar um recurso!')
+      }
+      else window.location = $(this).attr('href')
+    })
+    
     $('#resources_filter').one("click", function() {
       var tipos = JSON.parse($('#tipos').val())
       var autores = JSON.parse($('#autores').val())
@@ -144,15 +160,12 @@ $(document).ready(function()
       var ordemAtual = $('#ordemAtual').val()
       var meus_recursos = $('#meus_recursos').is(":checked")
 
-      if (filtroAtual == '' && !meus_recursos) {
+      if (!filtroAtual && !meus_recursos) {
         if (ordemAtual != href) {
           $('#formOrdenacao').attr('action', `/recursos/ordenar/${href}`)
           $('#formOrdenacao').submit()
         }
-        else {
-          $('#formOrdenacao').attr('action', `/recursos`)
-          $('#formOrdenacao').submit()
-        }
+        else window.location = '/recursos'
       }
       else {
         if (ordemAtual != href) {
