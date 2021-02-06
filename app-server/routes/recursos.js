@@ -285,7 +285,7 @@ router.post('/upload', upload.single('zip'), function(req, res) {
           entries.pop()
           
           entries.forEach(a=>{
-            let separated = a.split(" ",2)
+            let separated = a.split(/ (.+)/ ,2) // para os files com espaços no nome darem
             let hash = separated[0]
             let nome_ficheiro = separated[1].split("data/")[1]
             let diretoria = extractpath + ("/" + separated[1])
