@@ -1,5 +1,5 @@
 body{
-    background:#eee;
+    background-color:#f8f9fa !important;
 }
 
 hr {
@@ -11,6 +11,10 @@ hr {
 a {
     color: #82b440;
     text-decoration: none;
+}
+
+.profile-image{
+	padding-left: 10%;
 }
 
 .blog-comment::before,
