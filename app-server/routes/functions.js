@@ -28,9 +28,7 @@ function unveilToken(token){
         console.log('Erro: ' + e)
         t = null
       }
-      else{
-        return t = decoded
-      } 
+      else return t = decoded
     })
 
     return t

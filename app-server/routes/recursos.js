@@ -202,6 +202,7 @@ router.post('/pesquisar', (req, res) => {
 
           axios.get('http://localhost:8001/recursos/tipos?token=' + req.cookies.token)
             .then(tipos_bd => {
+              console.log(tipos_bd.data)
               var varsPug = aux.variaveisRecursos(dados.data, tipos_bd, req.cookies.token, true)
               res.render('recursos', varsPug)
             })

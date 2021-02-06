@@ -14,11 +14,8 @@ module.exports.listar = () => {
                 nrComentarios: {$size: '$comentarios'},
                 classificacao: {$ifNull: [{$round: [{$avg: '$classificacao.pontuacao'}, 0]}, 0]},
                 dataUltimaMod: 1,
-                tamanho: 1,
-                nrDownloads: 1,
-                nome_ficheiro: 1,
-                diretoria: 1,
-                tipo_mime: 1
+                tamanho: {$round: [{$sum: '$ficheiros.tamanho'}, 0]},
+                nrDownloads: 1
             }
         }])
         .sort('-dataUltimaMod')
@@ -38,11 +35,8 @@ module.exports.pesquisarMeusRecursos = idAutor => {
                 nrComentarios: {$size: '$comentarios'},
                 classificacao: {$ifNull: [{$round: [{$avg: '$classificacao.pontuacao'}, 0]}, 0]},
                 dataUltimaMod: 1,
-                tamanho: 1,
-                nrDownloads: 1,
-                nome_ficheiro: 1,
-                diretoria: 1,
-                tipo_mime: 1
+                tamanho: {$round: [{$sum: '$ficheiros.tamanho'}, 0]},
+                nrDownloads: 1
             }
         }])
         .sort('-dataUltimaMod')
@@ -68,11 +62,8 @@ module.exports.pesquisarPorAutor = (nome, meus_recursos) => {
                 nrComentarios: {$size: '$comentarios'},
                 classificacao: {$ifNull: [{$round: [{$avg: '$classificacao.pontuacao'}, 0]}, 0]},
                 dataUltimaMod: 1,
-                tamanho: 1,
-                nrDownloads: 1,
-                nome_ficheiro: 1,
-                diretoria: 1,
-                tipo_mime: 1
+                tamanho: {$round: [{$sum: '$ficheiros.tamanho'}, 0]},
+                nrDownloads: 1
             }
         }])
         .sort('-dataUltimaMod')
@@ -98,11 +89,8 @@ module.exports.pesquisarPorTitulo = (titulo, meus_recursos) => {
                 nrComentarios: {$size: '$comentarios'},
                 classificacao: {$ifNull: [{$round: [{$avg: '$classificacao.pontuacao'}, 0]}, 0]},
                 dataUltimaMod: 1,
-                tamanho: 1,
-                nrDownloads: 1,
-                nome_ficheiro: 1,
-                diretoria: 1,
-                tipo_mime: 1
+                tamanho: {$round: [{$sum: '$ficheiros.tamanho'}, 0]},
+                nrDownloads: 1
             }
         }])
         .sort('-dataUltimaMod')
@@ -128,11 +116,8 @@ module.exports.pesquisarPorTipo = (tipo, meus_recursos) => {
                 nrComentarios: {$size: '$comentarios'},
                 classificacao: {$ifNull: [{$round: [{$avg: '$classificacao.pontuacao'}, 0]}, 0]},
                 dataUltimaMod: 1,
-                tamanho: 1,
-                nrDownloads: 1,
-                nome_ficheiro: 1,
-                diretoria: 1,
-                tipo_mime: 1
+                tamanho: {$round: [{$sum: '$ficheiros.tamanho'}, 0]},
+                nrDownloads: 1
             }
         }, { $sort: {dataUltimaMod: -1} }])
 }
@@ -157,11 +142,8 @@ module.exports.pesquisarPorAno = (ano, meus_recursos) => {
                 nrComentarios: {$size: '$comentarios'},
                 classificacao: {$ifNull: [{$round: [{$avg: '$classificacao.pontuacao'}, 0]}, 0]},
                 dataUltimaMod: 1,
-                tamanho: 1,
-                nrDownloads: 1,
-                nome_ficheiro: 1,
-                diretoria: 1,
-                tipo_mime: 1
+                tamanho: {$round: [{$sum: '$ficheiros.tamanho'}, 0]},
+                nrDownloads: 1
             }
         }])
         .sort('-dataUltimaMod')
@@ -186,11 +168,8 @@ module.exports.ordenarPor = params => {
                 nrComentarios: {$size: '$comentarios'},
                 classificacao: {$ifNull: [{$round: [{$avg: '$classificacao.pontuacao'}, 0]}, 0]},
                 dataUltimaMod: 1,
-                tamanho: 1,
-                nrDownloads: 1,
-                nome_ficheiro: 1,
-                diretoria: 1,
-                tipo_mime: 1
+                tamanho: {$round: [{$sum: '$ficheiros.tamanho'}, 0]},
+                nrDownloads: 1
             }
         }, { $sort: criteriosObj }])
 }
@@ -220,10 +199,10 @@ module.exports.editarRecurso = (id, novos) => {
     return Recurso.findOneAndUpdate(
         {"_id": id},
         { $set: {
-                    'titulo': novos.titulo,
-                    'descricao': novos.descricao,
-                    'tipo': novos.tipo,
-                    'visibilidade': novos.visibilidade
+            'titulo': novos.titulo,
+            'descricao': novos.descricao,
+            'tipo': novos.tipo,
+            'visibilidade': novos.visibilidade
                 }
         }, 
         {useFindAndModify: false, new: true})
@@ -237,7 +216,6 @@ module.exports.incrementarDownloads = dir => {
 }
 
 module.exports.inserir = recurso => {
-    console.log(recurso)
     var novoRec = new Recurso(recurso)
     return novoRec.save()
 }
