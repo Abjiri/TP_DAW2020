@@ -18,20 +18,19 @@ block content
       each n in noticias
         .d-flex.flex-row.align-items-center.text-left.comment-top.p-2.bg-light.border-bottom.px-4
           .profile-image
-            img.rounded-circle(src=n.foto ? n.foto : '/images/login_avatar.png' width='50' height='50')
+            img.rounded-circle(src=n.autor.foto.length > 0 ? n.autor.foto : '/images/login_avatar.png' width='50' height='50')
           .d-flex.flex-column-reverse.flex-grow-0.align-items-center.votings.ml-1
             .d-flex.flex-column.ml-3
               .d-flex.flex-row.post-title
                 h5.text-primary
-                  a(href=`/recursos/${n.recursos[0].id}`) #{n.recursos[0].titulo}
+                  a(href=`/recursos/${n.recurso.id}`) #{n.recurso.titulo}
               .d-flex.flex-row.align-items-center.align-content-center.post-title
-                span Tipo:&nbsp;
-                b #{n.recursos[0].tipo}
+                b Tipo:&nbsp;
+                | #{n.recurso.tipo}
               .d-flex.flex-row.align-items-center.align-content-center.post-title
                 span.mr-2
-                  a(href=`/perfil/${n.id_autor}`) #{n.nomeAutor}
-                span 
-                  b #{moment(new Date(n.data)).locale('pt').fromNow()}
+                  a(href=`/perfil/${n.autor.id}`) #{n.autor.nome}
+                span #{moment(new Date(n.data)).locale('pt').fromNow()}
 
 
     //- ul.w3-ul
