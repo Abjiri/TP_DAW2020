@@ -137,21 +137,34 @@ router.get('/:id/remover', (req,res) => {
 router.post('/download', (req,res) => {
   if (!req.cookies.token) aux.gerarTokenConsumidor(req.originalUrl, res)
   else {
-    var diretorias = JSON.parse(req.body.selecionados)
-    
-    axios.post('http://localhost:8001/recursos/download?token=' + req.cookies.token, diretorias)
-      .then(() => {
-        var zip = bagit.zipRecursos(diretorias)
-        zip.generateAsync({ type: "base64" }).then((base64) => {
-          let zipRet = Buffer.from(base64, "base64");
-          res.writeHead(200, {
-            "Content-Type": "application/zip",
-            "Content-Disposition": `attachment; filename=${Date.now()}.zip`,
-          })
-          res.end(zipRet)
+    var recursos = JSON.parse(req.body.selecionados)
+    var qs = ''
+    var zips = [] 
+    recursos.forEach(r => {
+      qs += `recursos=${r}&`
+    })
+    axios.get('http://localhost:8001/recursos/ids?' + qs + 'token=' + req.cookies.token)
+      .then(recursosData => {
+        recursosData.data.forEach(recurso => {
+          let titulo = recurso.titulo
+          let ficheiros = recurso.ficheiros
+          var zip = bagit.zipRecurso(ficheiros)
+          zips.push({titulo,zip})
         })
+        let all = bagit.zipAll(zips)
+        let filename = recursosData.data.length == 1 ? recursosData.data[0].titulo : Date.now()
+        axios.post('http://localhost:8001/recursos/download?token=' + req.cookies.token, recursos)
+          .then(() => {
+            res.writeHead(200, {
+              "Content-Type": "application/zip",
+              "Content-Disposition": `attachment; filename=${filename}.zip`,
+            })
+            recursosData.data.length == 1 ? res.write(zips[0].zip) : res.write(all)
+            res.end()
+          })
+          .catch(errors => res.render('error', {error:errors[0]}))
       })
-      .catch(errors => res.render('error', {error: errors[0]}))
+      .catch(error => res.render('error', {error}))
   }
 })
 
@@ -299,7 +312,7 @@ router.post('/upload', upload.single('zip'), function(req, res) {
               hash: newhash
             })
             
-            fs.rename(diretoria, nova_diretoria, err => { if (err) throw err })
+            fs.renameSync(diretoria, nova_diretoria, err => { if (err) throw err })
             
             let pertence = false
 

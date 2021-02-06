@@ -31,21 +31,21 @@ block content
                 // END profile-header-img
                 // BEGIN profile-header-info
                 .profile-header-info
-                  h3.m-t-10.m-b-5(style="color:#001f3f") 
-                   b #{user.nome}
+                  h3.m-t-10.m-b-5
+                   | #{user.nome}
                   p.m-b-10
-                   i.fa.fa-paper-plane-o(style='font-size:24px;color:#2196F3!important')
+                   i.fa.fa-paper-plane-o(style='font-size:24px;color:#7FDBFF!important')
                     b  Afiliação: 
-                   span(style="color:#333")  #{user.estatuto.filiacao} (#{user.estatuto.tipo})
+                   span(style="color:#eee")  #{user.estatuto.filiacao} (#{user.estatuto.tipo})
                   p.m-b-10
-                   i.fa.fa-envelope-o(style='font-size:24px;color:#2196F3!important')
+                   i.fa.fa-envelope-o(style='font-size:24px;color:#7FDBFF!important')
                     b  E-mail: 
-                   span(style="color:#333")  #{user.email}
+                   span(style="color:#eee")  #{user.email}
                   if user.descricao 
                    p.m-b-10
-                    i.fa.fa-file-o(style='font-size:24px;color:#2196F3!important')
+                    i.fa.fa-file-o(style='font-size:24px;color:#7FDBFF!important')
                      b  Descrição: 
-                    span(style="color:#333")  #{user.descricao} 
+                    span(style="color:#eee")  #{user.descricao} 
                   if dono 
                     a.w3-btn.w3-blue.w3-round-large(href='#' onclick='editForm(' +'\'' + JSON.stringify(user) +'\'' + ');') Editar Perfil
                     |  
