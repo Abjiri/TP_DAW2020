@@ -208,6 +208,12 @@ module.exports.editarRecurso = (id, novos) => {
         {useFindAndModify: false, new: true})
 }
 
+module.exports.consultarTitulo = id => {
+    return Recurso
+        .findOne({_id: id}, {titulo: 1, _id: 0})
+        .exec()
+}
+
 module.exports.incrementarDownloads = dir => {
     return Recurso.findOneAndUpdate(
         { diretoria: dir },
