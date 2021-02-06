@@ -130,7 +130,11 @@ router.get('/:id/classificar/:pont', (req,res) => {
 
 router.get('/:id/remover', (req,res) => {
   axios.delete('http://localhost:8001/recursos/' + req.params.id + '?token=' + req.cookies.token)
-    .then(dados => res.redirect('/recursos'))
+    .then(dados => {
+      axios.post('http://localhost:8001/noticias/atualizarEstado/' + req.params.id + '?token=' + req.cookies.token)
+        .then(d => res.redirect('/recursos'))
+        .catch(error => res.render('error', {error}))
+    })
     .catch(error => res.render('error', {error}))
 })
 
@@ -212,8 +216,6 @@ router.post('/pesquisar', (req, res) => {
 })
 
 router.post('/editar/:id', upload.any(), function(req, res) {
-  console.log(req.files)
-  console.log(req.body)
   if (!req.cookies.token) aux.gerarTokenConsumidor(req.originalUrl, res)
   else {
     var token = aux.unveilToken(req.cookies.token)
@@ -289,12 +291,10 @@ router.post('/editar/:id', upload.any(), function(req, res) {
                         id: req.params.id,
                         titulo: req.body.titulo,
                         tipo: req.body.tipo,
-                        novo: false
+                        estado: 'Atualizado'
                       },
                       data: new Date().toISOString().substr(0,19)
                     }
-
-                    console.log(noticia)
     
                     axios.post('http://localhost:8001/noticias?token=' + req.cookies.token, noticia)
                       .then(d => {
@@ -310,10 +310,14 @@ router.post('/editar/:id', upload.any(), function(req, res) {
                   .catch(error => res.render('error', {error}))
               }
               else {
-                axios.get('http://localhost:8001/recursos/' + req.params.id + '?token=' + req.cookies.token)
-                  .then(dados => {
-                    var recurso = aux.prepararRecurso(dados.data, tipos_bd, req.cookies.token)
-                    res.render('recurso', recurso)
+                axios.post('http://localhost:8001/noticias/atualizarEstado/' + req.params.id + '?token=' + req.cookies.token)
+                .then(d2 => {
+                  axios.get('http://localhost:8001/recursos/' + req.params.id + '?token=' + req.cookies.token)
+                    .then(dados => {
+                      var recurso = aux.prepararRecurso(dados.data, tipos_bd, req.cookies.token)
+                      res.render('recurso', recurso)
+                    })
+                    .catch(error => res.render('error', {error}))
                   })
                   .catch(error => res.render('error', {error}))
               }
@@ -349,7 +353,6 @@ router.post('/upload', upload.single('zip'), function(req, res) {
         else if (entry.entryName == "manifest-md5.txt") {
           let entries = entry.getData().toString().split("\n")
           entries.pop()
-          aux.calculateMd5(diretoria)
           entries.forEach(a=>{
             let separated = a.split(/ (.+)/ ,2)
             let hash = separated[0]
@@ -432,7 +435,7 @@ router.post('/upload', upload.single('zip'), function(req, res) {
                         id: novoRecurso._id,
                         titulo: novoRecurso.titulo,
                         tipo: novoRecurso.tipo,
-                        novo: true
+                        estado: 'Novo'
                       },
                       data: dataAtual
                     }
