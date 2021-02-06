@@ -77,8 +77,10 @@ router.post('/', function(req, res){
 
 // Atualizar recurso
 router.post('/editar/:id', function(req, res) {
+  console.log(req.body)
+  console.log("--------------------------------------------------")
   Recurso.editarRecurso(req.params.id, req.body)
-    .then(dados => {console.log(dados);
+    .then(dados => {
       if (req.body.tipoNovo) {
         RecursoTipo.inserir([{tipo: req.body.tipo}])
           .then(dados2 => res.status(201).jsonp({dados}))

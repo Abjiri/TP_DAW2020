@@ -121,10 +121,10 @@ router.get('/:id/classificar/:pont', (req,res) => {
     if (token.nivel == 'produtor' || token.nivel == 'admin') {
       axios.put(`http://localhost:8001/recursos/${req.params.id}/classificar/?token=${req.cookies.token}`,
         {user: token._id, pontuacao: Number.parseInt(req.params.pont)})
-          .then(dados => res.redirect('/recursos'))
+          .then(dados => res.redirect(req.headers.referer))
           .catch(error => res.render('error', {error}))
     }
-    else res.redirect('/recursos')
+    else res.redirect(req.headers.referer)
   }
 })
 
@@ -211,7 +211,9 @@ router.post('/pesquisar', (req, res) => {
   }
 })
 
-router.post('/editar/:id', function(req, res) {
+router.post('/editar/:id', upload.any(), function(req, res) {
+  console.log(req.files)
+  console.log(req.body)
   if (!req.cookies.token) aux.gerarTokenConsumidor(req.originalUrl, res)
   else {
     var token = aux.unveilToken(req.cookies.token)
@@ -220,6 +222,8 @@ router.post('/editar/:id', function(req, res) {
     if ((token.nivel == 'produtor' || token.nivel == 'admin') && token._id == req.body.idAutor) {
       axios.get('http://localhost:8001/recursos/tipos?token=' + req.cookies.token)
         .then(tipos_bd => {
+          //processar o req.body --------------------------------------------------------------
+          
           req.body.visibilidade = req.body.visibilidade ? false : true
           var tipo = req.body.tipo
 
@@ -241,6 +245,31 @@ router.post('/editar/:id', function(req, res) {
             req.body.tipoNovo = novo
             tipos_bd.data.push({tipo})
           }
+
+          //processar o req.files -------------------------------------------------------------
+
+          req.body.ficheiros = []
+          req.files.forEach(f => {
+            if (f.fieldname == 'novoFicheiro') {
+              var data = Date.now()
+              f.originalname = f.originalname.replace(/ /g, "_")
+
+              let oldPath = __dirname.split('/routes')[0] + '/' + f.path
+              let newPath = __dirname.split('/routes')[0] + '/public/fileStore/' + data + '-' + f.originalname
+
+              fs.renameSync(oldPath, newPath, (err) => {
+                  if (err) throw err;
+              });
+
+              req.body.ficheiros.push({
+                nome_ficheiro: f.originalname,
+                tamanho: f.size,
+                tipo_mime: f.mimetype,
+                diretoria: 'fileStore/' + data + '-' + f.originalname,
+                hash: aux.calculateMd5(newPath)
+              })
+            }
+          })
 
           axios.post(`http://localhost:8001/recursos/editar/${req.params.id}?token=${req.cookies.token}`, req.body)
             .then(d => {
@@ -282,7 +311,7 @@ router.post('/upload', upload.single('zip'), function(req, res) {
         else if (entry.entryName == "manifest-md5.txt") {
           let entries = entry.getData().toString().split("\n")
           entries.pop()
-          
+          aux.calculateMd5(diretoria)
           entries.forEach(a=>{
             let separated = a.split(/ (.+)/ ,2)
             let hash = separated[0]
