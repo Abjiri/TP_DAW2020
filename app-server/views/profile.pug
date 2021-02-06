@@ -25,23 +25,27 @@ block content
                 // BEGIN profile-header-img
                 .profile-header-img
                   if dono 
-                    img(src= user.foto ? user.foto : '/images/login_avatar.png' onClick='pictureForm(' +'\'' + user._id +'\'' + ');' style="cursor:pointer")
+                    img(src= user.foto ? user.foto : '/images/login_avatar.png' onClick='pictureForm(' +'\'' + user._id +'\'' + ');' style="cursor:pointer; border-radius: 50%;" )
                   else 
-                    img(src= user.foto ? user.foto : '/images/login_avatar.png')
+                    img(src= user.foto ? user.foto : '/images/login_avatar.png; border-radius: 50%;')
                 // END profile-header-img
                 // BEGIN profile-header-info
                 .profile-header-info
-                  h3.m-t-10.m-b-5 #{user.nome}
-                  p.m-b-10
-                   i.fa.fa-paper-plane-o(style='font-size:24px;color:#7FDBFF')  Afiliação: 
-                   |  #{user.estatuto.filiacao} (#{user.estatuto.tipo})
-                  p.m-b-10 
-                   i.fa.fa-envelope-o(style='font-size:24px;color:#7FDBFF')  E-mail: 
-                   |  #{user.email}
+                  h3.m-t-10.m-b-5(style="color:#001f3f") 
+                   b #{user.nome}
+                  p.m-b-10(style="background: #fff")
+                   i.fa.fa-paper-plane-o(style='font-size:24px;color:#2196F3!important')
+                    b  Afiliação: 
+                   span(style="color:#333")  #{user.estatuto.filiacao} (#{user.estatuto.tipo})
+                  p.m-b-10(style="background: #fff")
+                   i.fa.fa-envelope-o(style='font-size:24px;color:#2196F3!important')
+                    b  E-mail: 
+                   span(style="color:#333")  #{user.email}
                   if user.descricao 
-                   p.m-b-10 
-                    i.fa.fa-file-o(style='font-size:24px;color:#7FDBFF')  Descrição: 
-                    |  #{user.descricao} 
+                   p.m-b-10(style="background: #fff")
+                    i.fa.fa-file-o(style='font-size:24px;color:#2196F3!important')
+                     b  Descrição: 
+                    span(style="color:#333")  #{user.descricao} 
                   if dono 
                     a.w3-btn.w3-blue.w3-round-large(href='#' onclick='editForm(' +'\'' + JSON.stringify(user) +'\'' + ');') Editar Perfil
                     |  
