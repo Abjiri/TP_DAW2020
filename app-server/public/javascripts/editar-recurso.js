@@ -96,6 +96,9 @@ function editarRecurso(recurso) {
             </div>
         </div>
 
+        <input id="ficheiros" name="ficheiros" value='${JSON.stringify(r.ficheiros)}' hidden>
+        <input id="removerFicheiros" name="removerFicheiros" value="[]" hidden>
+
         <div class="login_container">
             <div class="w3-col s3">
                 <label class="w3-text-teal"><b>Ficheiros: </b></label>
@@ -208,7 +211,17 @@ function mostrarPreviewNovo(nr) {
 function removerFicheiro(id) {
     var nrLinhas = $('#ficheiros tr').length - 2 //th's e linha de adicionar recursos
     if (nrLinhas == 1) window.alert('O recurso precisa de ter pelo menos 1 ficheiro!') 
-    else $('#'+id).remove();
+    else {
+        var removerFicheiros = JSON.parse($('#removerFicheiros').val())
+        var ficheiros = JSON.parse($('#ficheiros').val())
+
+        var f = ficheiros.filter(obj => {return obj._id == id})
+        removerFicheiros.push(id)
+        console.log(f[0])
+        $('#removerFicheiros').val(JSON.stringify(removerFicheiros))
+
+        $('#'+id).remove()
+    }
 }
 
 function cancelarEdicao() {

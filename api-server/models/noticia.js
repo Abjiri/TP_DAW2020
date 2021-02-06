@@ -9,7 +9,8 @@ var noticiaSchema = new mongoose.Schema({
   recurso: {type: {
     id: {type: String, required: true},
     titulo: {type: String, required: true},
-    tipo: {type: String, required: true}
+    tipo: {type: String, required: true},
+    novo: {type: Boolean, required: true}
   }, required: true},
   data: {type: String, default: new Date().toISOString().substr(0,19)}
 });

@@ -25,6 +25,9 @@ block content
                 h5.text-primary
                   a(href=`/recursos/${n.recurso.id}`) #{n.recurso.titulo}
               .d-flex.flex-row.align-items-center.align-content-center.post-title
+                b Estado:&nbsp;
+                | #{n.recurso.novo ? 'Novo' : 'Atualizado'}
+              .d-flex.flex-row.align-items-center.align-content-center.post-title
                 b Tipo:&nbsp;
                 | #{n.recurso.tipo}
               .d-flex.flex-row.align-items-center.align-content-center.post-title

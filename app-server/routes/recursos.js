@@ -223,7 +223,8 @@ router.post('/editar/:id', upload.any(), function(req, res) {
       axios.get('http://localhost:8001/recursos/tipos?token=' + req.cookies.token)
         .then(tipos_bd => {
           //processar o req.body --------------------------------------------------------------
-          
+          req.body.removerFicheiros = JSON.parse(req.body.removerFicheiros)
+          delete req.body.ficheiros
           req.body.visibilidade = req.body.visibilidade ? false : true
           var tipo = req.body.tipo
 
@@ -273,12 +274,49 @@ router.post('/editar/:id', upload.any(), function(req, res) {
 
           axios.post(`http://localhost:8001/recursos/editar/${req.params.id}?token=${req.cookies.token}`, req.body)
             .then(d => {
-              axios.get('http://localhost:8001/recursos/' + req.params.id + '?token=' + req.cookies.token)
-                .then(dados => {
-                  var recurso = aux.prepararRecurso(dados.data, tipos_bd, req.cookies.token)
-                  res.render('recurso', recurso)
-                })
-                .catch(error => res.render('error', {error}))
+              if (req.body.visibilidade) {
+                var token = aux.unveilToken(req.cookies.token)
+
+                axios.get('http://localhost:8001/users/imagem/' + token._id + '?token=' + req.cookies.token)
+                  .then(foto => {
+                    var noticia = {
+                      autor: {
+                        id: token._id,
+                        nome: token.nome,
+                        foto: foto.data.foto
+                      },
+                      recurso: {
+                        id: req.params.id,
+                        titulo: req.body.titulo,
+                        tipo: req.body.tipo,
+                        novo: false
+                      },
+                      data: new Date().toISOString().substr(0,19)
+                    }
+
+                    console.log(noticia)
+    
+                    axios.post('http://localhost:8001/noticias?token=' + req.cookies.token, noticia)
+                      .then(d => {
+                        axios.get('http://localhost:8001/recursos/' + req.params.id + '?token=' + req.cookies.token)
+                          .then(dados => {
+                            var recurso = aux.prepararRecurso(dados.data, tipos_bd, req.cookies.token)
+                            res.render('recurso', recurso)
+                          })
+                          .catch(error => res.render('error', {error}))
+                      })
+                      .catch(error => res.render('error', {error}))
+                  })
+                  .catch(error => res.render('error', {error}))
+              }
+              else {
+                axios.get('http://localhost:8001/recursos/' + req.params.id + '?token=' + req.cookies.token)
+                  .then(dados => {
+                    var recurso = aux.prepararRecurso(dados.data, tipos_bd, req.cookies.token)
+                    res.render('recurso', recurso)
+                  })
+                  .catch(error => res.render('error', {error}))
+              }
             })
             .catch(error => res.render('error', {error}))
         })
@@ -393,7 +431,8 @@ router.post('/upload', upload.single('zip'), function(req, res) {
                       recurso: {
                         id: novoRecurso._id,
                         titulo: novoRecurso.titulo,
-                        tipo: novoRecurso.tipo
+                        tipo: novoRecurso.tipo,
+                        novo: true
                       },
                       data: dataAtual
                     }

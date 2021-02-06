@@ -186,7 +186,6 @@ $(document).ready(function()
     $('.recurso-checkbox').click(function() {
       var recursos = JSON.parse($('[name=selecionados]').val())
       var diretoria = $(this).closest("tr").attr('id')
-      console.log(diretoria)
 
       if($(this).is(':checked')) recursos.push(diretoria)
       else {
