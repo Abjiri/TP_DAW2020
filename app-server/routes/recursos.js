@@ -285,7 +285,7 @@ router.post('/upload', upload.single('zip'), function(req, res) {
           entries.pop()
           
           entries.forEach(a=>{
-            let separated = a.split(/ (.+)/ ,2) // para os files com espaços no nome darem
+            let separated = a.split(/ (.+)/ ,2)
             let hash = separated[0]
             let nome_ficheiro = separated[1].split("data/")[1]
             let diretoria = extractpath + ("/" + separated[1])
@@ -347,8 +347,6 @@ router.post('/upload', upload.single('zip'), function(req, res) {
               ficheiros: ficheiros
             }
 
-            console.log(recurso)
-
             aux.clearZipFolder(extractpath,zippath)
             
             axios.post('http://localhost:8001/recursos?token=' + req.cookies.token, {recurso, tiposNovos})
@@ -371,10 +369,6 @@ router.post('/upload', upload.single('zip'), function(req, res) {
                       },
                       data: dataAtual
                     }
-    
-                    if (novoRecurso.descricao) noticia.recurso.descricao = novoRecurso.descricao
-
-                    console.log(noticia)
     
                     axios.post('http://localhost:8001/noticias?token=' + req.cookies.token, noticia)
                       .then(d => res.redirect('/recursos'))
