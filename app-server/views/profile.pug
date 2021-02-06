@@ -8,7 +8,8 @@ block content
   link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css')
   
   #display.modal(style="display: none; overflow: hidden; height: auto")
-  #display2.modal(style="display: none; overflow: hidden; height: auto")
+  div(id="edit_pic_modal" class="my-modal" style="display: none") 
+  div(id="edit_profile_modal" class="my-modal" style="display: none") 
   .container
     .row
       .col-md-12
@@ -42,11 +43,11 @@ block content
                     i.fa.fa-file-o(style='font-size:24px;color:#7FDBFF')  Descrição: 
                     |  #{user.descricao} 
                   if dono 
-                    a.btn.btn-sm.btn-info.mb-2(href='#' onclick='editForm(' +'\'' + JSON.stringify(user) +'\'' + ');') Editar Perfil
+                    a.w3-btn.w3-blue.w3-round-large(href='#' onclick='editForm(' +'\'' + JSON.stringify(user) +'\'' + ');') Editar Perfil
                     |  
-                    i.fa.fa-edit 
+                    | &nbsp; 
                     |  
-                    a.btn.btn-sm.btn-info.mb-2(href='#' onclick='pictureForm(' +'\'' + user._id +'\'' + ');') Mudar Foto
+                    a.w3-btn.w3-blue.w3-round-large(href='#' onclick='pictureForm(' +'\'' + user._id +'\'' + ');') Mudar Foto
                 // END profile-header-info
               // END profile-header-content
           // end profile
