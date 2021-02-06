@@ -33,16 +33,16 @@ block content
                 .profile-header-info
                   h3.m-t-10.m-b-5(style="color:#001f3f") 
                    b #{user.nome}
-                  p.m-b-10(style="background: #fff")
+                  p.m-b-10
                    i.fa.fa-paper-plane-o(style='font-size:24px;color:#2196F3!important')
                     b  Afiliação: 
                    span(style="color:#333")  #{user.estatuto.filiacao} (#{user.estatuto.tipo})
-                  p.m-b-10(style="background: #fff")
+                  p.m-b-10
                    i.fa.fa-envelope-o(style='font-size:24px;color:#2196F3!important')
                     b  E-mail: 
                    span(style="color:#333")  #{user.email}
                   if user.descricao 
-                   p.m-b-10(style="background: #fff")
+                   p.m-b-10
                     i.fa.fa-file-o(style='font-size:24px;color:#2196F3!important')
                      b  Descrição: 
                     span(style="color:#333")  #{user.descricao} 

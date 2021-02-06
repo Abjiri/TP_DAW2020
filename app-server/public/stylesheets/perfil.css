@@ -21,7 +21,7 @@ body{
 .profile-header .profile-header-cover:before {
     content: '';
     position: absolute;
-    background: #eee;
+    background: lightskyblue;
     top: 0;
     left: 0;
     right: 0;
