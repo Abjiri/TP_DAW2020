@@ -11,7 +11,9 @@ module.exports.listar = () => {
 }
 
 module.exports.inserir = noticia => {
+    console.log(noticia)
     var nova = new Noticia(noticia)
+    console.log(nova)
     return nova.save()
 }
 
