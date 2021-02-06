@@ -120,8 +120,8 @@ function getMimeType(file){
 
 function clearZipFolder(folder, zipfile){
   fs.rmSync(zipfile)
-  fs.rmSync(folder + "\\\\data", {recursive:true})
-  fs.rmSync(folder +"\\\\manifest-md5.txt",{recursive:true})
+  fs.rmSync(folder + "/data", {recursive:true})
+  fs.rmSync(folder +"/manifest-md5.txt",{recursive:true})
 }
 
 // obj1 = publicacoes, obj2 = noticias
