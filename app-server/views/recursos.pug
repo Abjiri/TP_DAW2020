@@ -80,11 +80,10 @@ block content
 
     button(id="new_resource" type="button") Carregar Recursos
 
-    
+
 
     input(id="nivelAutorizacao" value=nivel hidden)
     input(id="autores" hidden value=autores)
-    input(id="tipos" hidden value=tipos)
     if ordemAtual
       input(id="ordemAtual" hidden value=ordemAtual)
 
@@ -186,7 +185,7 @@ block content
         each r in recursos
           tr(id= r._id class="linhaRecurso")
             td
-              input(id=r.diretoria class="recurso-checkbox" type="checkbox")
+              input(class="recurso-checkbox" type="checkbox")
             td
               a(href="/recursos/" + r._id) #{r.titulo}
             td= r.tipo
