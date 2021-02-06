@@ -3,14 +3,9 @@
 
 - inputs invalidos no novo tipo de recurso (p.e. com /)
 
-/recursos
-	- preview
-	- remover com confirm
-	- criar post sem o id do recurso visivel
-	- editar -> abrir overlay de edição na pagina do recurso
-	
-/recurso
-	- criar post ----
-	- preview
-	- download
-	- editar
+
+- noticia ao mudar visibilidade para publico
+- acabar o design 70/30 da pagina
+- por os modal forms do perfil decentes
+- por o botao de remover ficheiro no form de upload mais limpo
+- nova edição de recurso

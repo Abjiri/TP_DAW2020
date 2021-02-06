@@ -176,7 +176,24 @@ module.exports.ordenarPor = params => {
 
 module.exports.consultar = id => {
     return Recurso
-        .findOne({_id: id})
+        .findOne({_id: id},
+            {
+                _id: 1,
+                titulo: 1,
+                tipo: 1,
+                descricao: 1,
+                dataCriacao: 1,
+                dataRegisto: 1,
+                idAutor: 1,
+                nomeAutor: 1,
+                comentarios: 1,
+                nrComentarios: {$size: '$comentarios'},
+                classificacao: {$ifNull: [{$round: [{$avg: '$classificacao.pontuacao'}, 0]}, 0]},
+                dataUltimaMod: 1,
+                tamanho: {$sum: '$ficheiros.tamanho'},
+                ficheiros: 1,
+                nrDownloads: 1
+            })
         .exec()
 }
 
