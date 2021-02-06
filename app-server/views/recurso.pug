@@ -11,13 +11,17 @@ block content
     p Data de criação: #{r.dataCriacao}
     p Data de registo: #{r.dataRegisto}
     p Data da última modificação: #{r.dataUltimaMod}
-    p Classificação: #{r.classificacao}
+    p Classificação:
+        div(class="stars rate" data-percent=`${r.classificacao}`)
+            a(class="classificarRecurso" href=`/recursos/${r._id}/classificar/20#${r._id}` title="Horrível") ★
+            a(class="classificarRecurso" href=`/recursos/${r._id}/classificar/40#${r._id}` title="Decente") ★
+            a(class="classificarRecurso" href=`/recursos/${r._id}/classificar/60#${r._id}` title="Bom") ★
+            a(class="classificarRecurso" href=`/recursos/${r._id}/classificar/80#${r._id}` title="Muito bom") ★
+            a(class="classificarRecurso" href=`/recursos/${r._id}/classificar/100#${r._id}` title="Excelente") ★
     p Autor: #{r.nomeAutor}
     p Comentários: #{r.comentarios}
     p Número de downloads: #{r.nrDownloads}
-    p Nome do ficheiro: #{r.nome_ficheiro}
     p Tamanho: #{r.tamanho}
-    p Mimetype: #{r.tipo_mime}
 
     button(id="recurso_preview" onclick=`showImage("${r.nome_ficheiro}", "${r.tipo_mime}")`) Preview
     button(onclick=`showPostForm("${r._id}")`) Criar publicação
