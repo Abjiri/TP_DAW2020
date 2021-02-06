@@ -21,6 +21,13 @@ module.exports.listar = () => {
         .sort('-dataUltimaMod')
 }
 
+module.exports.listarPorIDs = ids =>{
+    return Recurso
+        .find()
+        .where('_id').in(ids)
+        .exec()
+} 
+
 // pesquisar "meus" recursos
 module.exports.pesquisarMeusRecursos = idAutor => {
     return Recurso
@@ -234,9 +241,9 @@ module.exports.consultarTitulo = id => {
         .exec()
 }
 
-module.exports.incrementarDownloads = dir => {
+module.exports.incrementarDownloads = id => {
     return Recurso.findOneAndUpdate(
-        { diretoria: dir },
+        { _id: id },
         { $inc: { nrDownloads: 1 } }
     )
 }

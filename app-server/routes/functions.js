@@ -103,6 +103,13 @@ function calculateMd5(file){
   return hex
 }
 
+function calculateMd5_Buffer(buffer){
+  let sum = crypto.createHash('md5');
+  sum.update(String(buffer));
+  const hex = sum.digest('hex');
+  return hex
+}
+
 function getSize(file){
   var stats = fs.statSync(file);
   var fileSizeInBytes = stats.size;
@@ -171,6 +178,7 @@ module.exports = {
   prepararRecurso,
   calculateSize,
   calculateMd5,
+  calculateMd5_Buffer,
   getSize,
   getMimeType,
   clearZipFolder,

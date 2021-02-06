@@ -21,6 +21,12 @@ module.exports.atualizarEstado = idRecurso => {
         {$set: {'recurso.estado': 'Indisponível'}})
 }
 
+module.exports.atualizarFoto = (idUser,foto) => {
+    return Noticia.updateMany(
+        {"autor.id": idUser},
+        {$set: {'autor.foto': foto}})
+}
+
 module.exports.noticiasUtilizador = id =>{
     return Noticia
         .find({idAutor: id})

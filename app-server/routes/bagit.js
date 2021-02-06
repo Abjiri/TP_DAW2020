@@ -1,32 +1,41 @@
-var fs = require('fs')
-var JSZip  = require('jszip')
-var JSZipUtils = require('jszip-utils')
+var AdmZip = require('adm-zip')
 var func = require('./functions')
 
-function genManifest(selecionados){
+function genManifest(ficheiros){
     var manifest = ''
-    selecionados.forEach(f => {
-        var nome = f.split("-",2)[1]
-        var path = __dirname.replace("\\routes","") + "\\public" + f
-        var hash = func.calculateMd5(path)
-        manifest += `${hash} data/${nome}\n`
+    ficheiros.forEach(f => {
+        manifest += `${f.hash} data/${f.nome_ficheiro}\n`
     })
     return manifest
 }
 
-function zipRecursos(selecionados){
-    var zip = new JSZip();
-    selecionados.forEach(f => {
-        var nome = f.split("-",2)[1]
-        var path = __dirname.replace("\\routes","") + "\\public" + f
-        var data = fs.readFileSync(path)
-        zip.file("data/"+nome, data, {binary:true});
+function zipRecurso(ficheiros){
+    var zip = new AdmZip()
+    var dir = __dirname.replace(/\\/g, "/").replace("routes","public")
+    var manifest = genManifest(ficheiros)
+    zip.addFile("manifest-md5.txt", manifest)
+    ficheiros.forEach(f => {
+        let nome = f.diretoria.replace("/fileStore/", "")
+        zip.addLocalFile(dir + f.diretoria)
+        zip.getEntry(nome).entryName = "data/" + f.nome_ficheiro
     })
-    var manifest = genManifest(selecionados)
-    zip.file("manifest-md5.txt",manifest)
-    return zip  
+    return zip.toBuffer()
+}
+
+function zipAll(zips){
+    var zip = new AdmZip()
+    var manifest = ''
+    var dir = __dirname.replace(/\\/g, "/").replace("routes","public")
+    zips.forEach(z => {
+        var hash = func.calculateMd5_Buffer(z.zip)
+        manifest += `${hash} data/${z.titulo}.zip\n`
+        zip.addFile(`data/${z.titulo}.zip`, z.zip)
+    })
+    zip.addFile("manifest-md5.txt",manifest)
+    return zip.toBuffer()
 }
 
 module.exports = {
-    zipRecursos
+    zipRecurso,
+    zipAll
 }

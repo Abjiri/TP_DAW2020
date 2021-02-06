@@ -27,6 +27,16 @@ router.post('/', function(req,res){
     .catch(e => res.status(500).jsonp({error: e}))
 })
 
+router.post('/atualizarFoto/:id', function(req, res){
+  Publicacao.atualizarFoto(req.params.id, req.body.foto)
+    .then(dados => {
+      Publicacao.atualizarFotoComments(req.params.id, req.body.foto)
+        .then(dados => res.status(200).jsonp(dados))
+        .catch(e => res.status(500).jsonp({error: e}))
+    })
+    .catch(e => res.status(500).jsonp({error: e}))
+})
+
 router.post('/comentar/:id', function(req,res){
   Publicacao.adicionarComentario(req.params.id, req.body)
     .then(dados => res.status(200).jsonp(dados))

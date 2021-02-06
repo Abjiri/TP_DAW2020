@@ -25,6 +25,12 @@ router.get('/ordenar/:criterio/:sentido', function(req, res){
     .catch(e => res.status(500).jsonp({error: e}))
 })
 
+router.get('/ids', function(req,res){
+  Recurso.listarPorIDs(req.query.recursos)
+    .then(dados => res.status(201).jsonp(dados))
+    .catch(e => res.status(500).jsonp({error: e}))
+})
+
 // Pesquisar certo tipo de recursos
 router.post('/pesquisar', function(req, res) {
   switch (req.body.filtro) {
@@ -99,7 +105,7 @@ router.post('/editar/:id', function(req, res) {
 // Inserir recursos
 router.post('/download', function(req, res){
   var erros = []
-
+  console.log(req.body)
   req.body.forEach(dir => {
     Recurso.incrementarDownloads(dir)
       .then(d => {})

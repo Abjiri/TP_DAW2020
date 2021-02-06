@@ -30,4 +30,11 @@ router.post('/atualizarEstado/:id', function(req, res){
     .catch(e => res.status(500).jsonp({error: e}))
 })
 
+// Atualizar foto dos utilizadores nas noticias
+router.post('/atualizarFoto/:id', function(req, res){
+  Noticia.atualizarFoto(req.params.id, req.body.foto)
+    .then(dados => res.status(201).jsonp({dados}))
+    .catch(e => res.status(500).jsonp({error: e}))
+})
+
 module.exports = router;
