@@ -347,31 +347,37 @@ router.post('/upload', upload.single('zip'), function(req, res) {
               ficheiros: ficheiros
             }
 
+            console.log(recurso)
+
             aux.clearZipFolder(extractpath,zippath)
             
             axios.post('http://localhost:8001/recursos?token=' + req.cookies.token, {recurso, tiposNovos})
             .then(dados => {
-              if (dados.data.visibilidade) {
+              var novoRecurso = dados.data.dados
+              
+              if (novoRecurso.visibilidade) {
                 axios.get('http://localhost:8001/users/imagem/' + token._id + '?token=' + req.cookies.token)
                   .then(foto => {
                     var noticia = {
-                      data: dataAtual,
                       autor: {
                         id: token._id,
                         nome: token.nome,
                         foto: foto.data.foto
                       },
                       recurso: {
-                        id: dados.data._id,
-                        titulo: dados.data.titulo,
-                        tipo: dados.data.tipo
-                      }
+                        id: novoRecurso._id,
+                        titulo: novoRecurso.titulo,
+                        tipo: novoRecurso.tipo
+                      },
+                      data: dataAtual
                     }
     
-                    if (dados.data.descricao) noticia.recurso.descricao = dados.data.descricao
+                    if (novoRecurso.descricao) noticia.recurso.descricao = novoRecurso.descricao
+
+                    console.log(noticia)
     
                     axios.post('http://localhost:8001/noticias?token=' + req.cookies.token, noticia)
-                      .then(dados => res.redirect('/recursos'))
+                      .then(d => res.redirect('/recursos'))
                       .catch(error => res.render('error', {error}))
                   })
                   .catch(error => res.render('error', {error}))
