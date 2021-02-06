@@ -28,17 +28,16 @@ function injectForm() {
     $('#anotherFile').attr('class', newFileId);
     
     let form = `
-        <div id="${newFileId}" style="margin: 20px">
+        <div id="${newFileId}">
             <input hidden name="checksum${newFileId}" value=""> 
 
-            <div class="login_container">
-                <div class="w3-col s3">
-                    <label class="w3-text-teal"><b>Ficheiro: </b></label>
-                </div>
-                <div class="w3-col s9 w3-border">
-                    <input class="w3-input w3-border w3-light-grey" type="file" name="recurso" onchange="getChecksum(this,${newFileId})" required>
-                </div>
+            <div class="w3-col s3">
+                <label class="w3-text-teal"><b>Ficheiro: </b></label>
             </div>
+            <div class="w3-col s9 w3-border">
+                <input class="w3-input w3-border w3-light-grey" type="file" name="recurso" onchange="getChecksum(this,${newFileId})" required>
+            </div>
+            
             <input class="w3-btn w3-blue-grey" type="button" value="Remover" onclick='removeFormChunk(${newFileId})'/>
         </div>`;
         

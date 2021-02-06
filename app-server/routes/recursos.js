@@ -266,6 +266,7 @@ router.post('/upload', upload.single('zip'), function(req, res) {
         else if (entry.entryName == "manifest-md5.txt") {
           let entries = entry.getData().toString().split("\n")
           entries.pop()
+          
           entries.forEach(a=>{
             let separated = a.split(" ")
             let hash = separated[0]
@@ -273,14 +274,19 @@ router.post('/upload', upload.single('zip'), function(req, res) {
             let diretoria = extractpath + ("/" + separated[1])
             let nova_diretoria = extractpath.replace("uploads","public/fileStore/") + Date.now() + "-" + nome_ficheiro
             let newhash = aux.calculateMd5(diretoria)
-            ficheiros.push({nome_ficheiro: nome_ficheiro, tipo_mime: aux.getMimeType(diretoria), tamanho: aux.getSize(diretoria), diretoria: nova_diretoria.split("app-server/")[1].replace(/^public/, ""), hash: newhash})
-            fs.rename(diretoria, nova_diretoria, err => {
-              if (err) throw err
+
+            ficheiros.push({
+              nome_ficheiro: nome_ficheiro, 
+              tipo_mime: aux.getMimeType(diretoria), 
+              tamanho: aux.getSize(diretoria), 
+              diretoria: nova_diretoria.split("app-server/")[1].replace(/^public/, ""), 
+              hash: newhash
             })
+            
+            fs.rename(diretoria, nova_diretoria, err => { if (err) throw err })
+
             let pertence = false
-            entradasZip.forEach(r=>{
-              if(r==nome_ficheiro) pertence = true
-            })
+            entradasZip.forEach(r => { if(r==nome_ficheiro) pertence = true })
             if(newhash != hash || !pertence) valido = false
           })
         }

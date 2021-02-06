@@ -42,7 +42,7 @@ block content
               select(id="tipo_recurso0" class="w3-input w3-border w3-light-grey" name="tipo" required)
                 option(hidden disabled selected value)
                 each t in tipos
-                  option(value= t.tipo) #{t.tipo}
+                  option(value= t) #{t}
                 option(value="Outro") Outro
                 
           div(id="outro_tipo_recurso0" class="login_container" style="display: none")
@@ -73,7 +73,8 @@ block content
                 b Ficheiro: 
             div(class="w3-col s9 w3-border")
               input(class="w3-input w3-border w3-light-grey" type="file" name="recurso" onchange="getChecksum(this,0)" required)
-        div(id="anotherFile" style="login-container" class="0")
+
+            div(id="anotherFile" style="login-container" class="0")
 
         div(class="login_container")
           input(class="w3-btn w3-blue-grey" type="button" value="+ 1" onclick='injectForm()')
