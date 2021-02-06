@@ -37,9 +37,10 @@ block content
                   p.m-b-10 
                    i.fa.fa-envelope-o(style='font-size:24px;color:#7FDBFF')  E-mail: 
                    |  #{user.email}
-                  p.m-b-10 
-                   i.fa.fa-file-o(style='font-size:24px;color:#7FDBFF')  Descrição: 
-                   |  #{user.descricao} 
+                  if user.descricao 
+                   p.m-b-10 
+                    i.fa.fa-file-o(style='font-size:24px;color:#7FDBFF')  Descrição: 
+                    |  #{user.descricao} 
                   if dono 
                     a.btn.btn-sm.btn-info.mb-2(href='#' onclick='editForm(' +'\'' + JSON.stringify(user) +'\'' + ');') Editar Perfil
                     |  
