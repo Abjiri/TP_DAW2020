@@ -44,19 +44,18 @@ function getInfoToken(cookiesToken) {
   return {_id: null, nivel: 'consumidor'}
 }
 
-function variaveisRecursos(recursos, cookiesToken, meus_recursos) {
+function variaveisRecursos(recursos, tipos_bd, cookiesToken, meus_recursos) {
+  var token = unveilToken(cookiesToken)
   var nomesAutores = []
   var idsAutores = []
+  
   var tipos = []
-
-  var token = unveilToken(cookiesToken)
+  tipos_bd.data.forEach(t => tipos.push(t.tipo))
 
   recursos.forEach(r => {
     r.tamanho = calculateSize(r.tamanho)
     r.dono = token._id == r.idAutor
     r.dataUltimaMod = moment(r.dataUltimaMod).format('HH:mm:ss, DD-MM-YYYY')
-            
-    if (!tipos.includes(r.tipo)) tipos.push(r.tipo)
 
     if (!idsAutores.includes(r.idAutor)) {
       idsAutores.push(r.idAutor)

@@ -17,8 +17,12 @@ router.get('/', function(req, res) {
   else {
     axios.get('http://localhost:8001/recursos?token=' + req.cookies.token)
       .then(dados => {
-        var varsPug = aux.variaveisRecursos(dados.data, req.cookies.token, false)
-        res.render('recursos', varsPug)
+        axios.get('http://localhost:8001/recursos/tipos?token=' + req.cookies.token)
+          .then(tipos_bd => {
+            var varsPug = aux.variaveisRecursos(dados.data, tipos_bd, req.cookies.token, false)
+            res.render('recursos', varsPug)
+          })
+          .catch(error => res.render('error', {error}))
       })
       .catch(error => res.render('error', {error}))
   }
@@ -29,10 +33,14 @@ router.post('/ordenar/:criterio/:sentido', function(req, res) {
   else {
     axios.get(`http://localhost:8001/recursos/ordenar/${req.params.criterio}/${req.params.sentido}?token=` + req.cookies.token)
       .then(dados => {
-        var varsPug = aux.variaveisRecursos(dados.data, req.cookies.token, false)
-        varsPug.ordemAtual = req.params.criterio + '/' + req.params.sentido
-
-        res.render('recursos', varsPug)
+        axios.get('http://localhost:8001/recursos/tipos?token=' + req.cookies.token)
+          .then(tipos_bd => {
+            var varsPug = aux.variaveisRecursos(dados.data, tipos_bd, req.cookies.token, false)
+            varsPug.ordemAtual = req.params.criterio + '/' + req.params.sentido
+    
+            res.render('recursos', varsPug)
+          })
+          .catch(error => res.render('error', {error}))
       })
       .catch(error => res.render('error', {error}))
   }
@@ -76,8 +84,12 @@ router.get('/limpar-filtro/:meus_recursos?', (req, res) => {
 
       axios.post(`http://localhost:8001/recursos/pesquisar?token=${req.cookies.token}`, {meus_recursos: token._id})
         .then(dados => {
-          var varsPug = aux.variaveisRecursos(dados.data, req.cookies.token, true)
-          res.render('recursos', varsPug)
+          axios.get('http://localhost:8001/recursos/tipos?token=' + req.cookies.token)
+            .then(tipos_bd => {
+              var varsPug = aux.variaveisRecursos(dados.data, tipos_bd, req.cookies.token, true)
+              res.render('recursos', varsPug)
+            })
+            .catch(error => res.render('error', {error}))
         })
         .catch(error => res.render('error', {error}))
     }
@@ -188,7 +200,12 @@ router.post('/pesquisar', (req, res) => {
             varsPug.filtroAtual = novoFiltro
           }
 
-          res.render('recursos', varsPug)
+          axios.get('http://localhost:8001/recursos/tipos?token=' + req.cookies.token)
+            .then(tipos_bd => {
+              var varsPug = aux.variaveisRecursos(dados.data, tipos_bd, req.cookies.token, true)
+              res.render('recursos', varsPug)
+            })
+            .catch(error => res.render('error', {error}))
         })
         .catch(error => res.render('error', {error}))
     }
@@ -284,8 +301,9 @@ router.post('/upload', upload.single('zip'), function(req, res) {
             })
             
             fs.rename(diretoria, nova_diretoria, err => { if (err) throw err })
-
+            
             let pertence = false
+
             entradasZip.forEach(r => { if(r==nome_ficheiro) pertence = true })
             if(newhash != hash || !pertence) valido = false
           })

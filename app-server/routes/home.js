@@ -24,14 +24,7 @@ router.get('/', function(req, res) {
         })
 
         var token = aux.unveilToken(req.cookies.token)
-          
-        axios.get('http://localhost:8001/recursos/tipos?token=' + req.cookies.token)
-          .then(tipos_bd => {
-            var tipos = []
-            tipos_bd.data.forEach(t => tipos.push(t.tipo))
-
-            res.render('home', {nivel: token.nivel, noticias, tipos})})
-          .catch(error => res.render('error', {error}))
+        res.render('home', {nivel: token.nivel, noticias})
       })
       .catch(error => res.render('error', {error}))
   }
