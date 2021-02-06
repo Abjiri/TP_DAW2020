@@ -73,7 +73,6 @@ router.get('/:id', function(req, res) {
 router.post('/', function(req, res){
   Recurso.inserir(req.body.recurso)
     .then(dados => {
-      console.log("correu bem ate aqui")
       RecursoTipo.inserir(req.body.tiposNovos)
         .then(dados2 => res.status(201).jsonp({dados}))
         .catch(e => res.status(500).jsonp({error: e}))

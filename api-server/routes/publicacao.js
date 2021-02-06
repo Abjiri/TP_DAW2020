@@ -28,8 +28,6 @@ router.post('/', function(req,res){
 })
 
 router.post('/comentar/:id', function(req,res){
-  console.log(req.params.id)
-  console.log(req.body)
   Publicacao.adicionarComentario(req.params.id, req.body)
     .then(dados => res.status(200).jsonp(dados))
     .catch(e => res.status(500).jsonp({error: e}))

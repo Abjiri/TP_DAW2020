@@ -253,7 +253,7 @@ router.post('/editar/:id', upload.any(), function(req, res) {
 
           req.body.ficheiros = []
           req.files.forEach(f => {
-            if (f.fieldname == 'novoFicheiro') {
+            if (f.fieldname == 'recurso') {
               var data = Date.now()
               f.originalname = f.originalname.replace(/ /g, "_")
 

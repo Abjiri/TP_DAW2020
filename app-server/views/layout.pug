@@ -3,7 +3,6 @@ html
   head
     title Gestão de recursos educativos
     link(rel='stylesheet', href='/stylesheets/style.css')
-    link(rel='stylesheet', href='/stylesheets/modal.css')
     link(rel='stylesheet', href='/stylesheets/rating.css')
     link(rel='stylesheet', href='/stylesheets/navbar.css')
     link(rel='stylesheet', href='/stylesheets/imageform.css')
@@ -11,6 +10,7 @@ html
     link(rel='stylesheet', href='/stylesheets/slider-visibilidade.css')
     link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css")
     link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css")
+    link(rel='stylesheet', href='/stylesheets/modal.css')
 
     script(src="/javascripts/jquery-3.5.1.min.js")
     script(src="/javascripts/jszip.js")
@@ -120,6 +120,9 @@ html
         div(class="signup_container clearfix")
           button(id="signup_cancelbtn" type="button" class="signup_btn signup_cancelbtn") Cancelar
           button(type="submit" class="signup_btn signup_submit_btn") Registar
+
+    
+    div(id="preview_recurso" class="modal" style="z-index: 101; width: 50%; max-width: 50; %height: 60%; max-height: 60%")
 
         
     block content

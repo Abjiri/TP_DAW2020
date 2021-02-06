@@ -29,7 +29,7 @@
     display:none;
     vertical-align:middle;
     position:relative;
-    z-index:2;
+    z-index:101;
     max-height: 90%;
     max-width: 90%;
     box-sizing:border-box;

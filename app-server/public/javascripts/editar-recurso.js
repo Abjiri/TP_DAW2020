@@ -1,15 +1,20 @@
-function adicionarLinha(nr) {
-    return `
-        <tr id="linha${nr}">
+function adicionarLinha(nr, operacao) {
+    var html = `<tr id="linha${nr}">
             <th class="nome"></th>
             <th class="tamanho"></th>
             <th class="preview"></th>
-            <th>
-                <button class="adicionar" type="button" onclick="adicionarFicheiro(${nr})"> &#10133; </button>
-                <input name="novoFicheiro" type="file" id="novoFicheiro${nr}" style="display: none">
-                <button class="remover" type="button" style="color: red; display: none" onclick="removerFicheiro('linha${nr}')"> &#10006; </button>
+            <th>`
+    
+    if (operacao == 'upload') html += `<input hidden name="checksum${nr}" value="">`
+
+    html += `
+                <button class="adicionar" type="button" onclick="adicionarFicheiro(${nr}, '${operacao}')"> &#10133; </button>
+                <input name="recurso" type="file" id="novoFicheiro${nr}" style="display: none">
+                <button class="remover" type="button" style="color: red; display: none" onclick="removerFicheiro('linha${nr}', '${operacao}')"> &#10006; </button>
             </th>
         </tr>`
+
+    return html
 }
 
 function editarRecurso(recurso) {
@@ -19,7 +24,6 @@ function editarRecurso(recurso) {
   
     var html = `
     <form class="my-modal-content" style="width: 60%" action="/recursos/editar/${r._id}" method="POST" enctype="multipart/form-data">
-      <div id="preview_recurso" class="modal" style="z-index: 101; width: 50%; max-width: 50; %height: 60%; max-height: 60%"></div>
 
       <h2 style="margin: 10px 20px 20px 20px">Editar recurso</h2>
       <div class="login_container">
@@ -104,7 +108,7 @@ function editarRecurso(recurso) {
                 <label class="w3-text-teal"><b>Ficheiros: </b></label>
             </div>
             <div class="w3-col s9 w3-border">
-                <table id="ficheiros" class="w3-table-all">
+                <table id="ficheiros-edicao" class="w3-table-all">
                     <tr>
                         <th> Nome </th>
                         <th> Tamanho </th>
@@ -117,17 +121,15 @@ function editarRecurso(recurso) {
                     <td> ${f.nome_ficheiro} </td>
                     <td> ${f.tamanho} </td>
                     <td><button type="button" class="resource-btn" onclick='mostrarPreviewAntigo("${f.nome_ficheiro}", "${f.tipo_mime}", "${f.diretoria}")')> 👁 </button></td>
-                    <td><button type="button" style="color: red" onclick="removerFicheiro('${f._id}')"> &#10006; </button></td>
+                    <td><button type="button" style="color: red" onclick="removerFicheiro('${f._id}', 'edicao')"> &#10006; </button></td>
                 </tr>`
     })
 
-    html += adicionarLinha(1)
+    html += adicionarLinha(0, 'edicao')
     html += `
                 </table>
             </div>
         </div>
-
-        <input id="nrFicheirosNovos" value="1" hidden>
   
         <div class="w3-row login_container w3-margin-bottom">
             <input class="w3-btn w3-blue-grey w3-margin-top" style="float:right" type="submit" value="Submeter"/>
@@ -140,24 +142,23 @@ function editarRecurso(recurso) {
     document.getElementById('editar_recurso').style.display = 'block'; 
 }
 
-function adicionarFicheiro(nr) {
+function adicionarFicheiro(nr, operacao) {
     $('#novoFicheiro'+nr).click();
     $('#novoFicheiro'+nr).change(function () {
         if (this.files) {
-            var nrFicheiroNovo = parseInt($('#nrFicheirosNovos').val())
             var detalhes = this.files[0]
+            if (operacao == 'upload') getChecksum(this,nr)
 
-            $(`#linha${nrFicheiroNovo} .nome`).html(detalhes.name)
-            $(`#linha${nrFicheiroNovo} .tamanho`).html(calcularTamanho(detalhes.size))
+            $(`#linha${nr} .nome`).html(detalhes.name)
+            $(`#linha${nr} .tamanho`).html(calcularTamanho(detalhes.size))
 
             var preview = '<button type="button" class="resource-btn" onclick="mostrarPreviewNovo('+nr+')"> 👁 </button>'
-            $(`#linha${nrFicheiroNovo} .preview`).html(preview)
+            $(`#linha${nr} .preview`).html(preview)
 
-            $(`#linha${nrFicheiroNovo} button.adicionar`).css("display","none")
-            $(`#linha${nrFicheiroNovo} button.remover`).css("display","inline-block")
-
-            $('#ficheiros tr:last').after(adicionarLinha(nrFicheiroNovo+1))
-            $('#nrFicheirosNovos').val(nrFicheiroNovo+1)
+            $(`#linha${nr} button.adicionar`).css("display","none")
+            $(`#linha${nr} button.remover`).css("display","inline-block")
+            
+            $(`#ficheiros-${operacao} tr:last`).after(adicionarLinha(nr+1, operacao))
         }
     })
 }
@@ -208,17 +209,17 @@ function mostrarPreviewNovo(nr) {
     $('#preview_recurso').modal();
 }
 
-function removerFicheiro(id) {
-    var nrLinhas = $('#ficheiros tr').length - 2 //th's e linha de adicionar recursos
+function removerFicheiro(id, operacao) {
+    var nrLinhas = $(`#ficheiros-${operacao} tr`).length - 2 //th's e linha de adicionar recursos
     if (nrLinhas == 1) window.alert('O recurso precisa de ter pelo menos 1 ficheiro!') 
     else {
-        var removerFicheiros = JSON.parse($('#removerFicheiros').val())
+        /* var removerFicheiros = JSON.parse($('#removerFicheiros').val())
         var ficheiros = JSON.parse($('#ficheiros').val())
 
         var f = ficheiros.filter(obj => {return obj._id == id})
         removerFicheiros.push(id)
         console.log(f[0])
-        $('#removerFicheiros').val(JSON.stringify(removerFicheiros))
+        $('#removerFicheiros').val(JSON.stringify(removerFicheiros)) */
 
         $('#'+id).remove()
     }

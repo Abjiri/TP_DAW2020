@@ -2,19 +2,23 @@ $(document).ready(function()
   {
     $('body').on('click', '#upload', function(e){
         e.preventDefault();
-        var total = parseInt($('#anotherFile').attr('class')) + 1
+
         var i = 0; 
         var form = document.getElementById('myForm');
+
+        var total = parseInt($(`#ficheiros-upload tr`).length - 2) //th's e linha de adicionar recursos
+        $('#linha'+total).remove()
+
         var formData = new FormData(form);
         console.log("START")
         console.log([...formData])
         var files = {}
         var zip = new JSZip();
-        for (var [key, value] of formData.entries()) { 
-            if(key == "recurso"){
-                zip.file("data/" + value.name, value)
-                files[i++] = value.name
-            }
+        for (var [key, value] of formData.entries()) {
+          if(key == "recurso"){
+            zip.file("data/" + value.name, value)
+            files[i++] = value.name
+          }
         }
         var manifest = getManifestString(files)
         zip.file("manifest-md5.txt",manifest)
@@ -22,7 +26,6 @@ $(document).ready(function()
         zip.generateAsync({type:'blob'}).then((blobdata)=>{
           //o zip chama-se blob
           formData.delete("recurso")
-          formData.delete("nr_visibilidade")
           for(var i = 0; i < total; i++){
             formData.delete("checksum"+i)
           }
@@ -30,7 +33,7 @@ $(document).ready(function()
           console.log("FIM")
           console.log([...formData])
           
-          $.ajax({
+          /* $.ajax({
             url: "/recursos/upload",
             type: "POST",
             data: formData,
@@ -39,7 +42,7 @@ $(document).ready(function()
             success: function (response){
               window.location.replace("/recursos");
             }
-          });
+          }); */
           // For development and testing purpose
             // create zip blob file
             // Download the zipped file 
@@ -53,6 +56,7 @@ $(document).ready(function()
 })
 
 function getChecksum(input, id){
+  console.log(id)
     let file = input.files[0];
 
     let reader = new FileReader();
@@ -62,8 +66,9 @@ function getChecksum(input, id){
     reader.onload = function() {
       var hash = CryptoJS.MD5(reader.result).toString();
       console.log($(`input[name = "checksum${id}"]`))
-      $(`input[name = "checksum${id}"]`).attr('value', hash)
+      $(`input[name = "checksum${id}"]`).val(hash)
       console.log("HASH: " + hash)
+      console.log($(`input[name = "checksum${id}"]`).val())
     };
 
     reader.onerror = function() {
