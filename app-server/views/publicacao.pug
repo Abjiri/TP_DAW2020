@@ -6,10 +6,9 @@ block content
     script(src='https://code.jquery.com/jquery-3.2.1.slim.min.js' integrity='sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN' crossorigin='anonymous')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js' integrity='sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q' crossorigin='anonymous')
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js' integrity='sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl' crossorigin='anonymous')
-    .d-flex.flex-row.align-items-center.text-left.comment-top.p-2.bg-light.border-bottom.px-4
+    .container.d-flex.flex-row.align-items-center.text-left.comment-top.p-2.bg-light.border-bottom.px-4.mt-4
      .profile-image
         img.rounded-circle(src=autor.foto ? autor.foto : '/images/login_avatar.png' width='80' height='80')
-     .d-flex.flex-column-reverse.flex-grow-0.align-items-center.votings.ml-1
 
      .d-flex.flex-column.ml-3
         .d-flex.flex-row.post-title
@@ -28,7 +27,7 @@ block content
           b #{moment(new Date(publicacao.dataCriacao)).locale('pt').fromNow()}
         .d-flex.flex-row.align-items-center.align-content-center.post-title
          span.mr-2.comments (#{publicacao.comments.length} comentários)
-    .d-flex.flex-row.align-items-center.text-left.comment-top.p-2.bg-light.border-bottom.px-4
+    .container.d-flex.flex-row.align-items-center.text-left.comment-top.p-2.bg-light.border-bottom.px-4
         textarea.textarea2(readonly) #{publicacao.corpo}
     .container.bootstrap.snippets.bootdey.bg-light
        .row
