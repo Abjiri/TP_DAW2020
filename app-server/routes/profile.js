@@ -70,8 +70,19 @@ router.post('/:id/editar/imagem/', upload.single('foto'), function(req,res,next)
     var token = aux.unveilToken(req.cookies.token)
 
     if ((token.nivel == 'produtor' || token.nivel == 'admin') && token._id == req.params.id) {
-      axios.put('http://localhost:8001/users/imagem/' + req.params.id +'?token=' + req.cookies.token, {foto: req.file.path.replace("public","").replace(/\\/g,"/"), _id: token._id})
-        .then(dados => res.redirect("/perfil"))
+      var foto = req.file.path.replace("public","").replace(/\\/g,"/")
+      axios.put('http://localhost:8001/users/imagem/' + req.params.id +'?token=' + req.cookies.token, {foto: foto, _id: token._id})
+        .then(dados => {
+          axios.post('http://localhost:8001/noticias/atualizarFoto/' + token._id + '?token=' + req.cookies.token, {foto: foto})
+            .then(dados => {
+              axios.post('http://localhost:8001/publicacoes/atualizarFoto/' + token._id + '?token=' + req.cookies.token, {foto: foto})
+                .then(dados => {
+                  res.redirect("/perfil")
+                })
+                .catch(error => res.render('error', {error}))
+            })
+            .catch(error => res.render('error', {error}))
+        })
         .catch(error => res.render('error', {error}))
     }
     else res.redirect('/perfil/' + req.params.id)
