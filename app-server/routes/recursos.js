@@ -185,25 +185,23 @@ router.post('/pesquisar', (req, res) => {
 
       axios.post(`http://localhost:8001/recursos/pesquisar?token=${req.cookies.token}`, req.body)
         .then(dados => {
-          var varsPug = aux.variaveisRecursos(dados.data, req.cookies.token, req.body.meus_recursos ? true : false)
-
-          if (req.body.filtro) {
-            var novoFiltro;
-
-            switch (req.body.filtro) {
-              case 'titulo': novoFiltro = {"tipo": "Título", "valor": req.body.titulo}; break;
-              case 'tipo': novoFiltro = {"tipo": "Tipo", "valor": req.body.tipo}; break;
-              case 'autor': novoFiltro = {"tipo": "Autor", "valor": req.body.autor}; break;
-              case 'ano': novoFiltro = {"tipo": "Ano", "valor": req.body.ano}; break;
-            }
-            novoFiltro.tipoOriginal = req.body.filtro
-            varsPug.filtroAtual = novoFiltro
-          }
-
           axios.get('http://localhost:8001/recursos/tipos?token=' + req.cookies.token)
             .then(tipos_bd => {
-              console.log(tipos_bd.data)
-              var varsPug = aux.variaveisRecursos(dados.data, tipos_bd, req.cookies.token, true)
+              var varsPug = aux.variaveisRecursos(dados.data, tipos_bd, req.cookies.token, req.body.meus_recursos ? true : false)
+
+              if (req.body.filtro) {
+                var novoFiltro;
+
+                switch (req.body.filtro) {
+                  case 'titulo': novoFiltro = {"tipo": "Título", "valor": req.body.titulo}; break;
+                  case 'tipo': novoFiltro = {"tipo": "Tipo", "valor": req.body.tipo}; break;
+                  case 'autor': novoFiltro = {"tipo": "Autor", "valor": req.body.autor}; break;
+                  case 'ano': novoFiltro = {"tipo": "Ano", "valor": req.body.ano}; break;
+                }
+                novoFiltro.tipoOriginal = req.body.filtro
+                varsPug.filtroAtual = novoFiltro
+              }
+                
               res.render('recursos', varsPug)
             })
             .catch(error => res.render('error', {error}))
