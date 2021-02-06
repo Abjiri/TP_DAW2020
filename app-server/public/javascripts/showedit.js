@@ -10,35 +10,39 @@ var loadFile = function(event){
     }
 };
 
-function showEdit(){
-    var ficheiro = `<img src='https://bootdey.com/img/Content/avatar/avatar3.png' />`
-
-    $('#display').empty()
-    $('#display').append(ficheiro)
-    $('#display').modal()
-}
-
 function pictureForm(id){
-    var form = `
-    <form class="w3-container my-modal-content" action="/perfil/${id}/editar/imagem/" method="POST" style="border: 0; width: 100%" enctype='multipart/form-data'>
-    <div class="login_img">
-        <span class="picture_close" title="Fechar" onclick="fechar()"> &times;</span>
-    </div>
-    <div "w3-row w3-margin-bottom">
-        <div class="w3-col s3">
+    $('#edit_pic_modal').empty()
+    var html = `
+    <form class="my-modal-content" action="/perfil/${id}/editar/imagem/" method="POST" enctype='multipart/form-data'>
+      <h2 style="margin: 10px 20px 20px 20px">Mudar Foto</h2>
+      <div class="login_container">
+  
+        <div class="login_container">
+          <div class="w3-col s3">
             <label class="w3-text-teal"><b>Selecionar Imagem: </b></label>
-        </div>
-        <div class="w3-col s9 w3-border">
+          </div>
+          <div class="w3-col s9 w3-border">
             <input class="w3-input w3-border w3-light-grey" onchange="loadFile(event)" type="file" name="foto" accept="image/*" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+          </div>
         </div>
-        <img class="w3-margin-top w3-margin-bottom" id="output" style="width:100%"/>
-    </div>
-    <input class="w3-btn w3-light-blue" type="submit" value="Confirmar" style="width: 100%"/>
-</form>
-    `
-    $('#display').empty()
-    $('#display').append(form)
-    $('#display').modal()
+        
+        <div class="login_container">
+            <img class="w3-margin-top w3-margin-bottom" id="output" style="width:100%"/>
+
+        <div class="w3-row login_container w3-margin-bottom">
+          <input class="w3-btn w3-blue-grey w3-margin-top" style="float:right" type="submit" value="Submeter"/>
+          <input class="w3-btn w3-blue-grey w3-margin-top" id="close_edit_picture" style="float:right; margin-right: 10px" type="button" value="Cancelar"/>
+        </div>
+      </div>
+    </form>`
+
+    $('#edit_pic_modal').append(html)
+    document.getElementById('edit_pic_modal').style.display = 'block';
+
+    $("#close_edit_picture").click(function(event) {
+        event.preventDefault();
+        document.getElementById('edit_pic_modal').style.display='none';   
+    })
 }
 
 function equalSelect(f1,f2){
@@ -46,48 +50,63 @@ function equalSelect(f1,f2){
 }
 
 function editForm(user){
+    $('#edit_profile_modal').empty()
     var json = JSON.parse(user.replace(/\\/g, "/"))
-    var form = ` 
-    <form class="w3-container" action="/perfil/${json._id}/editar/" method="POST">
-    <div class="w3-row w3-margin-bottom">
-        <div class="w3-col s3">
-            <label class="w3-text-teal"><b>Nome:</b></label>
-        </div>
-        <div class="w3-col s9 w3-border">
+    var html = `
+    <form class="my-modal-content" action="/perfil/${json._id}/editar/" method="POST">
+      <h2 style="margin: 10px 20px 20px 20px">Editar Perfil</h2>
+      <div class="login_container">
+  
+        <div class="login_container">
+          <div class="w3-col s3">
+            <label class="w3-text-teal"><b>Nome: </b></label>
+          </div>
+          <div class="w3-col s9 w3-border">
             <input class="w3-input w3-border w3-light-grey" type="text" name="nome" value="${json.nome}">
+          </div>
         </div>
-    </div>
-    <div "w3-row w3-margin-bottom">
-        <div class="w3-col s3">
-            <label class="w3-text-teal"><b>Descrição:</b></label>
-        </div>
-        <div class="w3-col s9 w3-border">
+  
+        <div class="login_container">
+          <div class="w3-col s3">
+            <label class="w3-text-teal"><b>Descrição: </b></label>
+          </div>
+          <div class="w3-col s9 w3-border">
             <input class="w3-input w3-border w3-light-grey" type="text" name="descricao" value="${json.descricao}">
+          </div>
         </div>
-    </div>
-    <div "w3-row w3-margin-bottom">
-    <div class="w3-col s3  w3-margin-top">
-        <label class="w3-text-teal"><b>Estatuto:</b></label>
-    </div>
-    <div class="w3-col s9 w3-border w3-margin-top">
-        <select name="estatuto" id="estatuto" style="width:100%">
-            <option value="estudante" ` + (json.estatuto.tipo == "estudante" ? `selected` : ``)  + `>Estudante</option>
-            <option value="docente" ` + (json.estatuto.tipo == "docente" ? `selected` : ``) + `>Docente</option>
-            <option value="trabalhador" ` + (json.estatuto.tipo == "trabalhador" ? `selected` : ``) + `>Trabalhador</option>
-        </select>
-    </div>
-    </div>
-    <div "w3-row w3-margin-bottom">
+        <div class="login_container">
+          <div class="w3-col s3 w3-margin-top">
+            <label class="w3-text-teal"><b>Estatuto: </b></label>
+          </div>
+          <div class="w3-col s9 w3-margin-top">
+            <select name="estatuto" id="estatuto" style="width:100%">
+              <option value="estudante" ` + (json.estatuto.tipo == "estudante" ? `selected` : ``)  + `>Estudante</option>
+              <option value="docente" ` + (json.estatuto.tipo == "docente" ? `selected` : ``) + `>Docente</option>
+              <option value="trabalhador" ` + (json.estatuto.tipo == "trabalhador" ? `selected` : ``) + `>Trabalhador</option>
+            </select>
+          </div>
+        </div>
+        <div class="login_container">
         <div class="w3-col s3 w3-margin-top">
-            <label class="w3-text-teal"><b>Filiação:</b></label>
+          <label class="w3-text-teal"><b>Filiação: </b></label>
         </div>
-        <div class="w3-col s9">
-            <input class="w3-input w3-margin-top w3-border w3-light-grey" type="text" name="filiacao" value="${json.estatuto.filiacao}">
+        <div class="w3-col s9 ">
+            <input class="w3-input w3-margin-top w3-light-grey w3-margin-top w3-border" type="text" name="filiacao" value="${json.estatuto.filiacao}">
         </div>
-    </div>
-    <input class="w3-margin-top w3-btn w3-light-blue" type="submit" value="Confirmar" style="width: 100%"/>
+      </div>
+        <div class="w3-row login_container w3-margin-bottom">
+          <input class="w3-btn w3-blue-grey w3-margin-top" style="float:right" type="submit" value="Submeter"/>
+          <input class="w3-btn w3-blue-grey w3-margin-top" id="close_edit_profile" style="float:right; margin-right: 10px" type="button" value="Cancelar"/>
+        </div>
+      </div>
     </form>`
-    $('#display2').empty()
-    $('#display2').append(form)
-    $('#display2').modal()
+    
+    $('#edit_profile_modal').append(html)
+    document.getElementById('edit_profile_modal').style.display = 'block';
+
+    $("#close_edit_profile").click(function(event) {
+        event.preventDefault();
+        document.getElementById('edit_profile_modal').style.display='none';   
+    })
+    
 }

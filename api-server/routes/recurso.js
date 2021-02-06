@@ -56,6 +56,12 @@ router.post('/pesquisar', function(req, res) {
   }
 })
 
+router.get('/titulo/:id', function(req, res) {
+  Recurso.consultarTitulo(req.params.id)
+    .then(dados => res.status(200).jsonp(dados))
+    .catch(e => res.status(500).jsonp({error: e}))
+});
+
 // Consultar um recurso
 router.get('/:id', function(req, res) {
   Recurso.consultar(req.params.id)

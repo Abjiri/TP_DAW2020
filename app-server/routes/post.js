@@ -12,35 +12,14 @@ router.get('/:id', function(req,res) {
 
         axios.get('http://localhost:8001/publicacoes/' + req.params.id + '?token=' + req.cookies.token)
             .then(dados => {
+                let visitante
                 aux.sortComments(dados.data)
-
-                let users = {}
-                let promises = []
-                let visitante, autor
-
-                dados.data.comments.forEach(c => {
-                    promises.push(
-                        axios.get('http://localhost:8001/users/' + c.id_autor + '?token=' + req.cookies.token)
-                            .then(userData => {
-                                let user = userData.data
-                                if (!(user._id in users)) users[user._id] = user
-                            })  
-                            .catch(error => res.render('error', {error}))
-                    )
-                })
-                
-                promises.push(
-                    axios.get('http://localhost:8001/users/' + token._id + '?token=' + req.cookies.token)
-                    .then(visitanteData => visitante = visitanteData.data)  
+                axios.get('http://localhost:8001/users/' + token._id + '?token=' + req.cookies.token)
+                    .then(visitanteData => {
+                        visitante = visitanteData.data
+                        res.render('publicacao', {publicacao: dados.data, nivel: token.nivel, visitante})
+                    })  
                     .catch(error => res.render('error', {error}))
-                )
-
-                promises.push(
-                    axios.get('http://localhost:8001/users/' + dados.data.id_autor + '?token=' + req.cookies.token)
-                    .then(autorData => autor = autorData.data)  
-                    .catch(error => res.render('error', {error}))
-                )
-                Promise.all(promises).then(() => res.render('publicacao', {publicacao: dados.data, nivel: token.nivel, users, visitante, autor}));
             })
             .catch(error => res.render('error', {error}))
     }
@@ -54,10 +33,23 @@ router.post('/', function(req, res) {
         if (token.nivel == 'produtor' || token.nivel == 'admin') {
             req.body["id_autor"] = token._id
             req.body["dataCriacao"] = new Date().toISOString().substr(0,19)
+            axios.get('http://localhost:8001/users/imagem/' + token._id + '?token=' + req.cookies.token)
+                .then(fotoData => {
+                    req.body["nome_autor"] = token.nome
+                    req.body["foto"] = fotoData.data.foto
 
-            axios.post('http://localhost:8001/publicacoes?token=' + req.cookies.token, req.body)
-                .then(dados => res.redirect("/publicacoes/" + dados.data._id))
-                .catch(error => res.render('error', {error}))
+                    axios.get('http://localhost:8001/recursos/titulo/' + req.body.id_recurso + '?token=' + req.cookies.token)
+                    .then(tituloData => {
+                        console.log(tituloData.data)
+                        req.body["titulo_recurso"] = tituloData.data.titulo
+
+                        axios.post('http://localhost:8001/publicacoes?token=' + req.cookies.token, req.body)
+                            .then(dados => res.redirect("/publicacoes/" + dados.data._id))
+                            .catch(error => res.render('error', {error}))
+                    })
+                    .catch(error => res.render('error', {error}))
+                })
+                .catch(error => res.render('error', {error})) 
         }
     }
 })
@@ -70,10 +62,15 @@ router.post('/comentar/:id', function(req, res) {
         if (token.nivel == 'produtor' || token.nivel == 'admin') {
             req.body["id_autor"] = token._id
             req.body["dataCriacao"] = new Date().toISOString().substr(0,19)
-            
-            axios.post('http://localhost:8001/publicacoes/comentar/' + req.params.id + '?token=' + req.cookies.token, req.body)
-                .then(dados => res.redirect("/publicacoes/"+dados.data._id))
-                .catch(error => res.render('error', {error}))
+            axios.get('http://localhost:8001/users/imagem/' + token._id + '?token=' + req.cookies.token)
+                .then(fotoData => {
+                    req.body["nome_autor"] = token.nome
+                    req.body["foto"] = fotoData.data.foto
+                    axios.post('http://localhost:8001/publicacoes/comentar/' + req.params.id + '?token=' + req.cookies.token, req.body)
+                        .then(dados => res.redirect("/publicacoes/"+dados.data._id))
+                        .catch(error => res.render('error', {error}))
+                })
+                .catch(error => res.render('error', {error})) 
         }
     }
 })

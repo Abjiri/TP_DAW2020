@@ -8,7 +8,7 @@ block content
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js' integrity='sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl' crossorigin='anonymous')
     .container.d-flex.flex-row.align-items-center.text-left.comment-top.p-2.bg-light.border-bottom.px-4.mt-4
      .profile-image
-        img.rounded-circle(src=autor.foto ? autor.foto : '/images/login_avatar.png' width='80' height='80')
+        img.rounded-circle(src=publicacao.foto ? publicacao.foto : '/images/login_avatar.png' width='80' height='80')
 
      .d-flex.flex-column.ml-3
         .d-flex.flex-row.post-title
@@ -16,13 +16,13 @@ block content
         .d-flex.flex-row.align-items-center.align-content-center.post-title
          span.mr-2 
           b Recurso:  
-          a(href=`/recursos/${publicacao.recurso}`) Ver
+          a(href=`/recursos/${publicacao.id_recurso}`) #{publicacao.titulo_recurso}
         .d-flex.flex-row.align-items-center.align-content-center.post-title
          if visitante._id == publicacao.id_autor
           span.mr-2 Postado por mim
          else  
           span.mr-2 Postado por  
-            a(href=`/perfil/${publicacao.id_autor}`) #{autor.nome}
+            a(href=`/perfil/${publicacao.id_autor}`) #{publicacao.nome_autor}
          span 
           b #{moment(new Date(publicacao.dataCriacao)).locale('pt').fromNow()}
         .d-flex.flex-row.align-items-center.align-content-center.post-title
@@ -45,7 +45,7 @@ block content
                 - dataTimeline = moment(new Date(c.dataCriacao)).locale('pt').fromNow() 
                 li.clearfix
                     figure
-                     img.avatar(src= users[c.id_autor].foto ? users[c.id_autor].foto : '/images/login_avatar.png' alt='' style="border-radius: 50%")
+                     img.avatar(src= c.foto ? c.foto : '/images/login_avatar.png' alt='' style="border-radius: 50%")
                     .post-comments
                      figcaption 
                       a(href=`/perfil/${c.id_autor}`)
@@ -53,7 +53,7 @@ block content
                         if publicacao.id_autor == c.id_autor 
                          | Eu 
                         else 
-                         | #{users[c.id_autor].nome}
+                         | #{c.nome_autor}
                      p.meta
                         | #{dataTimeline}:
                         i.pull-right

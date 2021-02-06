@@ -7,7 +7,7 @@ function showPostForm(id) {
     <div class="login_container">
 
       <div class="login_container">
-        <input type="text" name="recurso" value=${id} hidden/>
+        <input type="text" name="id_recurso" value=${id} hidden/>
 
         <div class="w3-col s3">
           <label class="w3-text-teal"><b>Título: </b></label>
@@ -35,13 +35,9 @@ function showPostForm(id) {
 
   $('#new_post_modal').append(html)
   document.getElementById('new_post_modal').style.display = 'block'; 
-}
 
-$(document).ready(function()
-  {
-    $("#close_new_post").click(function(event) {
-      event.preventDefault();
-      document.getElementById('new_post_modal').style.display = 'none';   
-    });
-  }
-)
+  $("#close_new_post").click(function(event) {
+    event.preventDefault();
+    document.getElementById('new_post_modal').style.display = 'none';   
+  });
+}
