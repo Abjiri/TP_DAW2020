@@ -191,12 +191,13 @@ module.exports.consultar = id => {
                 descricao: 1,
                 dataCriacao: 1,
                 dataRegisto: 1,
+                dataUltimaMod: 1,
                 idAutor: 1,
                 nomeAutor: 1,
                 comentarios: 1,
                 nrComentarios: {$size: '$comentarios'},
                 classificacao: {$ifNull: [{$round: [{$avg: '$classificacao.pontuacao'}, 0]}, 0]},
-                dataUltimaMod: 1,
+                visibilidade: 1,
                 tamanho: {$sum: '$ficheiros.tamanho'},
                 ficheiros: 1,
                 nrDownloads: 1
@@ -219,7 +220,7 @@ module.exports.atualizarClassificacao = (idRecurso,classif) => {
 }
 
 module.exports.editarRecurso = (id, novos) => {
-    console.log(novos)
+    console.log(novos.removerFicheiros)
     return Recurso.findOneAndUpdate(
         {"_id": id},
         { $set: {
@@ -227,9 +228,11 @@ module.exports.editarRecurso = (id, novos) => {
             'descricao': novos.descricao,
             'tipo': novos.tipo,
             'visibilidade': novos.visibilidade
-                }
-        }, 
-        {useFindAndModify: false, new: true})
+            },
+          $push: { ficheiros: { $each: novos.ficheiros } }/* ,
+          $pull: { ficheiros: novos.removerFicheiros } */
+        },
+        {multi: true, useFindAndModify: false, new: true})
 }
 
 module.exports.consultarTitulo = id => {

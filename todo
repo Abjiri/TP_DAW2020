@@ -1,11 +1,15 @@
-- renaming do ficheiro no download para tirar o id do produtor só funciona em alguns casos
-- styling das páginas
-
 - inputs invalidos no novo tipo de recurso (p.e. com /)
+- por os modal forms do perfil decentes
 
 
 - noticia ao mudar visibilidade para publico
 - acabar o design 70/30 da pagina
-- por os modal forms do perfil decentes
 - por o botao de remover ficheiro no form de upload mais limpo
-- nova edição de recurso
+- nova edição de recurso (o que ja tenho + eliminar/adicionar ficheiros)
+- frontend da página de recurso individual
+- comentarios diretamente a recursos
+- melhorar a preview de imagens
+
+
+
+- limpar codigo (tudo para pt e nos ficheiros certos)

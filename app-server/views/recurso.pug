@@ -1,7 +1,10 @@
 extends layout 
 
 block content
+    link(rel='stylesheet', href='/stylesheets/modal.css')
+    
     div(id="editar_recurso" class="my-modal" style="display: none")
+    div(id="display_recurso" class="modal")
 
     input(id="tipos_edicao" hidden value=tipos)
 
@@ -23,11 +26,23 @@ block content
     p Número de downloads: #{r.nrDownloads}
     p Tamanho: #{r.tamanho}
 
-    button(id="recurso_preview" onclick=`showImage("${r.nome_ficheiro}", "${r.tipo_mime}")`) Preview
+    table 
+        p Ficheiros:
+        tr 
+            th Nome 
+            th Tamanho
+            th Visualizar
+        each f in r.ficheiros 
+            tr 
+                td= f.nome_ficheiro
+                td= f.tamanho
+                td
+                    button(type="button" class="resource-btn" onclick=`showImage("${f.nome_ficheiro}", "${f.diretoria}", "${f.tipo_mime}")`) 👁
+
     button(onclick=`showPostForm("${r._id}")`) Criar publicação
     
     if r.dono
-        button(onclick=`editarRecurso("${r._id}","${r.idAutor}","${r.titulo}","${r.descricao}","${r.tipo}","${r.visibilidade}")`) Editar
+        button(onclick=`editarRecurso('${JSON.stringify(r)}')`) Editar
 
     p
         a(href=`/recursos/${r.idAutor}-${r.nome_ficheiro}/download/`) Download

@@ -15,6 +15,12 @@ module.exports.inserir = noticia => {
     return nova.save()
 }
 
+module.exports.atualizarEstado = idRecurso => {
+    return Noticia.updateMany(
+        {"recurso.id": idRecurso},
+        {$set: {'recurso.estado': 'Indisponível'}})
+}
+
 module.exports.noticiasUtilizador = id =>{
     return Noticia
         .find({idAutor: id})

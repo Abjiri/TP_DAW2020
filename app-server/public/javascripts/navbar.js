@@ -81,4 +81,9 @@ $(document).ready(function()
     $(".download_recurso").click(function() {
         location.reload() 
     });
+
+    $('#noticia-Indisponível').click(function(e) {
+        e.preventDefault()
+        window.alert('Este recurso já não se encontra disponível!')
+    })
   });

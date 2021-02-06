@@ -23,7 +23,10 @@ block content
             .d-flex.flex-column.ml-3
               .d-flex.flex-row.post-title
                 h5.text-primary
-                  a(href=`/recursos/${n.recurso.id}`) #{n.recurso.titulo}
+                  a(id=`noticia-${n.recurso.estado}` href=`/recursos/${n.recurso.id}`) #{n.recurso.titulo}
+              .d-flex.flex-row.align-items-center.align-content-center.post-title
+                b Estado:&nbsp;
+                | #{n.recurso.estado}
               .d-flex.flex-row.align-items-center.align-content-center.post-title
                 b Tipo:&nbsp;
                 | #{n.recurso.tipo}

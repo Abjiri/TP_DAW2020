@@ -71,10 +71,12 @@ function prepararRecurso(r, tipos_bd, cookiesToken) {
   tipos_bd.data.forEach(t => tipos.push(t.tipo))
 
   r.dono = token._id == r.idAutor
-  r.tamanho = calculateSize(r.tamanho)
   r.dataCriacao = moment(r.dataCriacao).format('DD-MM-YYYY')
   r.dataRegisto = moment(r.dataRegisto).format('HH:mm:ss, DD-MM-YYYY')
   r.dataUltimaMod = moment(r.dataUltimaMod).format('HH:mm:ss, DD-MM-YYYY')
+
+  r.tamanho = calculateSize(r.tamanho)
+  r.ficheiros.forEach(f => {f.tamanho = calculateSize(f.tamanho)})
 
   return {r, tipos, nivel: token.nivel}
 }

@@ -5,7 +5,7 @@ var axios = require('axios');
 
 router.get('/logout', function(req, res) {
   res.clearCookie("token");
-  res.redirect('/');
+  res.redirect(req.headers.referer);
 })
 
 router.post('/login', function(req, res) {
@@ -18,7 +18,7 @@ router.post('/login', function(req, res) {
           httpOnly: true
         })
 
-        res.redirect('/')
+        res.redirect(req.headers.referer)
       }
       else res.render('home', {
         nivel: 'consumidor',
@@ -49,7 +49,7 @@ router.post('/signup', function(req, res) {
             httpOnly: true
           })
 
-          res.redirect('/')
+          res.redirect(req.headers.referer)
         }
         else res.render('home', {
           nivel: 'consumidor',

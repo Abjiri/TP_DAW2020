@@ -23,4 +23,11 @@ router.post('/', function(req, res){
     .catch(e => res.status(500).jsonp({error: e}))
 })
 
+// Atualizar estado para indisponível
+router.post('/atualizarEstado/:id', function(req, res){
+  Noticia.atualizarEstado(req.params.id)
+    .then(dados => res.status(201).jsonp({dados}))
+    .catch(e => res.status(500).jsonp({error: e}))
+})
+
 module.exports = router;
