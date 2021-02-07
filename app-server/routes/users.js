@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var aux = require('./functions')
 
 var axios = require('axios');
 
@@ -59,6 +60,23 @@ router.post('/signup', function(req, res) {
         })
       })
       .catch(error => res.render('error', {error}))
+  }
+})
+
+router.delete('/:id',function(req,res){
+  if (!req.cookies.token) res.render('error', {error})
+  else {
+    var token = aux.unveilToken(req.cookies.token)
+    if(token.nivel == 'admin') {
+      axios.delete('http://localhost:8001/users/' + req.params.id + '?token=' + req.cookies.token)
+        .then(dados => {
+          res.redirect("/home")
+        })
+        .catch(error => res.render('error', {error}))
+    }
+    else {
+      res.render('error', {error})
+    }
   }
 })
 

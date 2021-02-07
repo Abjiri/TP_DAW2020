@@ -33,7 +33,7 @@ router.post('/', function(req, res) {
 
 // login de utilizador
 router.post('/login', passport.authenticate('login-auth'), function(req, res) {
-  if (req.user.success) {
+  if (req.user.success && req.user.bloqueado == false) {
     jwt.sign({
       _id: req.user.user._id,
       nome: req.user.user.nome,
