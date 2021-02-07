@@ -36,4 +36,10 @@ router.put("/:id", function(req,res) {
     .catch(e => res.status(500).jsonp({error: e}))
 })
 
+router.delete("/:id", function(req,res){
+  User.alterar({_id: req.params.id, bloqueado: true})
+    .then(dados => res.status(200).jsonp(dados))
+    .catch(e => res.status(500).jsonp({error: e}))
+})
+
 module.exports = router;

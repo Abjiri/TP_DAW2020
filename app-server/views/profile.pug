@@ -52,6 +52,11 @@ block content
                     | &nbsp; 
                     |  
                     a.w3-btn.w3-blue.w3-round-large(href='#' onclick='pictureForm(' +'\'' + user._id +'\'' + ');') Mudar Foto
+                    if nivel=="admin"
+                      |  
+                      | &nbsp; 
+                      |  
+                      a.w3-btn.w3-red.w3-round-large(onclick='deleteUser(' +'\'' + user._id +'\'' + ');') Bloquear Acesso
                 // END profile-header-info
               // END profile-header-content
           // end profile

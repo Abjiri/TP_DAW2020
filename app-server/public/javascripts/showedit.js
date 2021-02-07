@@ -2,6 +2,14 @@ function fechar(){
     document.getElementById('close-modal').click()
 }
 
+function deleteUser(id){
+  $.ajax({
+    url: '/users/'+id,
+    type: 'DELETE',
+    success: function(result) {window.location.replace("/home");}
+  });
+}
+
 var loadFile = function(event){
     var output = document.getElementById('output');
     output.src = URL.createObjectURL(event.target.files[0]);
