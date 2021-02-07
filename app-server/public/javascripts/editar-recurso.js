@@ -216,13 +216,14 @@ function removerFicheiro(id, operacao) {
     var nrLinhas = $(`#ficheiros-${operacao} tr`).length - 2 //th's e linha de adicionar recursos
     if (nrLinhas == 1) window.alert('O recurso precisa de ter pelo menos 1 ficheiro!') 
     else {
-        /* var removerFicheiros = JSON.parse($('#removerFicheiros').val())
-        var ficheiros = JSON.parse($('#ficheiros').val())
+        if (operacao == 'edicao') {
+            var removerFicheiros = JSON.parse($('#removerFicheiros').val())
+            var ficheiros = JSON.parse($('#ficheiros').val())
 
-        var f = ficheiros.filter(obj => {return obj._id == id})
-        removerFicheiros.push(id)
-        console.log(f[0])
-        $('#removerFicheiros').val(JSON.stringify(removerFicheiros)) */
+            var f = ficheiros.filter(obj => {return obj._id == id})
+            removerFicheiros.push(id)
+            $('#removerFicheiros').val(JSON.stringify(removerFicheiros))
+        }
 
         $('#'+id).remove()
     }
