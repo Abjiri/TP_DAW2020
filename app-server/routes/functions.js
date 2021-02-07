@@ -17,7 +17,7 @@ function gerarTokenConsumidor(url, res) {
 
         res.redirect(url)
     })
-    .catch(error => res.render('error', {error}))
+    .catch(error => res.render('error', {nivel: 'consumidor', error}))
 }
 
 function unveilToken(token){  
@@ -34,14 +34,6 @@ function unveilToken(token){
     return t
 }
 
-function getInfoToken(cookiesToken) {
-  if (cookiesToken) {
-    var token = unveilToken(cookiesToken)
-    return {_id: token._id, nivel: token.nivel}
-  }
-  return {_id: null, nivel: 'consumidor'}
-}
-
 function variaveisRecursos(recursos, tipos_bd, cookiesToken, meus_recursos) {
   var token = unveilToken(cookiesToken)
   var nomesAutores = []
@@ -49,7 +41,7 @@ function variaveisRecursos(recursos, tipos_bd, cookiesToken, meus_recursos) {
   
   var tipos = []
   tipos_bd.data.forEach(t => tipos.push(t.tipo))
-  console.log(recursos[0])
+  
   recursos.forEach(r => {
     r.tamanho = calculateSize(r.tamanho)
     r.dono = token._id == r.idAutor || token.nivel == 'admin'
@@ -83,6 +75,28 @@ function prepararRecurso(r, tipos_bd, cookiesToken) {
   r.ficheiros.forEach(f => {f.tamanho = calculateSize(f.tamanho)})
 
   return {r, tipos, nivel: token.nivel}
+}
+
+function renderHome(cookiesToken, res, atribsForms) {
+  axios.get('http://localhost:8001/publicacoes?token=' + cookiesToken)
+    .then(pubs => {
+      var publicacoes = {}
+      var colunas = 4
+      var linhas = Math.ceil(pubs.data.length/colunas)
+
+      for (var i = 0; i < linhas; i++) publicacoes['linha'+i] = []
+      for (var i = 0; i < pubs.data.length; i++) {
+        publicacoes['linha'+(Math.floor(i/colunas))].push(pubs.data[i])
+      }
+      
+      axios.get('http://localhost:8001/noticias?token=' + cookiesToken)
+        .then(noticias => {
+          var token = unveilToken(cookiesToken)
+          res.render('home', {nivel: token.nivel, pubs: publicacoes, noticias: noticias.data, ...atribsForms})
+        })
+        .catch(error => res.render('error', {nivel: 'consumidor', error}))
+    })
+    .catch(error => res.render('error', {nivel: 'consumidor', error}))
 }
 
 function calculateSize(bytes) {
@@ -177,9 +191,9 @@ function cleanTitle(title){
 module.exports = {
   gerarTokenConsumidor,
   unveilToken,
-  getInfoToken,
   variaveisRecursos,
   prepararRecurso,
+  renderHome,
   calculateSize,
   calculateMd5,
   calculateMd5_Buffer,
