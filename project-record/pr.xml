@@ -38,6 +38,9 @@
             Cada recurso dá a possibilidade de pré-visualizar cada um dos ficheiros que são nele contidos.
         </p>
         <p>
+            A listagem de recursos permite ao utilizador filtrar por tipo, data, título ou pelos seus recursos e permite diversas formas de ordenação, tais como por classificação, data, etc. Tanto os métodos de ordenação como os filtros funcionam simultaneamente, isto é, o utilizador pode filtrar todos os recursos que disponibilizou no ano 2021 ordenados por classificação, por exemplo.
+        </p>
+        <p>
             É possível, também, criar uma publicação sobre um recurso, pelo que os restantes produtores poderão comentar sobre essa mesma publicação.
         </p>
         <p>
