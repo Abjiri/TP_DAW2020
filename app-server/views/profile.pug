@@ -89,10 +89,16 @@ block content
                                 b 
                                   span(style='color:#0074D9') #{dataTimeline}:
                                 if item.recurso
-                                  if dono && nivel!='consumidor'  
-                                    |  Notifiquei os utilizadores sobre o recurso: 
+                                  if item.recurso.estado == "Atualizado"
+                                    if dono && nivel!='consumidor'  
+                                      |  Atualizei um recurso: 
+                                    else 
+                                      |  Atualizou um recurso:  
                                   else 
-                                    |  Notificou os utilizadores sobre o recurso: 
+                                    if dono && nivel!='consumidor'  
+                                      |  Carreguei um novo recurso: 
+                                    else 
+                                      |  Carregou um novo recurso: 
                                   a(href=`/recursos/${item.recurso.id}`) #{item.recurso.titulo}
                               
                             else
