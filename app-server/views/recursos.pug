@@ -202,9 +202,9 @@ block content
               td= r.tamanho
               td
                 if (nivel == 'produtor' || nivel == 'admin')
-                  button(type="button" onclick=`showPostForm("${r._id}")`) &#10095;
+                  button.fa.fa-comment-o(type="button" onclick=`showPostForm("${r._id}")` style="border: 0px; background-color: transparent")
                 else
-                  button(type="button" onclick=`showPostForm("${r._id}")` disabled) &#10095;
+                  button.fa.fa-comment-o(type="button" onclick=`showPostForm("${r._id}")` disabled style="border: 0px; background-color: transparent")
 
                 if r.dono
                   form(action=`/recursos/${r._id}/remover/` method="GET" style="display: inline-block")
