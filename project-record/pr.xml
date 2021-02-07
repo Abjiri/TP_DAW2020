@@ -23,16 +23,38 @@
     </team>
     <abstract>
         <p>
+            O projeto final da disciplina foi o desenvolvimento de uma plataforma de disponibilização de <b>recursos</b>, onde é possível descarregar ou carregar um conjunto de ficheiros.
+        </p>
+        <p>
             A plataforma disponibiliza autenticação de utilizadores através de JsonWebToken, pelo que existem três níveis de acesso: consumidor, produtor e administrador.
         </p>
         <p>
-            
+            Os consumidores são autenticados automaticamente, porém não têm permissões de edição, adicionar ou remover recursos; submeter comentários a publicações ou criar publicações.
         </p>
         <p>
-            O projeto final da disciplina foi o desenvolvimento de uma plataforma de disponibilização de <b>recursos</b>. 
+            Os produtores são autenticados se os dados fornecidos no <i>login</i> coincidirem com os dados na base de dados e, assim, conseguem fazer tudo o que os consumidores não conseguem, isto é, editar os seus recursos, adicionar novos recursos ou removê-los, assim como mudar a sua visibilidade.
+        </p>
+        <p>
+            Cada recurso dá a possibilidade de pré-visualizar cada um dos ficheiros que são nele contidos.
+        </p>
+        <p>
+            É possível, também, criar uma publicação sobre um recurso, pelo que os restantes produtores poderão comentar sobre essa mesma publicação.
+        </p>
+        <p>
+            Para além da publicação, existem também notícias que são geradas no momento do <i>upload</i> do ficheiro. Assim, é sempre visível um registo da atividade da plataforma.
+        </p>
+        <p>
+            É possível, na lista de recursos, selecionar vários para realizar o <i>download</i>, pelo que o utilizador receberá um <i>zip</i> num formato simplificado de <b>BagIt</b>. Em <i>uploads</i> é também utilizado este formato implicitamente, pelo que o utilizador só precisa de indicar os ficheiros e o browser gerará automaticamente para o envio.
+        </p>
+        <p>
+            A estrutura dos <i>zip</i> <b>BagIt</b> em <i>uploads</i> segue o seguinte esquema: um ficheiro <u>"manifest-md5.txt"</u> que contém todos os <i>checksums</i> dos ficheiros que o utilizador adicionar, calculados através do algoritmo MD5, e uma pasta <u>data</u> que contém os mesmos.
+        </p>
+        <p>
+            No <i>download</i>>, a estrutura é semelhante pelo que apenas muda se for um <i>download</i> de múltiplos recursos. Caso seja de um único recurso, é enviado um <i>zip</i> igual ao de <i>upload</i>. No entanto, se forem múltiplos recursos, a pasta <u>data</u> terá os <i>zips</i> de cada recurso individual, e o <u>"manifest-md5.txt"</u> terá os <i>checksum</i> desses <i>zips</i>. 
         </p>
     </abstract>
     <deliverables>
         <link url="https://github.com/Abjiri/TP_DAW2020">Código fonte da aplicação</link>
+        <link url="https://github.com/Abjiri/TP_DAW2020">Relatório do Projeto</link>
     </deliverables>
 </pr>
