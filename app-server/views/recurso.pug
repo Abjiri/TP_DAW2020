@@ -44,5 +44,8 @@ block content
     if r.dono
         button(onclick=`editarRecurso('${JSON.stringify(r)}')`) Editar
 
+        form(action=`/recursos/${r._id}/remover/` method="GET" style="display: inline-block")
+            button(type="submit" class="eliminarRecurso") Eliminar
+
     p
         a(href=`/recursos/${r.idAutor}-${r.nome_ficheiro}/download/`) Download
