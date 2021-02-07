@@ -268,10 +268,10 @@ router.post('/editar/:id', upload.any(), function(req, res) {
           req.files.forEach(f => {
             if (f.fieldname == 'recurso') {
               var data = Date.now()
-              f.originalname = f.originalname.replace(/ /g, "_")
+              f.originalname = f.originalname.replace(/ /g, "_").replace(/\\/g,"/")
 
-              let oldPath = __dirname.split('/routes')[0] + '/' + f.path
-              let newPath = __dirname.split('/routes')[0] + '/public/fileStore/' + data + '-' + f.originalname
+              let oldPath = __dirname.replace(/\\/g,"/").split('/routes')[0] + '/' + f.path.replace(/\\/g,"/")
+              let newPath = __dirname.replace(/\\/g,"/").split('/routes')[0] + '/public/fileStore/' + data + '-' + f.originalname
 
               fs.renameSync(oldPath, newPath, (err) => {
                   if (err) throw err;

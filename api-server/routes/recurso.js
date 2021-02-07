@@ -90,14 +90,18 @@ router.post('/', function(req, res){
 router.post('/editar/:id', function(req, res) {
   console.log(req.body)
   console.log("--------------------------------------------------")
-  Recurso.editarRecurso(req.params.id, req.body)
+  Recurso.editarRecursoTirar(req.params.id, req.body)
     .then(dados => {
-      if (req.body.tipoNovo) {
-        RecursoTipo.inserir([{tipo: req.body.tipo}])
-          .then(dados2 => res.status(201).jsonp({dados}))
-          .catch(e => res.status(500).jsonp({error: e}))
-      }
-      else res.status(201).jsonp({dados})
+      Recurso.editarRecursoAdicionar(req.params.id, req.body)
+        .then(dados => {
+          if (req.body.tipoNovo) {
+            RecursoTipo.inserir([{tipo: req.body.tipo}])
+              .then(dados2 => res.status(201).jsonp({dados}))
+              .catch(e => res.status(500).jsonp({error: e}))
+          }
+          else res.status(201).jsonp({dados})
+        })
+        .catch(e => res.status(500).jsonp({error: e}))
     })
     .catch(e => res.status(500).jsonp({error: e}))
 })
