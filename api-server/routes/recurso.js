@@ -102,10 +102,10 @@ router.post('/editar/:id', function(req, res) {
     .catch(e => res.status(500).jsonp({error: e}))
 })
 
-// Inserir recursos
+// Incrementar nr de downloads
 router.post('/download', function(req, res){
   var erros = []
-  console.log(req.body)
+  
   req.body.forEach(dir => {
     Recurso.incrementarDownloads(dir)
       .then(d => {})
@@ -114,6 +114,13 @@ router.post('/download', function(req, res){
 
   if (!erros.length) res.status(201).jsonp({})
   else res.status(500).jsonp({erros})
+})
+
+// Inserir recursos
+router.post('/publicacao/:id', function(req, res){
+  Recurso.incrementarPubs(req.params.id)
+    .then(d => res.status(201).jsonp({}))
+    .catch(e => res.status(500).jsonp({erros}))
 })
 
 // Alterar um recurso

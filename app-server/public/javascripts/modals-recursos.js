@@ -1,5 +1,5 @@
 function adicionarLinha(nr, operacao) {
-    var html = `<tr id="linha${nr}">
+    var html = `<tr id="linha${nr}" class="nova">
             <th class="nome"></th>
             <th class="tamanho"></th>
             <th class="preview"></th>
@@ -88,11 +88,11 @@ function editarRecurso(recurso) {
         </script>
 
         <div class="login_container">
-            <div class="w3-col s3">
+            <div class="w3-col s3" style="margin-top: 20px; margin-bottom: 20px">
                 <label class="w3-text-teal"><b>Visibilidade: </b></label>
             </div>
             <div class="w3-col s9">
-                <label id="switch" class="switch">
+                <label id="switch" class="switch" style="margin-top: 20px; margin-bottom: 20px">
                     <input type="checkbox" name="visibilidade" id="slider"`
     
     if (!r.visibilidade) html += ' checked'
@@ -109,8 +109,8 @@ function editarRecurso(recurso) {
             <div class="w3-col s3">
                 <label class="w3-text-teal"><b>Ficheiros: </b></label>
             </div>
-            <div class="w3-col s9 w3-border">
-                <table id="ficheiros-edicao" class="w3-table-all">
+            <div class="w3-col s9">
+                <table id="ficheiros-edicao" class="w3-table-all" style="margin-bottom: 20px">
                     <tr>
                         <th> Nome </th>
                         <th> Tamanho </th>
@@ -148,6 +148,7 @@ function adicionarFicheiro(nr, operacao) {
     $('#novoFicheiro'+nr).click();
     $('#novoFicheiro'+nr).change(function () {
         if (this.files) {
+            $('#linha'+nr).attr("class",'')
             var detalhes = this.files[0]
 
             $(`#linha${nr} .nome`).html(detalhes.name)
@@ -162,7 +163,6 @@ function adicionarFicheiro(nr, operacao) {
             $(`#ficheiros-${operacao} tr:last`).after(adicionarLinha(nr+1, operacao))
         }
     })
-    console.log("TERMINEI 2")
 }
 
 function checkMimetype(type) {

@@ -1,11 +1,5 @@
 const mongoose = require('mongoose')
 
-var comentarioSchema = new mongoose.Schema({
-  corpo: {type: String, required: true},
-  id_autor: {type: String, required: true},
-  dataCriacao: {type: String, default: new Date().toISOString().substr(0,19)}
-});
-
 var ficheiroSchema = new mongoose.Schema({
   nome_ficheiro: {type: String, required: true},
   tamanho: {type: Number, required: true},
@@ -28,7 +22,7 @@ var recursoSchema = new mongoose.Schema({
     visibilidade: {type: Boolean, required: true},
     idAutor: {type: String, required: true},
     nomeAutor: {type: String, required: true},
-    comentarios: {type: [comentarioSchema], default: []},
+    nrPubs: {type: Number, default: 0},
     nrDownloads: {type: Number, default: 0},
     ficheiros: {type: [ficheiroSchema], default: []}
   });

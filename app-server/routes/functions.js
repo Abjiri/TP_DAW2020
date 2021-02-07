@@ -60,7 +60,7 @@ function variaveisRecursos(recursos, tipos_bd, cookiesToken, meus_recursos) {
       nomesAutores.push(r.nomeAutor)
     }
   })
-  console.log({nivel: token.nivel, recursos, tipos, autores: nomesAutores.sort(), meus_recursos})
+  
   return {nivel: token.nivel, recursos, tipos, autores: nomesAutores.sort(), meus_recursos}
 }
 
@@ -74,6 +74,10 @@ function prepararRecurso(r, tipos_bd, cookiesToken) {
   r.dataCriacao = moment(r.dataCriacao).format('DD-MM-YYYY')
   r.dataRegisto = moment(r.dataRegisto).format('HH:mm:ss, DD-MM-YYYY')
   r.dataUltimaMod = moment(r.dataUltimaMod).format('HH:mm:ss, DD-MM-YYYY')
+  
+  var classif = r.classificacao
+  if (!classif.length) r.classificacao = 0
+  else r.classificacao = classif.reduce((total, prox) => total + prox.pontuacao, 0) / classif.length
 
   r.tamanho = calculateSize(r.tamanho)
   r.ficheiros.forEach(f => {f.tamanho = calculateSize(f.tamanho)})

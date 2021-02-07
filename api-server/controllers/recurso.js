@@ -12,10 +12,10 @@ module.exports.listar = () => {
                 idAutor: 1,
                 nomeAutor: 1,
                 visibilidade: 1,
-                nrComentarios: {$size: '$comentarios'},
                 classificacao: {$ifNull: [{$round: [{$avg: '$classificacao.pontuacao'}, 0]}, 0]},
                 dataUltimaMod: 1,
                 tamanho: {$round: [{$sum: '$ficheiros.tamanho'}, 0]},
+                nrPubs: 1,
                 nrDownloads: 1
             }
         }])
@@ -41,10 +41,10 @@ module.exports.pesquisarMeusRecursos = idAutor => {
                 idAutor: 1,
                 nomeAutor: 1,
                 visibilidade: 1,
-                nrComentarios: {$size: '$comentarios'},
                 classificacao: {$ifNull: [{$round: [{$avg: '$classificacao.pontuacao'}, 0]}, 0]},
                 dataUltimaMod: 1,
                 tamanho: {$round: [{$sum: '$ficheiros.tamanho'}, 0]},
+                nrPubs: 1,
                 nrDownloads: 1
             }
         }])
@@ -69,10 +69,10 @@ module.exports.pesquisarPorAutor = (nome, meus_recursos) => {
                 idAutor: 1,
                 nomeAutor: 1,
                 visibilidade: 1,
-                nrComentarios: {$size: '$comentarios'},
                 classificacao: {$ifNull: [{$round: [{$avg: '$classificacao.pontuacao'}, 0]}, 0]},
                 dataUltimaMod: 1,
                 tamanho: {$round: [{$sum: '$ficheiros.tamanho'}, 0]},
+                nrPubs: 1,
                 nrDownloads: 1
             }
         }])
@@ -97,10 +97,10 @@ module.exports.pesquisarPorTitulo = (titulo, meus_recursos) => {
                 idAutor: 1,
                 nomeAutor: 1,
                 visibilidade: 1,
-                nrComentarios: {$size: '$comentarios'},
                 classificacao: {$ifNull: [{$round: [{$avg: '$classificacao.pontuacao'}, 0]}, 0]},
                 dataUltimaMod: 1,
                 tamanho: {$round: [{$sum: '$ficheiros.tamanho'}, 0]},
+                nrPubs: 1,
                 nrDownloads: 1
             }
         }])
@@ -125,10 +125,10 @@ module.exports.pesquisarPorTipo = (tipo, meus_recursos) => {
                 idAutor: 1,
                 nomeAutor: 1,
                 visibilidade: 1,
-                nrComentarios: {$size: '$comentarios'},
                 classificacao: {$ifNull: [{$round: [{$avg: '$classificacao.pontuacao'}, 0]}, 0]},
                 dataUltimaMod: 1,
                 tamanho: {$round: [{$sum: '$ficheiros.tamanho'}, 0]},
+                nrPubs: 1,
                 nrDownloads: 1
             }
         }, { $sort: {dataUltimaMod: -1} }])
@@ -152,10 +152,10 @@ module.exports.pesquisarPorAno = (ano, meus_recursos) => {
                 idAutor: 1,
                 nomeAutor: 1,
                 visibilidade: 1,
-                nrComentarios: {$size: '$comentarios'},
                 classificacao: {$ifNull: [{$round: [{$avg: '$classificacao.pontuacao'}, 0]}, 0]},
                 dataUltimaMod: 1,
                 tamanho: {$round: [{$sum: '$ficheiros.tamanho'}, 0]},
+                nrPubs: 1,
                 nrDownloads: 1
             }
         }])
@@ -179,10 +179,10 @@ module.exports.ordenarPor = params => {
                 idAutor: 1,
                 nomeAutor: 1,
                 visibilidade: 1,
-                nrComentarios: {$size: '$comentarios'},
                 classificacao: {$ifNull: [{$round: [{$avg: '$classificacao.pontuacao'}, 0]}, 0]},
                 dataUltimaMod: 1,
                 tamanho: {$round: [{$sum: '$ficheiros.tamanho'}, 0]},
+                nrPubs: 1,
                 nrDownloads: 1
             }
         }, { $sort: criteriosObj }])
@@ -203,11 +203,11 @@ module.exports.consultar = id => {
                 nomeAutor: 1,
                 comentarios: 1,
                 visibilidade: 1,
-                nrComentarios: {$size: '$comentarios'},
-                classificacao: {$ifNull: [{$round: [{$avg: '$classificacao.pontuacao'}, 0]}, 0]},
+                classificacao: 1,
                 visibilidade: 1,
                 tamanho: {$sum: '$ficheiros.tamanho'},
                 ficheiros: 1,
+                nrPubs: 1,
                 nrDownloads: 1
             })
         .exec()
@@ -252,7 +252,16 @@ module.exports.consultarTitulo = id => {
 module.exports.incrementarDownloads = id => {
     return Recurso.findOneAndUpdate(
         { _id: id },
-        { $inc: { nrDownloads: 1 } }
+        { $inc: { nrDownloads: 1 } }, 
+        {useFindAndModify: false, new: true}
+    )
+}
+
+module.exports.incrementarPubs = id => {
+    return Recurso.findOneAndUpdate(
+        { _id: id },
+        { $inc: { nrPubs: 1 } }, 
+        {useFindAndModify: false, new: true}
     )
 }
 

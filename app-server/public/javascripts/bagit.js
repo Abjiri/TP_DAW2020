@@ -3,22 +3,23 @@ $(document).ready(function()
     $('body').on('click', '#upload', function(e){
         e.preventDefault();
 
-        var i = 0; 
         var form = document.getElementById('myForm');
-
-        var total = parseInt($(`#ficheiros-upload tr`).length - 2) //th's e linha de adicionar recursos
-        $('#linha'+total).remove()
+        $('.nova').remove()
 
         var formData = new FormData(form);
         console.log("START")
         console.log([...formData])
 
+        var checksums = []
         var hashes = []
         var ficheiros = []
         var zip = new JSZip();
 
         for (var [key, value] of formData.entries()) {
-          if (/^checksum/.test(key)) hashes.push(value)
+          if (/^checksum/.test(key)) {
+            checksums.push(key)
+            hashes.push(value)
+          }
           if(key == "recurso"){
             zip.file("data/" + value.name, value)
             ficheiros.push(value.name)
@@ -30,9 +31,8 @@ $(document).ready(function()
         zip.generateAsync({type:'blob'}).then((blobdata)=>{
           //o zip chama-se blob
           formData.delete("recurso")
-          for(var i = 0; i < total; i++){
-            formData.delete("checksum"+i)
-          }
+          for (var i = 0; i < checksums.length; i++) formData.delete(checksums[i])
+
           formData.append("zip",blobdata)
           console.log("FIM")
           console.log([...formData])

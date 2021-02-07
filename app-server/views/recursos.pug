@@ -73,7 +73,7 @@ block content
                     th Tamanho
                     th Visualizar
                     th
-                  tr(id=`linha0`)
+                  tr(id=`linha0` class="nova")
                     th(class="nome")
                     th(class="tamanho")
                     th(class="preview")
@@ -182,10 +182,10 @@ block content
               | &nbsp;&nbsp;
               a(href="dataUltimaMod/-1" class="ordenarRecursos")= ordemAtual == 'dataUltimaMod/-1' ? '▾' : '▿'
           
-            th Nr comentários &nbsp;
-              a(href="nrComentarios/+1" class="ordenarRecursos")= ordemAtual == 'nrComentarios/+1' ? '▴' : '▵'
+            th Nr publicações &nbsp;
+              a(href="nrPubs/+1" class="ordenarRecursos")= ordemAtual == 'nrPubs/+1' ? '▴' : '▵'
               | &nbsp;&nbsp;
-              a(href="nrComentarios/-1" class="ordenarRecursos")= ordemAtual == 'nrComentarios/-1' ? '▾' : '▿'
+              a(href="nrPubs/-1" class="ordenarRecursos")= ordemAtual == 'nrPubs/-1' ? '▾' : '▿'
 
             th Nr downloads &nbsp;
               a(href="nrDownloads/+1" class="ordenarRecursos")= ordemAtual == 'nrDownloads/+1' ? '▴' : '▵'
@@ -204,8 +204,6 @@ block content
                 a(href="/perfil/" + r.idAutor) #{r.nomeAutor}
               td= r.tamanho
               td
-                button(type="button" class="resource-btn" onclick=`showImage("${r.nome_ficheiro}", "${r.diretoria}", "${r.tipo_mime}")`) 👁
-
                 if (nivel == 'produtor' || nivel == 'admin')
                   button(type="button" onclick=`showPostForm("${r._id}")`) &#10095;
                 else
@@ -222,5 +220,5 @@ block content
                   a(class="classificarRecurso" href=`/recursos/${r._id}/classificar/80#${r._id}` title="Muito bom") ★
                   a(class="classificarRecurso" href=`/recursos/${r._id}/classificar/100#${r._id}` title="Excelente") ★
               td= r.dataUltimaMod
-              td= r.nrComentarios
+              td= r.nrPubs
               td= r.nrDownloads

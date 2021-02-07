@@ -40,11 +40,14 @@ router.post('/', function(req, res) {
 
                     axios.get('http://localhost:8001/recursos/titulo/' + req.body.id_recurso + '?token=' + req.cookies.token)
                     .then(tituloData => {
-                        console.log(tituloData.data)
                         req.body["titulo_recurso"] = tituloData.data.titulo
 
                         axios.post('http://localhost:8001/publicacoes?token=' + req.cookies.token, req.body)
-                            .then(dados => res.redirect("/publicacoes/" + dados.data._id))
+                            .then(dados => {
+                                axios.post('http://localhost:8001/recursos/publicacao/' + req.body.id_recurso + '?token=' + req.cookies.token)
+                                    .then(d => res.redirect("/publicacoes/" + dados.data._id))
+                                    .catch(error => res.render('error', {error}))
+                            })
                             .catch(error => res.render('error', {error}))
                     })
                     .catch(error => res.render('error', {error}))
