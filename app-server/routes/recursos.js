@@ -415,6 +415,7 @@ router.post('/upload', upload.single('zip'), function(req, res) {
                 tiposNovos.push({tipo})
               }
             }
+            console.log("BOAS")
 
             var recurso = {
               tipo,
@@ -428,8 +429,10 @@ router.post('/upload', upload.single('zip'), function(req, res) {
               nomeAutor: token.nome,
               ficheiros: ficheiros
             }
+            console.log("BOAS")
 
             aux.clearZipFolder(extractpath,zippath)
+            console.log("BOAS")
             
             axios.post('http://localhost:8001/recursos?token=' + req.cookies.token, {recurso, tiposNovos})
             .then(dados => {

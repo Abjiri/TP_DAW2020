@@ -7,9 +7,12 @@ function adicionarLinha(nr, operacao) {
     
     if (operacao == 'upload') html += `<input hidden name="checksum${nr}" value="">`
 
-    html += `
-                <button class="adicionar" type="button" onclick="adicionarFicheiro(${nr}, '${operacao}')"> &#10133; </button>
-                <input name="recurso" type="file" id="novoFicheiro${nr}" style="display: none">
+    html += `   <button class="adicionar" type="button" onclick="adicionarFicheiro(${nr}, '${operacao}')"> &#10133; </button>
+                <input name="recurso" type="file" id="novoFicheiro${nr}" `
+
+    if (operacao == 'upload') html += `onchange='getChecksum(this,${nr})' ` 
+    
+    html += `style="display: none">
                 <button class="remover" type="button" style="color: red; display: none" onclick="removerFicheiro('linha${nr}', '${operacao}')"> &#10006; </button>
             </th>
         </tr>`
@@ -147,7 +150,6 @@ function adicionarFicheiro(nr, operacao) {
     $('#novoFicheiro'+nr).change(function () {
         if (this.files) {
             var detalhes = this.files[0]
-            if (operacao == 'upload') getChecksum(this,nr)
 
             $(`#linha${nr} .nome`).html(detalhes.name)
             $(`#linha${nr} .tamanho`).html(calcularTamanho(detalhes.size))
@@ -161,6 +163,7 @@ function adicionarFicheiro(nr, operacao) {
             $(`#ficheiros-${operacao} tr:last`).after(adicionarLinha(nr+1, operacao))
         }
     })
+    console.log("TERMINEI 2")
 }
 
 function checkMimetype(type) {

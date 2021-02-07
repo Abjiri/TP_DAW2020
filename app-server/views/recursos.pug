@@ -80,7 +80,7 @@ block content
                   th
                     input(hidden name="checksum0" value="")
                     button(class="adicionar" type="button" onclick=`adicionarFicheiro(0,'upload')`) &#10133;
-                    input(name="recurso" type="file" id=`novoFicheiro0` style="display: none")
+                    input(name="recurso" type="file" id=`novoFicheiro0` onchange=`getChecksum(this,0)` style="display: none")
                     button(class="remover" type="button" style="color: red; display: none" onclick=`removerFicheiro('linha0', 'upload')`) &#10006;
 
         div(class="login_container")

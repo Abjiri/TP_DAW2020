@@ -12,15 +12,19 @@ $(document).ready(function()
         var formData = new FormData(form);
         console.log("START")
         console.log([...formData])
-        var files = {}
+
+        var hashes = []
+        var ficheiros = []
         var zip = new JSZip();
+
         for (var [key, value] of formData.entries()) {
+          if (/^checksum/.test(key)) hashes.push(value)
           if(key == "recurso"){
             zip.file("data/" + value.name, value)
-            files[i++] = value.name
+            ficheiros.push(value.name)
           }
         }
-        var manifest = getManifestString(files)
+        var manifest = getManifestString(hashes, ficheiros)
         zip.file("manifest-md5.txt",manifest)
 
         zip.generateAsync({type:'blob'}).then((blobdata)=>{
@@ -33,7 +37,7 @@ $(document).ready(function()
           console.log("FIM")
           console.log([...formData])
           
-          /* $.ajax({
+          $.ajax({
             url: "/recursos/upload",
             type: "POST",
             data: formData,
@@ -42,7 +46,7 @@ $(document).ready(function()
             success: function (response){
               window.location.replace("/recursos");
             }
-          }); */
+          });
           // For development and testing purpose
             // create zip blob file
             // Download the zipped file 
@@ -56,7 +60,6 @@ $(document).ready(function()
 })
 
 function getChecksum(input, id){
-  console.log(id)
     let file = input.files[0];
 
     let reader = new FileReader();
@@ -77,14 +80,10 @@ function getChecksum(input, id){
 }
 
 // returns the manifest
-function getManifestString(files){
-    var total = parseInt($('#anotherFile').attr('class')) + 1
+function getManifestString(hashes, ficheiros){
     var str = ''
-    for(var i = 0; i < total; i++){
-        var elem = $(`input[name = "checksum${i}"]`)
-        var hash = elem.attr('value')
-        var file = files[i]
-        str += `${hash} data/${file}\n`
+    for(var i = 0; i < hashes.length; i++){
+      str += `${hashes[i]} data/${ficheiros[i]}\n`
     }
     return str
 }
