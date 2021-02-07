@@ -131,7 +131,7 @@ router.get('/:id/classificar/:pont', (req,res) => {
 router.get('/:id/remover', (req,res) => {
   axios.delete('http://localhost:8001/recursos/' + req.params.id + '?token=' + req.cookies.token)
     .then(dados => {
-      axios.post('http://localhost:8001/noticias/atualizarEstado/' + req.params.id + '?token=' + req.cookies.token)
+      axios.post('http://localhost:8001/noticias/atualizarEstado/' + req.params.id + '?token=' + req.cookies.token, {estado: 'Eliminado'})
         .then(d => res.redirect('/recursos'))
         .catch(error => res.render('error', {error}))
     })
@@ -286,7 +286,7 @@ router.post('/editar/:id', upload.any(), function(req, res) {
               })
             }
           })
-
+          
           axios.post(`http://localhost:8001/recursos/editar/${req.params.id}?token=${req.cookies.token}`, req.body)
             .then(dados => {
               if (req.body.visibilidade) {
@@ -316,7 +316,7 @@ router.post('/editar/:id', upload.any(), function(req, res) {
                   .catch(error => res.render('error', {error}))
               }
               else {
-                axios.post('http://localhost:8001/noticias/atualizarEstado/' + req.params.id + '?token=' + req.cookies.token)
+                axios.post('http://localhost:8001/noticias/atualizarEstado/' + req.params.id + '?token=' + req.cookies.token, {estado: 'Privado'})
                   .then(d => res.redirect('/recursos/' + req.params.id))
                   .catch(error => res.render('error', {error}))
               }

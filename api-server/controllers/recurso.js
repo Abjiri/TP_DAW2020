@@ -228,8 +228,6 @@ module.exports.atualizarClassificacao = (idRecurso,classif) => {
 }
 
 module.exports.editarRecursoTirar = (id, novos) => {
-    console.log(novos.removerFicheiros)
-    console.log(id)
     return Recurso.updateOne(
         {"_id": id},
         {$pull: {ficheiros: {_id: {$in: novos.removerFicheiros}}}},
@@ -238,10 +236,17 @@ module.exports.editarRecursoTirar = (id, novos) => {
 }
 
 module.exports.editarRecursoAdicionar = (id,novos) => {
-    return Recurso.updateOne(
+    return Recurso.findOneAndUpdate(
         {"_id": id},
-        {$push: {ficheiros: {$each: novos.ficheiros}}},
-        {multi: true}
+        { $set: {
+            'titulo': novos.titulo,
+            'descricao': novos.descricao,
+            'tipo': novos.tipo,
+            'visibilidade': novos.visibilidade
+            },
+          $push: { ficheiros: { $each: novos.ficheiros } }
+        },
+        {useFindAndModify: false, new: true}
     ).exec()
 }
 

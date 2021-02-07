@@ -19,14 +19,18 @@ router.get('/autor/:id',function(req,res){
 // Inserir noticia
 router.post('/', function(req, res){
   Noticia.inserir(req.body)
-    .then(dados => res.status(201).jsonp({dados}))
+    .then(dados => {
+      Noticia.atualizarEstado(req.params.id, null, true)
+        .then(dados => res.status(201).jsonp({dados}))
+        .catch(e => res.status(500).jsonp({error: e}))
+    })
     .catch(e => res.status(500).jsonp({error: e}))
 })
 
 // Atualizar estado para indisponível
 router.post('/atualizarEstado/:id', function(req, res){
-  Noticia.atualizarEstado(req.params.id)
-    .then(dados => res.status(201).jsonp({dados}))
+  Noticia.atualizarEstado(req.params.id, req.body.estado, false)
+    .then(dados => {console.log(dados); res.status(201).jsonp({dados})})
     .catch(e => res.status(500).jsonp({error: e}))
 })
 

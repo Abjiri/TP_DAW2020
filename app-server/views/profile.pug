@@ -89,17 +89,20 @@ block content
                                 b 
                                   span(style='color:#0074D9') #{dataTimeline}:
                                 if item.recurso
-                                  if item.recurso.estado == "Atualizado"
-                                    if dono && nivel!='consumidor'  
+                                  if /Atualizado/.test(item.recurso.estado)
+                                    if dono
                                       |  Atualizei um recurso: 
                                     else 
                                       |  Atualizou um recurso:  
-                                  else 
-                                    if dono && nivel!='consumidor'  
+                                  if /Novo/.test(item.recurso.estado)
+                                    if dono
                                       |  Carreguei um novo recurso: 
                                     else 
                                       |  Carregou um novo recurso: 
-                                  a(href=`/recursos/${item.recurso.id}`) #{item.recurso.titulo}
+                                  if dono && !(/Eliminado/.test(item.recurso.estado))
+                                    a(href=`/recursos/${item.recurso.id}`) #{item.recurso.titulo}
+                                  else 
+                                    a(id=`noticia-${item.recurso.estado}` href=`/recursos/${item.recurso.id}`) #{item.recurso.titulo}
                               
                             else
                               - let dataTimeline = new Date(item.dataCriacao)
@@ -109,7 +112,7 @@ block content
                               p 
                                 b 
                                   span(style='color:#0074D9') #{dataTimeline}:
-                                if dono && nivel!='consumidor'     
+                                if dono
                                   |  Criei uma nova publicação: 
                                 else 
                                   |  Criou uma nova publicação: 

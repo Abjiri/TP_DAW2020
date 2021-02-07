@@ -13,7 +13,7 @@ function adicionarLinha(nr, operacao) {
     if (operacao == 'upload') html += `onchange='getChecksum(this,${nr})' ` 
     
     html += `style="display: none">
-                <button class="remover" type="button" style="color: red; display: none" onclick="removerFicheiro('linha${nr}', '${operacao}')"> &#10006; </button>
+                <button class="remover" type="button" style="color: red; boder-radius: none; display: none" onclick="removerFicheiro('linha${nr}', '${operacao}')"> &#10006; </button>
             </th>
         </tr>`
 
