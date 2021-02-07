@@ -37,6 +37,13 @@ router.post('/atualizarFoto/:id', function(req, res){
     .catch(e => res.status(500).jsonp({error: e}))
 })
 
+// Atualizar estado para indisponível
+router.post('/atualizarEstado/:id', function(req, res){
+  Publicacao.atualizarEstado(req.params.id, req.body.disp)
+    .then(dados => res.status(201).jsonp({dados}))
+    .catch(e => res.status(500).jsonp({error: e}))
+})
+
 router.post('/comentar/:id', function(req,res){
   Publicacao.adicionarComentario(req.params.id, req.body)
     .then(dados => res.status(200).jsonp(dados))

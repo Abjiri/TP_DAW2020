@@ -28,7 +28,7 @@ block content
                   br
                   .d-flex.flex-row.align-items-center.align-content-center.post-title
                     b Recurso:&nbsp;
-                      a(href=`/recursos/${p.id_recurso}`) #{p.titulo_recurso}
+                      a(class=`pub-recurso-${p.disp_recurso}` href=`/recursos/${p.id_recurso}`) #{p.titulo_recurso}
                   .d-flex.flex-row.align-items-center.align-content-center.post-title
                     span.mr-2
                       a(href=`/perfil/${p.id_autor}`) #{p.nome_autor}

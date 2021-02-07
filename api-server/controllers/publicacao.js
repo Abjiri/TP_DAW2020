@@ -25,6 +25,15 @@ module.exports.adicionarComentario = (id, com) => {
         )
 }
 
+module.exports.atualizarEstado = (idRecurso,disp) => {
+    return Publicacao.updateMany(
+        {"id_recurso": idRecurso},
+        [{ $set: {
+            'disp_recurso': disp
+        }}],
+        {multi: true})
+}
+
 module.exports.pubsUtilizador = (id) => {
     return Publicacao
         .find({id_autor: id})

@@ -7,9 +7,6 @@ $(document).ready(function()
         $('.nova').remove()
 
         var formData = new FormData(form);
-        console.log("START")
-        console.log([...formData])
-
         var checksums = []
         var hashes = []
         var ficheiros = []
@@ -32,10 +29,7 @@ $(document).ready(function()
           //o zip chama-se blob
           formData.delete("recurso")
           for (var i = 0; i < checksums.length; i++) formData.delete(checksums[i])
-
           formData.append("zip",blobdata)
-          console.log("FIM")
-          console.log([...formData])
           
           $.ajax({
             url: "/recursos/upload",
@@ -68,10 +62,7 @@ function getChecksum(input, id){
 
     reader.onload = function() {
       var hash = CryptoJS.MD5(reader.result).toString();
-      console.log($(`input[name = "checksum${id}"]`))
       $(`input[name = "checksum${id}"]`).val(hash)
-      console.log("HASH: " + hash)
-      console.log($(`input[name = "checksum${id}"]`).val())
     };
 
     reader.onerror = function() {
