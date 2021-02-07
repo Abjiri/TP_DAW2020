@@ -161,7 +161,7 @@ function groupAndSortByDate(obj1,obj2){
     }
     grupo[dia].push(o)
   })
-  console.log(grupo)
+  
   for(var [data, lista] of Object.entries(grupo)){
     lista.sort((a,b) => {
       let x1 = a.data ? a.data : a.dataCriacao

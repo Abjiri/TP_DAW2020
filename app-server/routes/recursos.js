@@ -132,7 +132,11 @@ router.get('/:id/remover', (req,res) => {
   axios.delete('http://localhost:8001/recursos/' + req.params.id + '?token=' + req.cookies.token)
     .then(dados => {
       axios.post('http://localhost:8001/noticias/atualizarEstado/' + req.params.id + '?token=' + req.cookies.token, {estado: 'Eliminado'})
-        .then(d => res.redirect('/recursos'))
+        .then(d => {
+          axios.post('http://localhost:8001/publicacoes/atualizarEstado/' + req.params.id + '?token=' + req.cookies.token, {disp: false})
+            .then(d2 => res.redirect('/recursos'))
+            .catch(error => res.render('error', {nivel: 'consumidor', error}))
+        })
         .catch(error => res.render('error', {nivel: 'consumidor', error}))
     })
     .catch(error => res.render('error', {nivel: 'consumidor', error}))
@@ -310,14 +314,22 @@ router.post('/editar/:id', upload.any(), function(req, res) {
                     }
     
                     axios.post('http://localhost:8001/noticias?token=' + req.cookies.token, noticia)
-                      .then(d => res.redirect('/recursos/' + req.params.id))
+                      .then(d => {
+                        axios.post('http://localhost:8001/publicacoes/atualizarEstado/' + req.params.id + '?token=' + req.cookies.token, {disp: true})
+                          .then(d2 => res.redirect('/recursos/' + req.params.id))
+                          .catch(error => res.render('error', {nivel: 'consumidor', error}))
+                      })
                       .catch(error => res.render('error', {nivel: 'consumidor', error}))
                   })
                   .catch(error => res.render('error', {nivel: 'consumidor', error}))
               }
               else {
                 axios.post('http://localhost:8001/noticias/atualizarEstado/' + req.params.id + '?token=' + req.cookies.token, {estado: 'Privado'})
-                  .then(d => res.redirect('/recursos/' + req.params.id))
+                  .then(d => {
+                    axios.post('http://localhost:8001/publicacoes/atualizarEstado/' + req.params.id + '?token=' + req.cookies.token, {disp: false})
+                      .then(d2 => res.redirect('/recursos/' + req.params.id))
+                      .catch(error => res.render('error', {nivel: 'consumidor', error}))
+                  })
                   .catch(error => res.render('error', {nivel: 'consumidor', error}))
               }
             })

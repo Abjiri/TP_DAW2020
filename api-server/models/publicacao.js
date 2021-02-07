@@ -13,6 +13,7 @@ var publicacaoSchema = new mongoose.Schema({
     corpo: {type: String, required: true},
     id_recurso: {type: String, required: true},
     titulo_recurso: {type: String, required: true},
+    disp_recurso: {type: Boolean, required: true, default: true},
     id_autor: {type: String, required: true},
     nome_autor: {type: String, required: true}, 
     foto: {type: String, required: true},
