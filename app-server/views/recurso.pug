@@ -3,49 +3,117 @@ extends layout
 block content
     link(rel='stylesheet', href='/stylesheets/modal.css')
     
+    div(id="new_post_modal" class="my-modal" style="display: none") 
     div(id="editar_recurso" class="my-modal" style="display: none")
     div(id="preview_ficheiro" class="modal")
 
     input(id="tipos_edicao" hidden value=tipos)
 
-    h1= r.titulo
-    p Tipo: #{r.tipo}
-    p Descrição: #{r.descricao}
-    p Data de criação: #{r.dataCriacao}
-    p Data de registo: #{r.dataRegisto}
-    p Data da última modificação: #{r.dataUltimaMod}
-    p Classificação:
-        div(class="stars rate" data-percent=`${r.classificacao}`)
-            a(class="classificarRecurso" href=`/recursos/${r._id}/classificar/20#${r._id}` title="Horrível") ★
-            a(class="classificarRecurso" href=`/recursos/${r._id}/classificar/40#${r._id}` title="Decente") ★
-            a(class="classificarRecurso" href=`/recursos/${r._id}/classificar/60#${r._id}` title="Bom") ★
-            a(class="classificarRecurso" href=`/recursos/${r._id}/classificar/80#${r._id}` title="Muito bom") ★
-            a(class="classificarRecurso" href=`/recursos/${r._id}/classificar/100#${r._id}` title="Excelente") ★
-    p Autor: #{r.nomeAutor}
-    p Número de publicações: #{r.nrPubs}
-    p Número de downloads: #{r.nrDownloads}
-    p Tamanho: #{r.tamanho}
-
-    table 
-        p Ficheiros:
-        tr 
-            th Nome 
-            th Tamanho
-            th Visualizar
-        each f in r.ficheiros 
-            tr 
-                td= f.nome_ficheiro
-                td= f.tamanho
-                td
-                    button(type="button" class="resource-btn" onclick=`previewFicheiro("${f.nome_ficheiro}", "${f.diretoria}", "${f.tipo_mime}")`) 👁
-
-    button(onclick=`showPostForm("${r._id}")`) Criar publicação
-    
-    if r.dono
-        button(onclick=`editarRecurso('${JSON.stringify(r)}')`) Editar
-
-        form(action=`/recursos/${r._id}/remover/` method="GET" style="display: inline-block")
-            button(type="submit" class="eliminarRecurso") Eliminar
-
-    p
-        a(href=`/recursos/${r.idAutor}-${r.nome_ficheiro}/download/`) Download
+    link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' integrity='sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm' crossorigin='anonymous')
+    link(rel='stylesheet' href='/stylesheets/recurso.css')
+    link(rel='stylesheet' href='//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js' integrity='sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut' crossorigin='anonymous')
+    script(src='//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js')
+    link(rel='stylesheet' type='text/css' href='//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css')
+    .container.bootstrap.snippets.bootdey
+      .row
+        .col-xs-12.col-sm-12.col-md-12.col-lg-12
+         .well.profile
+            h3.name.pull-left.clearfix  #{r.titulo}
+            .clearfix
+            ul.nav.nav-tabs
+             li.active
+              a(href='#tab' data-toggle='tab')
+               | Informação
+             li
+              a(href='#tab2' data-toggle='tab')
+               | Visualizar
+            .tab-content
+             #tab.tab-pane.active
+              .row
+                .col-xs-12.col-sm-4.col-md-4.col-lg-4
+                    p
+                     br
+                     b 
+                      span(style="color:#0074D9") Tipo: 
+                     | #{r.tipo} 
+                    p
+                     b 
+                      span(style="color:#0074D9") Descrição: 
+                     | #{r.descricao}
+                    p
+                     b 
+                      span(style="color:#0074D9") Data de Criação: 
+                     | #{r.dataCriacao}
+                    p
+                     b 
+                      span(style="color:#0074D9") Data de Registo: 
+                     | #{r.dataRegisto}    
+                     br
+                    .col-xs-12.col-sm-4.col-md-4.col-lg-4
+                        b
+                            span(style="color:#0074D9; margin-left: -15px") Classificação: 
+                    .col-xs-12.col-sm-3.col-md-3.col-lg-3
+                        div(class="stars rate" data-percent=`${r.classificacao}` style="margin-left: -20px; margin-top: -10px; margin-bottom: 0px")
+                          a(class="classificarRecurso" href=`/recursos/${r._id}/classificar/20#${r._id}` title="Horrível") ★
+                          a(class="classificarRecurso" href=`/recursos/${r._id}/classificar/40#${r._id}` title="Decente") ★
+                          a(class="classificarRecurso" href=`/recursos/${r._id}/classificar/60#${r._id}` title="Bom") ★
+                          a(class="classificarRecurso" href=`/recursos/${r._id}/classificar/80#${r._id}` title="Muito bom") ★
+                          a(class="classificarRecurso" href=`/recursos/${r._id}/classificar/100#${r._id}` title="Excelente") ★  
+                .col-xs-12.col-sm-8.col-md-8.col-lg-8
+                    p
+                     br
+                     b 
+                      span(style="color:#0074D9") Autor: 
+                     a(href="/perfil/" + r.idAutor style="color: black") #{r.nomeAutor} 
+                    p
+                     b 
+                      span(style="color:#0074D9") Última Modificação: 
+                     | #{r.dataUltimaMod}  
+                    p
+                     b 
+                      span(style="color:#0074D9") Número de publicações: 
+                     | #{r.nrPubs}
+                    p
+                     b 
+                      span(style="color:#0074D9") Número de downloads:
+                     |  #{r.nrDownloads}
+                    p 
+                     b
+                      span(style="color:#0074D9") Tamanho total: 
+                     | #{r.tamanho} 
+                
+              hr(style="border-top: 1px solid #a0a0a0")
+             #tab2.tab-pane
+                .row
+                 .col-xs-12.col-sm-12.col-md-12.col-lg-12
+                    .tab-content
+                     #basic.tab-pane.active
+                      table.table 
+                       tr 
+                        th Ficheiro
+                        th Tamanho
+                        th Visualizar
+                       each f in r.ficheiros 
+                        tr 
+                         td= f.nome_ficheiro
+                         td= f.tamanho
+                         td
+                           button(type="button" class="resource-btn" onclick=`previewFicheiro("${f.nome_ficheiro}", "${f.diretoria}", "${f.tipo_mime}")`) 👁
+                .row
+                 .col-xs-12.col-sm-1.col-md-1.col-lg-1
+                   form(action="/recursos/download" method="POST")
+                     input(name="selecionados" type="hidden" value='["' + r._id + '"]')
+                     button.btn.btn-primary(id="submit_download" type="submit") Download
+                 .col-xs-12.col-sm-4.col-md-4.col-lg-4    
+                   | &nbsp;
+                   button.btn.btn-primary(onclick=`showPostForm("${r._id}")`) Publicar
+                 .col-xs-12.col-sm-3.col-md-3.col-lg-3.m-1
+                 .col-xs-12.col-sm-3.col-md-3.col-lg-3.m-1.float-right  
+                   if r.dono
+                    | &nbsp;
+                    button.btn.btn-primary(onclick=`editarRecurso('${JSON.stringify(r)}')`) Editar
+                    | &nbsp;
+                    form(action=`/recursos/${r._id}/remover/` method="GET" style="display: inline-block")
+                        button.btn.btn-primary(type="submit" class="eliminarRecurso" ) Eliminar
+                hr(style="border-top: 1px solid #a0a0a0")
