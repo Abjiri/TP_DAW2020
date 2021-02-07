@@ -3,9 +3,9 @@ extends layout
 block content
     link(rel='stylesheet', href='/stylesheets/modal.css')
     
+    div(id="new_post_modal" class="my-modal" style="display: none") 
     div(id="editar_recurso" class="my-modal" style="display: none")
     div(id="preview_ficheiro" class="modal")
-    div(id="new_post_modal" class="my-modal" style="display: none") 
 
     input(id="tipos_edicao" hidden value=tipos)
 
@@ -60,7 +60,7 @@ block content
                           a(class="classificarRecurso" href=`/recursos/${r._id}/classificar/60#${r._id}` title="Bom") ★
                           a(class="classificarRecurso" href=`/recursos/${r._id}/classificar/80#${r._id}` title="Muito bom") ★
                           a(class="classificarRecurso" href=`/recursos/${r._id}/classificar/100#${r._id}` title="Excelente") ★  
-                .col-xs-12.col-sm-6.col-md-6.col-lg-6
+                .col-xs-12.col-sm-8.col-md-8.col-lg-8
                     p
                      br
                      b 
@@ -100,47 +100,20 @@ block content
                          td= f.tamanho
                          td
                            button(type="button" class="resource-btn" onclick=`previewFicheiro("${f.nome_ficheiro}", "${f.diretoria}", "${f.tipo_mime}")`) 👁
-
-    h1= r.titulo
-    p Tipo: #{r.tipo}
-    p Descrição: #{r.descricao}
-    p Data de criação: #{r.dataCriacao}
-    p Data de registo: #{r.dataRegisto}
-    p Data da última modificação: #{r.dataUltimaMod}
-    p Classificação:
-        div(class="stars rate" data-percent=`${r.classificacao}`)
-            a(class="classificarRecurso" href=`/recursos/${r._id}/classificar/20#${r._id}` title="Horrível") ★
-            a(class="classificarRecurso" href=`/recursos/${r._id}/classificar/40#${r._id}` title="Decente") ★
-            a(class="classificarRecurso" href=`/recursos/${r._id}/classificar/60#${r._id}` title="Bom") ★
-            a(class="classificarRecurso" href=`/recursos/${r._id}/classificar/80#${r._id}` title="Muito bom") ★
-            a(class="classificarRecurso" href=`/recursos/${r._id}/classificar/100#${r._id}` title="Excelente") ★
-    p Autor: #{r.nomeAutor}
-    p Número de publicações: #{r.nrPubs}
-    p Número de downloads: #{r.nrDownloads}
-    p Tamanho: #{r.tamanho}
-
-    table 
-        p Ficheiros:
-        tr 
-            th Nome 
-            th Tamanho
-            th Visualizar
-        each f in r.ficheiros 
-            tr 
-                td= f.nome_ficheiro
-                td= f.tamanho
-                td
-                    button(type="button" class="resource-btn" onclick=`previewFicheiro("${f.nome_ficheiro}", "${f.diretoria}", "${f.tipo_mime}")`) 👁
-
-    button(onclick=`showPostForm("${r._id}")`) Criar publicação
-    
-    if r.dono
-        button(onclick=`editarRecurso('${JSON.stringify(r)}')`) Editar
-
-        form(action=`/recursos/${r._id}/remover/` method="GET" style="display: inline-block")
-            button(type="submit" class="eliminarRecurso") Eliminar
-
-    p
-        form(action="/recursos/download" method="POST")
-            input(name="selecionados" type="hidden" value='["' + r._id + '"]')
-            button(id="submit_download" type="submit") Download
+                .row
+                 .col-xs-12.col-sm-1.col-md-1.col-lg-1
+                   form(action="/recursos/download" method="POST")
+                     input(name="selecionados" type="hidden" value='["' + r._id + '"]')
+                     button.btn.btn-primary(id="submit_download" type="submit") Download
+                 .col-xs-12.col-sm-4.col-md-4.col-lg-4    
+                   | &nbsp;
+                   button.btn.btn-primary(onclick=`showPostForm("${r._id}")`) Publicar
+                 .col-xs-12.col-sm-3.col-md-3.col-lg-3.m-1
+                 .col-xs-12.col-sm-3.col-md-3.col-lg-3.m-1.float-right  
+                   if r.dono
+                    | &nbsp;
+                    button.btn.btn-primary(onclick=`editarRecurso('${JSON.stringify(r)}')`) Editar
+                    | &nbsp;
+                    form(action=`/recursos/${r._id}/remover/` method="GET" style="display: inline-block")
+                        button.btn.btn-primary(type="submit" class="eliminarRecurso" ) Eliminar
+                hr(style="border-top: 1px solid #a0a0a0")
