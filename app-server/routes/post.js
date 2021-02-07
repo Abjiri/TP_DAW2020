@@ -12,14 +12,20 @@ router.get('/:id', function(req,res) {
 
         axios.get('http://localhost:8001/publicacoes/' + req.params.id + '?token=' + req.cookies.token)
             .then(dados => {
-                let visitante
+                var visitante
                 aux.sortComments(dados.data)
-                axios.get('http://localhost:8001/users/' + token._id + '?token=' + req.cookies.token)
-                    .then(visitanteData => {
-                        visitante = visitanteData.data
-                        res.render('publicacao', {publicacao: dados.data, nivel: token.nivel, visitante})
-                    })  
-                    .catch(error => res.render('error', {error}))
+
+                if (token.nivel == 'consumidor') {
+                    res.render('publicacao', {publicacao: dados.data, nivel: token.nivel})
+                }
+                else {
+                    axios.get('http://localhost:8001/users/' + token._id + '?token=' + req.cookies.token)
+                        .then(visitanteData => {
+                            visitante = visitanteData.data
+                            res.render('publicacao', {publicacao: dados.data, nivel: token.nivel, visitante})
+                        })  
+                        .catch(error => res.render('error', {error}))
+                }
             })
             .catch(error => res.render('error', {error}))
     }

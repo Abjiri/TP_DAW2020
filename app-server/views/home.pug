@@ -1,20 +1,47 @@
 extends layout
 
 block content
+  link(rel='stylesheet', href='/stylesheets/home.css')
   link(rel='stylesheet', href='/stylesheets/comments.css')
   link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' integrity='sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm' crossorigin='anonymous')
   script(src='https://code.jquery.com/jquery-3.2.1.slim.min.js' integrity='sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN' crossorigin='anonymous')
   script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js' integrity='sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q' crossorigin='anonymous')
   script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js' integrity='sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl' crossorigin='anonymous')
-  
-  h1 Gestão de recursos educativos
 
-  div(class="w3-row")
-    div(class="w3-green w3-container w3-twothird")
-      h2 2/3
-    div(class="w3-container w3-third")
-      h2 Novos Recursos: 
+  div(class="row" style="margin: 30px")
+    div(class="column left")
+      h2
+        b.subtitle Publicações: 
 
+      table(id="actual-table" style="margin-top: 30px")
+        each prop in Object.keys(pubs)
+          tr 
+            each p in pubs[prop]
+              td 
+                div.post-block
+                  figure(class="wp-block-image")
+                    div(id="image")
+                      img.rounded-circle.img-center(src='/images/icone_pub.png')
+                  h3 
+                    b
+                      a(href=`/publicacoes/${p._id}` style="font-size: 18px") #{p.titulo}
+                  br
+                  .d-flex.flex-row.align-items-center.align-content-center.post-title
+                    b Recurso:&nbsp;
+                      a(href=`/recursos/${p.id_recurso}`) #{p.titulo_recurso}
+                  .d-flex.flex-row.align-items-center.align-content-center.post-title
+                    span.mr-2
+                      a(href=`/perfil/${p.id_autor}`) #{p.nome_autor}
+                    span #{moment(new Date(p.dataCriacao)).locale('pt').fromNow()}
+                        
+      footer
+        a(class="footer_home" href="#navbar") Voltar ao início
+
+    div(class="column middle")
+    
+    div(class="column right")
+      h2(style="margin-bottom: 30px")
+        b.subtitle Novos Recursos: 
       each n in noticias
         .d-flex.flex-row.align-items-center.text-left.comment-top.p-2.bg-light.border-bottom.px-4
           .profile-image
@@ -23,7 +50,8 @@ block content
             .d-flex.flex-column.ml-3
               .d-flex.flex-row.post-title
                 h5.text-primary
-                  a(id=`noticia-${n.recurso.estado}` href=`/recursos/${n.recurso.id}`) #{n.recurso.titulo}
+                  b
+                    a(id=`noticia-${n.recurso.estado}` href=`/recursos/${n.recurso.id}`) #{n.recurso.titulo}
               .d-flex.flex-row.align-items-center.align-content-center.post-title
                 b Estado:&nbsp;
                 | #{n.recurso.estado}
@@ -34,12 +62,6 @@ block content
                 span.mr-2
                   a(href=`/perfil/${n.autor.id}`) #{n.autor.nome}
                 span #{moment(new Date(n.data)).locale('pt').fromNow()}
-
-
-    //- ul.w3-ul
-    //-   each p in publicacoes
-    //-     li
-    //-       h4 #{p.titulo}
-    //-       p= p.recurso
-    //-       p= p.corpo
-    //-       p Autor: #{p.autor}
+      
+      footer
+        a(class="footer_home" href="#navbar") Voltar ao início

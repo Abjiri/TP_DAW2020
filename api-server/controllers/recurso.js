@@ -14,7 +14,7 @@ module.exports.listar = () => {
                 visibilidade: 1,
                 classificacao: {$ifNull: [{$round: [{$avg: '$classificacao.pontuacao'}, 0]}, 0]},
                 dataUltimaMod: 1,
-                tamanho: {$round: [{$sum: '$ficheiros.tamanho'}, 0]},
+                tamanho: {$sum: '$ficheiros.tamanho'},
                 nrPubs: 1,
                 nrDownloads: 1
             }
@@ -43,7 +43,7 @@ module.exports.pesquisarMeusRecursos = idAutor => {
                 visibilidade: 1,
                 classificacao: {$ifNull: [{$round: [{$avg: '$classificacao.pontuacao'}, 0]}, 0]},
                 dataUltimaMod: 1,
-                tamanho: {$round: [{$sum: '$ficheiros.tamanho'}, 0]},
+                tamanho: {$sum: '$ficheiros.tamanho'},
                 nrPubs: 1,
                 nrDownloads: 1
             }
@@ -71,7 +71,7 @@ module.exports.pesquisarPorAutor = (nome, meus_recursos) => {
                 visibilidade: 1,
                 classificacao: {$ifNull: [{$round: [{$avg: '$classificacao.pontuacao'}, 0]}, 0]},
                 dataUltimaMod: 1,
-                tamanho: {$round: [{$sum: '$ficheiros.tamanho'}, 0]},
+                tamanho: {$sum: '$ficheiros.tamanho'},
                 nrPubs: 1,
                 nrDownloads: 1
             }
@@ -99,7 +99,7 @@ module.exports.pesquisarPorTitulo = (titulo, meus_recursos) => {
                 visibilidade: 1,
                 classificacao: {$ifNull: [{$round: [{$avg: '$classificacao.pontuacao'}, 0]}, 0]},
                 dataUltimaMod: 1,
-                tamanho: {$round: [{$sum: '$ficheiros.tamanho'}, 0]},
+                tamanho: {$sum: '$ficheiros.tamanho'},
                 nrPubs: 1,
                 nrDownloads: 1
             }
@@ -127,7 +127,7 @@ module.exports.pesquisarPorTipo = (tipo, meus_recursos) => {
                 visibilidade: 1,
                 classificacao: {$ifNull: [{$round: [{$avg: '$classificacao.pontuacao'}, 0]}, 0]},
                 dataUltimaMod: 1,
-                tamanho: {$round: [{$sum: '$ficheiros.tamanho'}, 0]},
+                tamanho: {$sum: '$ficheiros.tamanho'},
                 nrPubs: 1,
                 nrDownloads: 1
             }
@@ -154,7 +154,7 @@ module.exports.pesquisarPorAno = (ano, meus_recursos) => {
                 visibilidade: 1,
                 classificacao: {$ifNull: [{$round: [{$avg: '$classificacao.pontuacao'}, 0]}, 0]},
                 dataUltimaMod: 1,
-                tamanho: {$round: [{$sum: '$ficheiros.tamanho'}, 0]},
+                tamanho: {$sum: '$ficheiros.tamanho'},
                 nrPubs: 1,
                 nrDownloads: 1
             }
@@ -181,7 +181,7 @@ module.exports.ordenarPor = params => {
                 visibilidade: 1,
                 classificacao: {$ifNull: [{$round: [{$avg: '$classificacao.pontuacao'}, 0]}, 0]},
                 dataUltimaMod: 1,
-                tamanho: {$round: [{$sum: '$ficheiros.tamanho'}, 0]},
+                tamanho: {$sum: '$ficheiros.tamanho'},
                 nrPubs: 1,
                 nrDownloads: 1
             }
