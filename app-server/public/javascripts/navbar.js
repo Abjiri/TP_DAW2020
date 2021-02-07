@@ -86,4 +86,11 @@ $(document).ready(function()
         e.preventDefault()
         window.alert('Este recurso já não se encontra disponível!')
     })
+
+    $('.footer_home').click(function(e) {
+        e.preventDefault()
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+    })
   });

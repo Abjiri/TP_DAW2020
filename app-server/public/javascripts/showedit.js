@@ -62,7 +62,7 @@ function editForm(user){
             <label class="w3-text-teal"><b>Nome: </b></label>
           </div>
           <div class="w3-col s9 w3-border">
-            <input class="w3-input w3-border w3-light-grey" type="text" name="nome" value="${json.nome}">
+            <input class="w3-input w3-border w3-light-grey" type="text" name="nome" value="${json.nome}" required>
           </div>
         </div>
   
@@ -79,7 +79,7 @@ function editForm(user){
             <label class="w3-text-teal"><b>Estatuto: </b></label>
           </div>
           <div class="w3-col s9 w3-margin-top">
-            <select name="estatuto" id="estatuto" style="width:100%">
+            <select name="estatuto" id="estatuto" style="width:100%" required>
               <option value="estudante" ` + (json.estatuto.tipo == "estudante" ? `selected` : ``)  + `>Estudante</option>
               <option value="docente" ` + (json.estatuto.tipo == "docente" ? `selected` : ``) + `>Docente</option>
               <option value="trabalhador" ` + (json.estatuto.tipo == "trabalhador" ? `selected` : ``) + `>Trabalhador</option>
@@ -91,7 +91,7 @@ function editForm(user){
           <label class="w3-text-teal"><b>Filiação: </b></label>
         </div>
         <div class="w3-col s9 ">
-            <input class="w3-input w3-margin-top w3-light-grey w3-margin-top w3-border" type="text" name="filiacao" value="${json.estatuto.filiacao}">
+            <input class="w3-input w3-margin-top w3-light-grey w3-margin-top w3-border" type="text" name="filiacao" value="${json.estatuto.filiacao}" required>
         </div>
       </div>
         <div class="w3-row login_container w3-margin-bottom">

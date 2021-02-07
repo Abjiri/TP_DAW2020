@@ -20,6 +20,8 @@ router.get('/', function(req, res) {
         axios.get('http://localhost:8001/recursos/tipos?token=' + req.cookies.token)
           .then(tipos_bd => {
             var varsPug = aux.variaveisRecursos(dados.data, tipos_bd, req.cookies.token, false)
+            console.log(varsPug.tipos)
+            console.log(varsPug.autores)
             res.render('recursos', varsPug)
           })
           .catch(error => res.render('error', {error}))

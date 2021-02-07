@@ -1,0 +1,144 @@
+* {
+  box-sizing: border-box;
+}
+
+/* Create three equal columns that floats next to each other */
+.column {
+  float: left;
+  padding: 10px;
+}
+
+.left {
+  width: 70%;
+}
+
+.middle {
+  width: 5%;
+  position:relative;
+  text-align:center
+}
+
+.right {
+  width: 25%;
+}
+
+.uniform {
+    width: 20%
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  .column {
+    width: 100%;
+  }
+}
+
+.middle:after {
+    content:"";
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    border-left: 1px solid #d4d4d4; 
+    transform: translate(-50%);
+}
+
+
+
+
+img {
+	max-width: 100%;
+    display:block;
+    margin:auto;
+}
+
+.post-img {
+    max-width: 30%;
+}
+
+.post-block {
+    margin: 20px;
+}
+
+.img-center {
+    text-align: center;
+}
+
+h3 {
+	font-family: 'Oswald', sans-serif;
+	font-size: 1.6rem;
+	font-weight: bold;
+}
+
+p {
+	font-family: 'Open Sans', sans-serif; 
+}
+
+footer {
+	text-align: center;
+	font-size: 1rem;
+	font-family: 'Open Sans', sans-serif; 
+    margin-top: 30px;
+}
+
+footer a {
+	transition: color 0.5s ease;
+}
+
+footer a:hover {
+	color: #333333;
+}
+/***************/
+
+.wp-block-columns {
+	display: flex;
+	margin: 20px 0;
+}
+
+.wp-block-column {
+	flex: 1;
+	margin: 0 20px;
+}
+
+@media (max-width: 764px) {
+	.wp-block-columns.has-3-columns {
+		flex-flow: row wrap;
+	}
+
+	.has-3-columns .wp-block-column:first-child {
+		flex-basis: 100%;
+	}
+}
+
+@media (max-width: 478px) {
+	.wp-block-columns.has-3-columns {
+		display: block;
+	}
+
+	.wp-block-column {
+		margin: 20px 0;
+	}
+}
+
+#actual-table { border-collapse: collapse; }
+#actual-table td {
+  width: 25%;
+  padding: 10px;
+  vertical-align: top;
+  border: 1px solid #d4d4d4; 
+}
+
+#image {
+  width: 60%;
+  position: relative; /* If you want text inside of it */
+  text-align: center;
+  margin-left: 20%;
+}

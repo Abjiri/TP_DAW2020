@@ -1,10 +1,8 @@
 extends layout
 
 block content
-  .w3-container.w3-margin
+  div(style="margin: 30px; padding: 10px")
     div(id="preview_ficheiro" class="modal")
-
-    h1 Lista de recursos
 
     if (nivel == 'produtor' || nivel == 'admin')
       div(id="new_resource_modal" class="my-modal" style="display: none")            
@@ -25,8 +23,6 @@ block content
                   b Descrição: 
               div(class="w3-col s9")
                 input(class="w3-input w3-border w3-light-grey" type="text" name="descricao" required)
-
-            input(id="tipos" hidden value=tipos)
 
             div(class="login_container")
               div(class="w3-col s3")
@@ -88,8 +84,6 @@ block content
               input(class="w3-btn w3-blue-grey" style="float:right" type="button" id="upload" value="Submeter")
               input(id="close_new_resource" class="w3-btn w3-blue-grey" style="float:right; margin-right: 10px" type="button" value="Cancelar")
 
-      button(id="new_resource" type="button") Carregar Recursos
-
 
 
     input(id="nivelAutorizacao" value=nivel hidden)
@@ -100,6 +94,10 @@ block content
     div(class="search-container")
       table(style= "width: 100%")
         tr
+          th(class="th-left")
+            a.w3-btn.w3-blue.w3-round-large(id="new_resource") Novo Recurso
+            | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
           th(class="th-right")
             form(action="/recursos/download" method="POST")
               input(name="selecionados" type="hidden" value='[]')
@@ -109,36 +107,36 @@ block content
 
           form(id="formPesquisa" autocomplete="off" action="/recursos/pesquisar" method="POST")
             th(class="th-left")
-              if !filtroAtual
-                select(id="resources_filter" class="w3-btn w3-white" name="filtro" required)
-                  option(selected disabled hidden) Filtrar por...
-                  option(value="autor") Autor
-                  option(value="ano") Data
-                  option(value="tipo") Tipo
-                  option(value="titulo") Título
-              else
-                input(name="filtroAtual" value=filtroAtual hidden)
-                p #{filtroAtual.tipo}:
+              table
+                tr 
+                  if !filtroAtual
+                    th
+                      select(id="resources_filter" class="w3-btn w3-white" name="filtro" required)
+                        option(selected disabled hidden) Filtrar por...
+                        option(value="autor") Autor
+                        option(value="ano") Data
+                        option(value="tipo") Tipo
+                        option(value="titulo") Título
+                      | &nbsp;
+                    th 
+                      div(class="autocomplete")
+                        input(id="search_title" placeholder="Título..." name="titulo" style="display: none")
+                        input(id="search_type" placeholder="Tipo..." name="tipo" style="display: none")
+                        input(id="search_author" placeholder="Autor..." name="autor" style="display: none")
+                        input(id="search_year" placeholder="Ano de criação..." name="ano" type="number" min="1900" max="2099" step="1" style="display: none")
+                    th
+                      | &nbsp;
+                      button(id="resources_searchbtn" type="submit" class="fa fa-search" style="display: none")
 
-            th(class="th-left") &nbsp;
-
-            th(class="th-left")
-              if !filtroAtual
-                div(class="autocomplete")
-                  input(id="search_title" placeholder="Título..." name="titulo" style="display: none")
-                  input(id="search_type" placeholder="Tipo..." name="tipo" style="display: none")
-                  input(id="search_author" placeholder="Autor..." name="autor" style="display: none")
-                  input(id="search_year" placeholder="Ano de criação..." name="ano" type="number" min="1900" max="2099" step="1" style="display: none")
-              else
-                input(value=filtroAtual.valor disabled)
-
-            th(class="th-left") &nbsp;
-            
-            th(class="th-left")
-              if !filtroAtual
-                button(id="resources_searchbtn" type="submit" class="fa fa-search" style="display: none")
-              else
-                a(type="submit" href=`/recursos/limpar-filtro${meus_recursos ? '/meus_recursos' : ''}`) Limpar...
+                  else
+                    th
+                      input(name="filtroAtual" value=filtroAtual hidden)
+                      p #{filtroAtual.tipo}: &nbsp;
+                    th
+                      input(value=filtroAtual.valor disabled)
+                      | &nbsp;
+                    th
+                      a(type="submit" href=`/recursos/limpar-filtro${meus_recursos ? '/meus_recursos' : ''}`) Limpar...
 
             if (nivel == 'produtor' || nivel == 'admin')
               th(class="th-right")
@@ -163,7 +161,7 @@ block content
 
           form(id="formOrdenacao" method="POST")
             input(name="recursos" value=recursos hidden)
-            input(name="tipos" value=tipos hidden)
+            input(id="tipos" name="tipos" value=tipos hidden)
             input(name="autores" value=autores hidden)
             if filtroAtual
               input(id="filtroAtual" name="filtroAtual" value=filtroAtual hidden)
