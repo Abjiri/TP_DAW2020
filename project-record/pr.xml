@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pr SYSTEM "pr.dtd">
+<pr>
+    <meta>
+        <key>Trabalho Prático</key>
+        <title>Open Archival Information System</title>
+        <subtitle>Plataforma de disponibilização de recursos</subtitle>
+        <bdate>10-Jan-2021</bdate>
+        <edate>07-Fev-2021</edate>
+        <supervisor url="http://www4.di.uminho.pt/~jcr/">José Carlos Ramalho</supervisor>
+    </meta>
+    <team>
+        <member id="a84464">
+            <name>Válter Ferreira Picas Carvalho</name>
+            <email>a84464@alunos.uminho.pt</email>
+            <url>https://github.com/wurzy</url>
+        </member>
+        <member id="a85006">
+            <name>Hugo André Coelho Cardoso</name>
+            <email>a85006@alunos.uminho.pt</email>
+            <url>https://github.com/Abjiri</url>
+        </member>
+    </team>
+    <abstract>
+        <p>
+            A plataforma disponibiliza autenticação de utilizadores através de JsonWebToken, pelo que existem três níveis de acesso: consumidor, produtor e administrador.
+        </p>
+        <p>
+            
+        </p>
+        <p>
+            O projeto final da disciplina foi o desenvolvimento de uma plataforma de disponibilização de <b>recursos</b>. 
+        </p>
+    </abstract>
+    <deliverables>
+        <link url="https://github.com/Abjiri/TP_DAW2020">Código fonte da aplicação</link>
+    </deliverables>
+</pr>
