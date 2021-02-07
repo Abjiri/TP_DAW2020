@@ -4,7 +4,7 @@ block content
     link(rel='stylesheet', href='/stylesheets/modal.css')
     
     div(id="editar_recurso" class="my-modal" style="display: none")
-    div(id="display_recurso" class="modal")
+    div(id="preview_ficheiro" class="modal")
 
     input(id="tipos_edicao" hidden value=tipos)
 
@@ -37,7 +37,7 @@ block content
                 td= f.nome_ficheiro
                 td= f.tamanho
                 td
-                    button(type="button" class="resource-btn" onclick=`showImage("${f.nome_ficheiro}", "${f.diretoria}", "${f.tipo_mime}")`) 👁
+                    button(type="button" class="resource-btn" onclick=`previewFicheiro("${f.nome_ficheiro}", "${f.diretoria}", "${f.tipo_mime}")`) 👁
 
     button(onclick=`showPostForm("${r._id}")`) Criar publicação
     

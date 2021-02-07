@@ -38,7 +38,12 @@ router.get('/:id', function(req, res, next) {
         axios.get('http://localhost:8001/noticias/autor/' + token._id +'?token=' + req.cookies.token)
         .then(noticias => {
           axios.get('http://localhost:8001/users/' + req.params.id +'?token=' + req.cookies.token)
-            .then(dados => res.render("profile", {nivel: token.nivel, user: dados.data, dono: token._id == req.params.id, moment: moment, timeline: aux.groupAndSortByDate(publicacoes.data,noticias.data)}))
+            .then(dados => res.render("profile", {
+              nivel: token.nivel, 
+              user: dados.data, 
+              dono: token._id == req.params.id || token.nivel == 'admin', 
+              moment, 
+              timeline: aux.groupAndSortByDate(publicacoes.data,noticias.data)}))
             .catch(error => res.render('error', {error}))
         })
         .catch(error => res.render('error', {error}))
