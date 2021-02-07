@@ -17,7 +17,7 @@ function gerarTokenConsumidor(url, res) {
 
         res.redirect(url)
     })
-    .catch(error => res.render('error', {nivel: 'consumidor', error}))
+    .catch(error => res.render('error', {error}))
 }
 
 function unveilToken(token){  
@@ -94,9 +94,9 @@ function renderHome(cookiesToken, res, atribsForms) {
           var token = unveilToken(cookiesToken)
           res.render('home', {nivel: token.nivel, pubs: publicacoes, noticias: noticias.data, ...atribsForms})
         })
-        .catch(error => res.render('error', {nivel: 'consumidor', error}))
+        .catch(error => res.render('error', {error}))
     })
-    .catch(error => res.render('error', {nivel: 'consumidor', error}))
+    .catch(error => res.render('error', {error}))
 }
 
 function calculateSize(bytes) {

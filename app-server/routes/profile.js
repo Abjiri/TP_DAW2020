@@ -44,11 +44,11 @@ router.get('/:id', function(req, res, next) {
               dono: token._id == req.params.id || token.nivel == 'admin', 
               moment, 
               timeline: aux.groupAndSortByDate(publicacoes.data,noticias.data)}))
-            .catch(error => res.render('error', {nivel: 'consumidor', error}))
+            .catch(error => res.render('error', {error}))
         })
-        .catch(error => res.render('error', {nivel: 'consumidor', error}))
+        .catch(error => res.render('error', {error}))
       })
-      .catch(error => res.render('error', {nivel: 'consumidor', error}))
+      .catch(error => res.render('error', {error}))
   }
 })
   
@@ -63,7 +63,7 @@ router.post('/:id/editar', function(req, res, next){
       
       axios.put('http://localhost:8001/users/' + req.params.id +'?token=' + req.cookies.token, fixed)
         .then(dados => res.redirect("/perfil"))
-        .catch(error => res.render('error', {nivel: 'consumidor', error}))
+        .catch(error => res.render('error', {error}))
     }
     else res.redirect('/perfil/' + req.params.id)
   }
@@ -86,11 +86,11 @@ router.post('/:id/editar/imagem/', upload.single('foto'), function(req,res,next)
             .then(d2 => {
               axios.post('http://localhost:8001/publicacoes/atualizarFoto/' + token._id + '?token=' + req.cookies.token, {foto: foto})
                 .then(d3 => res.redirect("/perfil"))
-                .catch(error => res.render('error', {nivel: 'consumidor', error}))
+                .catch(error => res.render('error', {error}))
             })
-            .catch(error => res.render('error', {nivel: 'consumidor', error}))
+            .catch(error => res.render('error', {error}))
         })
-        .catch(error => res.render('error', {nivel: 'consumidor', error}))
+        .catch(error => res.render('error', {error}))
     }
     else res.redirect('/perfil/' + req.params.id)
   }

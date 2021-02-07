@@ -22,9 +22,9 @@ router.get('/', function(req, res) {
             var varsPug = aux.variaveisRecursos(dados.data, tipos_bd, req.cookies.token, false)
             res.render('recursos', varsPug)
           })
-          .catch(error => res.render('error', {nivel: 'consumidor', error}))
+          .catch(error => res.render('error', {error}))
       })
-      .catch(error => res.render('error', {nivel: 'consumidor', error}))
+      .catch(error => res.render('error', {error}))
   }
 })
 
@@ -40,9 +40,9 @@ router.post('/ordenar/:criterio/:sentido', function(req, res) {
     
             res.render('recursos', varsPug)
           })
-          .catch(error => res.render('error', {nivel: 'consumidor', error}))
+          .catch(error => res.render('error', {error}))
       })
-      .catch(error => res.render('error', {nivel: 'consumidor', error}))
+      .catch(error => res.render('error', {error}))
   }
 })
 
@@ -89,9 +89,9 @@ router.get('/limpar-filtro/:meus_recursos?', (req, res) => {
               var varsPug = aux.variaveisRecursos(dados.data, tipos_bd, req.cookies.token, true)
               res.render('recursos', varsPug)
             })
-            .catch(error => res.render('error', {nivel: 'consumidor', error}))
+            .catch(error => res.render('error', {error}))
         })
-        .catch(error => res.render('error', {nivel: 'consumidor', error}))
+        .catch(error => res.render('error', {error}))
     }
     else res.redirect('/recursos')
   }
@@ -107,9 +107,9 @@ router.get('/:id', function(req, res) {
             var recurso = aux.prepararRecurso(dados.data, tipos_bd, req.cookies.token)
             res.render('recurso', recurso)
           })
-          .catch(error => res.render('error', {nivel: 'consumidor', error}))
+          .catch(error => res.render('error', {error}))
       })
-      .catch(error => res.render('error', {nivel: 'consumidor', error}))
+      .catch(error => res.render('error', {error}))
   }
 })
 
@@ -122,7 +122,7 @@ router.get('/:id/classificar/:pont', (req,res) => {
       axios.put(`http://localhost:8001/recursos/${req.params.id}/classificar/?token=${req.cookies.token}`,
         {user: token._id, pontuacao: Number.parseInt(req.params.pont)})
           .then(dados => res.redirect(req.headers.referer))
-          .catch(error => res.render('error', {nivel: 'consumidor', error}))
+          .catch(error => res.render('error', {error}))
     }
     else res.redirect(req.headers.referer)
   }
@@ -135,11 +135,11 @@ router.get('/:id/remover', (req,res) => {
         .then(d => {
           axios.post('http://localhost:8001/publicacoes/atualizarEstado/' + req.params.id + '?token=' + req.cookies.token, {disp: false})
             .then(d2 => res.redirect('/recursos'))
-            .catch(error => res.render('error', {nivel: 'consumidor', error}))
+            .catch(error => res.render('error', {error}))
         })
-        .catch(error => res.render('error', {nivel: 'consumidor', error}))
+        .catch(error => res.render('error', {error}))
     })
-    .catch(error => res.render('error', {nivel: 'consumidor', error}))
+    .catch(error => res.render('error', {error}))
 })
 
 router.post('/download', (req,res) => {
@@ -170,9 +170,9 @@ router.post('/download', (req,res) => {
             recursosData.data.length == 1 ? res.write(zips[0].zip) : res.write(all)
             res.end()
           })
-          .catch(errors => res.render('error', {nivel: 'consumidor', error:errors[0]}))
+          .catch(errors => res.render('error', {error:errors[0]}))
       })
-      .catch(error => res.render('error', {nivel: 'consumidor', error}))
+      .catch(error => res.render('error', {error}))
   }
 })
 
@@ -225,9 +225,9 @@ router.post('/pesquisar', (req, res) => {
                 
               res.render('recursos', varsPug)
             })
-            .catch(error => res.render('error', {nivel: 'consumidor', error}))
+            .catch(error => res.render('error', {error}))
         })
-        .catch(error => res.render('error', {nivel: 'consumidor', error}))
+        .catch(error => res.render('error', {error}))
     }
   }
 })
@@ -317,25 +317,25 @@ router.post('/editar/:id', upload.any(), function(req, res) {
                       .then(d => {
                         axios.post('http://localhost:8001/publicacoes/atualizarEstado/' + req.params.id + '?token=' + req.cookies.token, {disp: true})
                           .then(d2 => res.redirect('/recursos/' + req.params.id))
-                          .catch(error => res.render('error', {nivel: 'consumidor', error}))
+                          .catch(error => res.render('error', {error}))
                       })
-                      .catch(error => res.render('error', {nivel: 'consumidor', error}))
+                      .catch(error => res.render('error', {error}))
                   })
-                  .catch(error => res.render('error', {nivel: 'consumidor', error}))
+                  .catch(error => res.render('error', {error}))
               }
               else {
                 axios.post('http://localhost:8001/noticias/atualizarEstado/' + req.params.id + '?token=' + req.cookies.token, {estado: 'Privado'})
                   .then(d => {
                     axios.post('http://localhost:8001/publicacoes/atualizarEstado/' + req.params.id + '?token=' + req.cookies.token, {disp: false})
                       .then(d2 => res.redirect('/recursos/' + req.params.id))
-                      .catch(error => res.render('error', {nivel: 'consumidor', error}))
+                      .catch(error => res.render('error', {error}))
                   })
-                  .catch(error => res.render('error', {nivel: 'consumidor', error}))
+                  .catch(error => res.render('error', {error}))
               }
             })
-            .catch(error => res.render('error', {nivel: 'consumidor', error}))
+            .catch(error => res.render('error', {error}))
         })
-        .catch(error => res.render('error', {nivel: 'consumidor', error}))
+        .catch(error => res.render('error', {error}))
     }
     else res.redirect('/recursos/' + req.params.id)
   }
@@ -453,17 +453,17 @@ router.post('/upload', upload.single('zip'), function(req, res) {
     
                     axios.post('http://localhost:8001/noticias?token=' + req.cookies.token, noticia)
                       .then(d => res.redirect('/recursos'))
-                      .catch(error => res.render('error', {nivel: 'consumidor', error}))
+                      .catch(error => res.render('error', {error}))
                   })
-                  .catch(error => res.render('error', {nivel: 'consumidor', error}))
+                  .catch(error => res.render('error', {error}))
               }
               else res.redirect('/recursos')
             })
-            .catch(error => res.render('error', {nivel: 'consumidor', error}))
+            .catch(error => res.render('error', {error}))
           })
-          .catch(error => res.render('error', {nivel: 'consumidor', error}))
+          .catch(error => res.render('error', {error}))
       }
-      else res.render('error', {nivel: 'consumidor', error})
+      else res.render('error', {error})
     }
     else res.redirect('/recursos')
   }

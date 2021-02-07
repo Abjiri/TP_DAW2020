@@ -6,8 +6,8 @@ var userSchema = new mongoose.Schema({
     nivel: {type: String, required: true},
     nome: {type: String, required: true},
     estatuto: {
-        tipo: {type: String, required: true},
-        filiacao: {type: String, required: true},
+      tipo: {type: String, required: true},
+      filiacao: {type: String, required: true},
     },
     dataRegisto: {type: String, default: new Date().toISOString().substr(0,19)},
     dataUltimoAcesso: {type: String, default: new Date().toISOString().substr(0,19)},
