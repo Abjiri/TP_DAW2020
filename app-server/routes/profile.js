@@ -33,9 +33,9 @@ router.get('/:id', function(req, res, next) {
   else {
     var token = aux.unveilToken(req.cookies.token)
 
-    axios.get('http://localhost:8001/publicacoes/autor/' + token._id +'?token=' + req.cookies.token)
+    axios.get('http://localhost:8001/publicacoes/autor/' + req.params.id +'?token=' + req.cookies.token)
       .then(publicacoes => {
-        axios.get('http://localhost:8001/noticias/autor/' + token._id +'?token=' + req.cookies.token)
+        axios.get('http://localhost:8001/noticias/autor/' + req.params.id +'?token=' + req.cookies.token)
         .then(noticias => {
           axios.get('http://localhost:8001/users/' + req.params.id +'?token=' + req.cookies.token)
             .then(dados => res.render("profile", {

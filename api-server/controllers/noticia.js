@@ -29,7 +29,7 @@ module.exports.atualizarFoto = (idUser,foto) => {
 
 module.exports.noticiasUtilizador = id =>{
     return Noticia
-        .find({idAutor: id})
+        .find({"autor.id": id})
         .sort('-data')
         .exec()
 }

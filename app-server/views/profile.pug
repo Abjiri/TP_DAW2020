@@ -27,7 +27,7 @@ block content
                   if dono 
                     img(src= user.foto ? user.foto : '/images/login_avatar.png' onClick='pictureForm(' +'\'' + user._id +'\'' + ');' style="cursor:pointer; border-radius: 50%;" )
                   else 
-                    img(src= user.foto ? user.foto : '/images/login_avatar.png; border-radius: 50%;')
+                    img(src= user.foto ? user.foto : '/images/login_avatar.png' style="cursor:pointer; border-radius: 50%;")
                 // END profile-header-img
                 // BEGIN profile-header-info
                 .profile-header-info
@@ -88,22 +88,13 @@ block content
                               p 
                                 b 
                                   span(style='color:#0074D9') #{dataTimeline}:
-                                if dono 
-                                  if item.recursos.length == 1
-                                    if dono  
-                                      |  Notifiquei os utilizadores sobre o recurso: 
-                                    else 
-                                      |  Notificou os utilizadores sobre o recurso: 
-                                    a(href=`/recursos/${item.recursos[0].id}`) #{item.recursos[0].titulo}
-                                  else
-                                    if dono
-                                      |  Notifiquei os utilizadores sobre os recursos: 
-                                    else
-                                      |  Notificou os utilizadores sobre os recursos: 
-                                    each recurso in item.recursos 
-                                      p 
-                                        span(style="color: #0074D9") &nbsp&nbsp&nbsp&nbsp&bull; 
-                                        a(href=`/recursos/${recurso.id}`) #{recurso.titulo}
+                                if item.recurso
+                                  if dono && nivel!='consumidor'  
+                                    |  Notifiquei os utilizadores sobre o recurso: 
+                                  else 
+                                    |  Notificou os utilizadores sobre o recurso: 
+                                  a(href=`/recursos/${item.recurso.id}`) #{item.recurso.titulo}
+                              
                             else
                               - let dataTimeline = new Date(item.dataCriacao)
                               - const OneHourAgo = (date) => {const hour= 1000 * 60 * 60;const hourago= Date.now()-hour;return date > hourago;}
@@ -111,8 +102,11 @@ block content
                               - dataTimeline = print ? moment(new Date(item.dataCriacao)).locale('pt').fromNow() : moment(new Date(item.dataCriacao)).locale('pt').format("LT")
                               p 
                                 b 
-                                  span(style='color:#0074D9') #{dataTimeline}: 
-                                | Criei uma nova publicação: 
+                                  span(style='color:#0074D9') #{dataTimeline}:
+                                if dono && nivel!='consumidor'     
+                                  |  Criei uma nova publicação: 
+                                else 
+                                  |  Criou uma nova publicação: 
                                 a(href=`/publicacoes/${item._id}`) #{item.titulo} 
                   li
                     // begin timeline-icon
