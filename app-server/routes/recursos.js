@@ -281,7 +281,7 @@ router.post('/editar/:id', upload.any(), function(req, res) {
                 nome_ficheiro: f.originalname,
                 tamanho: f.size,
                 tipo_mime: f.mimetype,
-                diretoria: 'fileStore/' + data + '-' + f.originalname,
+                diretoria: '/fileStore/' + data + '-' + f.originalname,
                 hash: aux.calculateMd5(newPath)
               })
             }
