@@ -19,26 +19,28 @@ router.post('/login', function(req, res) {
           httpOnly: true
         })
 
-        res.redirect(req.headers.referer)
+        if (req.headers.referer == 'http://localhost:8002/users/login') res.redirect('/')
+          else res.redirect(req.headers.referer)
       }
-      else res.render('home', {
-        nivel: 'consumidor',
-        invalidLField: dados.data.invalidInput,
-        ...req.body,
-        error_msg: dados.data.error
-      })
+      else {
+        aux.renderHome(req.cookies.token, res, {
+          invalidLField: dados.data.invalidInput,
+          ...req.body,
+          error_msg: dados.data.error
+        })
+      }
     })
-    .catch(error => res.render('error', {error}))
+    .catch(error => res.render('error', {nivel: 'consumidor', error}))
 })
 
 router.post('/signup', function(req, res) {
-  if (req.body.password != req.body.password_again) 
-    res.render('home', {
-      nivel: 'consumidor',
+  if (req.body.password != req.body.password_again) {
+    aux.renderHome(req.cookies.token, res, {
       invalidSField: "password",
       ...req.body,
       error_msg: "As passwords não coincidem!"
     })
+  }
 
   else {
     axios.post('http://localhost:8000/users/signup', req.body)
@@ -50,21 +52,23 @@ router.post('/signup', function(req, res) {
             httpOnly: true
           })
 
-          res.redirect(req.headers.referer)
+          if (req.headers.referer == 'http://localhost:8002/users/signup') res.redirect('/')
+          else res.redirect(req.headers.referer)
         }
-        else res.render('home', {
-          nivel: 'consumidor',
-          invalidSField: dados.data.invalidInput,
-          ...req.body,
-          error_msg: dados.data.error
-        })
+        else {
+          aux.renderHome(req.cookies.token, res, {
+            invalidSField: dados.data.invalidInput,
+            ...req.body,
+            error_msg: dados.data.error
+          })
+        }
       })
-      .catch(error => res.render('error', {error}))
+      .catch(error => res.render('error', {nivel: 'consumidor', error}))
   }
 })
 
 router.delete('/:id',function(req,res){
-  if (!req.cookies.token) res.render('error', {error})
+  if (!req.cookies.token) res.render('error', {nivel: 'consumidor', error})
   else {
     var token = aux.unveilToken(req.cookies.token)
     if(token.nivel == 'admin') {
@@ -72,10 +76,10 @@ router.delete('/:id',function(req,res){
         .then(dados => {
           res.redirect("/home")
         })
-        .catch(error => res.render('error', {error}))
+        .catch(error => res.render('error', {nivel: 'consumidor', error}))
     }
     else {
-      res.render('error', {error})
+      res.render('error', {nivel: 'consumidor', error})
     }
   }
 })

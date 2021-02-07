@@ -88,8 +88,6 @@ router.post('/', function(req, res){
 
 // Atualizar recurso
 router.post('/editar/:id', function(req, res) {
-  console.log(req.body)
-  console.log("--------------------------------------------------")
   Recurso.editarRecursoTirar(req.params.id, req.body)
     .then(dados => {
       Recurso.editarRecursoAdicionar(req.params.id, req.body)

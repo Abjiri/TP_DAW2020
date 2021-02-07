@@ -82,7 +82,22 @@ $(document).ready(function()
         location.reload() 
     });
 
-    $('#noticia-Indisponível').click(function(e) {
+    $('#noticia-Privado-Atualizado').click(function(e) {
+        e.preventDefault()
+        window.alert('Este recurso já não se encontra disponível!')
+    })
+
+    $('#noticia-Privado-Novo').click(function(e) {
+        e.preventDefault()
+        window.alert('Este recurso já não se encontra disponível!')
+    })
+
+    $('#noticia-Eliminado-Atualizado').click(function(e) {
+        e.preventDefault()
+        window.alert('Este recurso já não se encontra disponível!')
+    })
+
+    $('#noticia-Eliminado-Novo').click(function(e) {
         e.preventDefault()
         window.alert('Este recurso já não se encontra disponível!')
     })

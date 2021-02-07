@@ -24,10 +24,10 @@ router.get('/:id', function(req,res) {
                             visitante = visitanteData.data
                             res.render('publicacao', {publicacao: dados.data, nivel: token.nivel, visitante})
                         })  
-                        .catch(error => res.render('error', {error}))
+                        .catch(error => res.render('error', {nivel: 'consumidor', error}))
                 }
             })
-            .catch(error => res.render('error', {error}))
+            .catch(error => res.render('error', {nivel: 'consumidor', error}))
     }
 })
 
@@ -52,13 +52,13 @@ router.post('/', function(req, res) {
                             .then(dados => {
                                 axios.post('http://localhost:8001/recursos/publicacao/' + req.body.id_recurso + '?token=' + req.cookies.token)
                                     .then(d => res.redirect("/publicacoes/" + dados.data._id))
-                                    .catch(error => res.render('error', {error}))
+                                    .catch(error => res.render('error', {nivel: 'consumidor', error}))
                             })
-                            .catch(error => res.render('error', {error}))
+                            .catch(error => res.render('error', {nivel: 'consumidor', error}))
                     })
-                    .catch(error => res.render('error', {error}))
+                    .catch(error => res.render('error', {nivel: 'consumidor', error}))
                 })
-                .catch(error => res.render('error', {error})) 
+                .catch(error => res.render('error', {nivel: 'consumidor', error})) 
         }
     }
 })
@@ -77,9 +77,9 @@ router.post('/comentar/:id', function(req, res) {
                     req.body["foto"] = fotoData.data.foto
                     axios.post('http://localhost:8001/publicacoes/comentar/' + req.params.id + '?token=' + req.cookies.token, req.body)
                         .then(dados => res.redirect("/publicacoes/"+dados.data._id))
-                        .catch(error => res.render('error', {error}))
+                        .catch(error => res.render('error', {nivel: 'consumidor', error}))
                 })
-                .catch(error => res.render('error', {error})) 
+                .catch(error => res.render('error', {nivel: 'consumidor', error})) 
         }
     }
 })

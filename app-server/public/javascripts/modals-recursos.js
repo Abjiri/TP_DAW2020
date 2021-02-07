@@ -13,7 +13,7 @@ function adicionarLinha(nr, operacao) {
     if (operacao == 'upload') html += `onchange='getChecksum(this,${nr})' ` 
     
     html += `style="display: none">
-                <button class="remover" type="button" style="color: red; display: none" onclick="removerFicheiro('linha${nr}', '${operacao}')"> &#10006; </button>
+                <button class="remover" type="button" style="color: red; boder-radius: none; display: none" onclick="removerFicheiro('linha${nr}', '${operacao}')"> &#10006; </button>
             </th>
         </tr>`
 
@@ -212,7 +212,7 @@ function mostrarPreviewNovo(nr) {
 }
 
 function previewFicheiro(nome, diretoria, tipo_mime){
-    var file;
+    var file
 
     if (tipo_mime == 'image/png' || tipo_mime == 'image/jpeg' || tipo_mime == 'image/gif')
         file = `<span class="helper"></span><img class="center" src="${diretoria}" style="max-width:90%; max-height:90%; border: 10px solid #000;"/>`;

@@ -54,7 +54,10 @@ block content
                     a(id=`noticia-${n.recurso.estado}` href=`/recursos/${n.recurso.id}`) #{n.recurso.titulo}
               .d-flex.flex-row.align-items-center.align-content-center.post-title
                 b Estado:&nbsp;
-                | #{n.recurso.estado}
+                if /^((Privado)|(Eliminado))/.test(n.recurso.estado)
+                  | Indisponível 
+                else
+                  | #{n.recurso.estado}
               .d-flex.flex-row.align-items-center.align-content-center.post-title
                 b Tipo:&nbsp;
                 | #{n.recurso.tipo}

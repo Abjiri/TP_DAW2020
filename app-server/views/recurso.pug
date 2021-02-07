@@ -1,11 +1,10 @@
 extends layout 
 
 block content
-    link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' integrity='sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm' crossorigin='anonymous')
     link(rel='stylesheet' href='/stylesheets/recurso.css')
-    link(rel='stylesheet' href='//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css')
+    link(rel='stylesheet' href='/stylesheets/bootstrap-recurso.css')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js' integrity='sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut' crossorigin='anonymous')
-    script(src='//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js')
+    script(src='/javascripts/bootstrap-tabs.js')
     link(rel='stylesheet' type='text/css' href='//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css')
     link(rel='stylesheet', href='/stylesheets/modal.css')
     
@@ -106,7 +105,10 @@ block content
                      button.btn.btn-primary(id="submit_download" type="submit") Download
                  .col-xs-12.col-sm-4.col-md-4.col-lg-4    
                    | &nbsp;
-                   button.btn.btn-primary(onclick=`showPostForm("${r._id}")`) Publicar
+                   if (nivel == 'produtor' || nivel == 'admin')
+                     button.btn.btn-primary(onclick=`showPostForm("${r._id}")`) Publicar
+                   else
+                     button.btn.btn-primary(onclick=`showPostForm("${r._id}")` disabled) Publicar
                  .col-xs-12.col-sm-3.col-md-3.col-lg-3.m-1
                  .col-xs-12.col-sm-3.col-md-3.col-lg-3.m-1.float-right  
                    if r.dono

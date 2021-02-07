@@ -15,10 +15,23 @@ module.exports.inserir = noticia => {
     return nova.save()
 }
 
-module.exports.atualizarEstado = idRecurso => {
-    return Noticia.updateMany(
-        {"recurso.id": idRecurso},
-        {$set: {'recurso.estado': 'Indisponível'}})
+module.exports.atualizarEstado = (idRecurso,estado,disponivel) => {
+    if (!disponivel) {
+        return Noticia.updateMany(
+            {"recurso.id": idRecurso, "recurso.estado": { $regex: /^((Novo)|(Atualizado))/ }},
+            [{ $set: {
+                'recurso.estado': { $concat: [estado+'-', '$recurso.estado'] }
+            }}],
+            {multi: true})
+    }
+    else {
+        return Noticia.updateMany(
+            {"recurso.id": idRecurso, "recurso.estado": { $regex: /^Privado/ }},
+            [{ $set: {
+                'recurso.estado': {$arrayElemAt:[{$split: ["$recurso.estado" , "-"]}, 1]}
+            }}],
+            {multi: true})
+    }
 }
 
 module.exports.atualizarFoto = (idUser,foto) => {

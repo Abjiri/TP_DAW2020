@@ -4,7 +4,7 @@
 }
 
 .topnav a {
-    color: #f2f2f2;
+    color: #f2f2f2 !important;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
@@ -13,7 +13,7 @@
 
 .topnav a:hover {
     background-color: #ddd;
-    color: black;
+    color: black !important;
 }
 
 .topnav a.active {
