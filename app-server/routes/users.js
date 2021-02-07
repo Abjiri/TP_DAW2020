@@ -30,7 +30,7 @@ router.post('/login', function(req, res) {
         })
       }
     })
-    .catch(error => res.render('error', {nivel: 'consumidor', error}))
+    .catch(error => res.render('error', {error}))
 })
 
 router.post('/signup', function(req, res) {
@@ -63,12 +63,12 @@ router.post('/signup', function(req, res) {
           })
         }
       })
-      .catch(error => res.render('error', {nivel: 'consumidor', error}))
+      .catch(error => res.render('error', {error}))
   }
 })
 
 router.delete('/:id',function(req,res){
-  if (!req.cookies.token) res.render('error', {nivel: 'consumidor', error})
+  if (!req.cookies.token) res.render('error', {error})
   else {
     var token = aux.unveilToken(req.cookies.token)
     if(token.nivel == 'admin') {
@@ -76,10 +76,10 @@ router.delete('/:id',function(req,res){
         .then(dados => {
           res.redirect("/home")
         })
-        .catch(error => res.render('error', {nivel: 'consumidor', error}))
+        .catch(error => res.render('error', {error}))
     }
     else {
-      res.render('error', {nivel: 'consumidor', error})
+      res.render('error', {error})
     }
   }
 })
