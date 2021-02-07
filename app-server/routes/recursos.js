@@ -20,8 +20,6 @@ router.get('/', function(req, res) {
         axios.get('http://localhost:8001/recursos/tipos?token=' + req.cookies.token)
           .then(tipos_bd => {
             var varsPug = aux.variaveisRecursos(dados.data, tipos_bd, req.cookies.token, false)
-            console.log(varsPug.tipos)
-            console.log(varsPug.autores)
             res.render('recursos', varsPug)
           })
           .catch(error => res.render('error', {error}))
@@ -290,7 +288,7 @@ router.post('/editar/:id', upload.any(), function(req, res) {
           })
 
           axios.post(`http://localhost:8001/recursos/editar/${req.params.id}?token=${req.cookies.token}`, req.body)
-            .then(d => {
+            .then(dados => {
               if (req.body.visibilidade) {
                 var token = aux.unveilToken(req.cookies.token)
 
@@ -312,28 +310,14 @@ router.post('/editar/:id', upload.any(), function(req, res) {
                     }
     
                     axios.post('http://localhost:8001/noticias?token=' + req.cookies.token, noticia)
-                      .then(d => {
-                        axios.get('http://localhost:8001/recursos/' + req.params.id + '?token=' + req.cookies.token)
-                          .then(dados => {
-                            var recurso = aux.prepararRecurso(dados.data, tipos_bd, req.cookies.token)
-                            res.render('recurso', recurso)
-                          })
-                          .catch(error => res.render('error', {error}))
-                      })
+                      .then(d => res.redirect('/recursos/' + req.params.id))
                       .catch(error => res.render('error', {error}))
                   })
                   .catch(error => res.render('error', {error}))
               }
               else {
                 axios.post('http://localhost:8001/noticias/atualizarEstado/' + req.params.id + '?token=' + req.cookies.token)
-                .then(d2 => {
-                  axios.get('http://localhost:8001/recursos/' + req.params.id + '?token=' + req.cookies.token)
-                    .then(dados => {
-                      var recurso = aux.prepararRecurso(dados.data, tipos_bd, req.cookies.token)
-                      res.render('recurso', recurso)
-                    })
-                    .catch(error => res.render('error', {error}))
-                  })
+                  .then(d => res.redirect('/recursos/' + req.params.id))
                   .catch(error => res.render('error', {error}))
               }
             })
