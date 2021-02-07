@@ -49,10 +49,10 @@ function variaveisRecursos(recursos, tipos_bd, cookiesToken, meus_recursos) {
   
   var tipos = []
   tipos_bd.data.forEach(t => tipos.push(t.tipo))
-
+  console.log(recursos[0])
   recursos.forEach(r => {
     r.tamanho = calculateSize(r.tamanho)
-    r.dono = token._id == r.idAutor
+    r.dono = token._id == r.idAutor || token.nivel == 'admin'
     r.dataUltimaMod = moment(r.dataUltimaMod).format('HH:mm:ss, DD-MM-YYYY')
 
     if (!idsAutores.includes(r.idAutor)) {
@@ -60,7 +60,7 @@ function variaveisRecursos(recursos, tipos_bd, cookiesToken, meus_recursos) {
       nomesAutores.push(r.nomeAutor)
     }
   })
-
+  console.log({nivel: token.nivel, recursos, tipos, autores: nomesAutores.sort(), meus_recursos})
   return {nivel: token.nivel, recursos, tipos, autores: nomesAutores.sort(), meus_recursos}
 }
 
@@ -70,7 +70,7 @@ function prepararRecurso(r, tipos_bd, cookiesToken) {
   var tipos = []
   tipos_bd.data.forEach(t => tipos.push(t.tipo))
 
-  r.dono = token._id == r.idAutor
+  r.dono = token._id == r.idAutor || token.nivel == 'admin'
   r.dataCriacao = moment(r.dataCriacao).format('DD-MM-YYYY')
   r.dataRegisto = moment(r.dataRegisto).format('HH:mm:ss, DD-MM-YYYY')
   r.dataUltimaMod = moment(r.dataUltimaMod).format('HH:mm:ss, DD-MM-YYYY')

@@ -103,7 +103,6 @@ function editarRecurso(recurso) {
             </div>
         </div>
 
-        <input id="ficheiros" name="ficheiros" value='${JSON.stringify(r.ficheiros)}' hidden>
         <input id="removerFicheiros" name="removerFicheiros" value="[]" hidden>
 
         <div class="login_container">
@@ -184,9 +183,9 @@ function mostrarPreviewAntigo(nome, tipo, diretoria) {
     else 
         html = '<p>' + nome + ', ' + tipo + '<p>';
         
-    $('#preview_recurso').empty();
-    $('#preview_recurso').append(html);
-    $('#preview_recurso').modal();
+    $('#preview_ficheiro_form').empty();
+    $('#preview_ficheiro_form').append(html);
+    $('#preview_ficheiro_form').modal();
 }
 
 function mostrarPreviewNovo(nr) {
@@ -200,8 +199,8 @@ function mostrarPreviewNovo(nr) {
     else 
         html = '<p>' + ficheiro.name + ', ' + ficheiro.type + '<p>';
         
-    $('#preview_recurso').empty();
-    $('#preview_recurso').append(html);
+    $('#preview_ficheiro_form').empty();
+    $('#preview_ficheiro_form').append(html);
 
     var reader = new FileReader();
     reader.onload = function(e) { $('#previewNovoFicheiro').attr('src', e.target.result); }
@@ -209,7 +208,22 @@ function mostrarPreviewNovo(nr) {
     reader.readAsDataURL(ficheiro); // convert to base64 string
     $('#previewNovoFicheiro').css("display","inline-block")
 
-    $('#preview_recurso').modal();
+    $('#preview_ficheiro_form').modal();
+}
+
+function previewFicheiro(nome, diretoria, tipo_mime){
+    var file;
+
+    if (tipo_mime == 'image/png' || tipo_mime == 'image/jpeg' || tipo_mime == 'image/gif')
+        file = `<span class="helper"></span><img class="center" src="${diretoria}" style="max-width:90%; max-height:90%; border: 10px solid #000;"/>`;
+    else if (checkMimetype(tipo_mime))
+        file = `<iframe src="${diretoria}" style="width:100%; height:100%"/>`;
+    else 
+        file = '<p>' + nome + ', ' + tipo_mime + '<p>';
+    
+    $('#preview_ficheiro').empty();
+    $('#preview_ficheiro').append(file);
+    $('#preview_ficheiro').modal();
 }
 
 function removerFicheiro(id, operacao) {
@@ -218,9 +232,6 @@ function removerFicheiro(id, operacao) {
     else {
         if (operacao == 'edicao') {
             var removerFicheiros = JSON.parse($('#removerFicheiros').val())
-            var ficheiros = JSON.parse($('#ficheiros').val())
-
-            var f = ficheiros.filter(obj => {return obj._id == id})
             removerFicheiros.push(id)
             $('#removerFicheiros').val(JSON.stringify(removerFicheiros))
         }
