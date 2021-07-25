@@ -9,11 +9,12 @@ The assignment was developed in **Development of Web Applications**, an optional
 ### Content
 
 1. [Assignment](Projeto%20final%202020.pdf)
-2. [Authentication Server](auth-server)
-3. [API Server](api-server)
-4. [Application Server](app-server)
-5. [Report](Relatorio.pdf)
-6. [Project Record](project-record)
+2. Project
+  2.1. [Authentication Server](auth-server)
+  2.2. [API Server](api-server)
+  2.3. [Application Server](app-server)
+3. [Report](Relatorio.pdf)
+4. [Project Record](project-record)
 
 ## Contributors
 
